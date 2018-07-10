@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactFilestack from 'filestack-react';
 
-const EventsForm = ({ handleSubmit, handleChange, data }) => {
+const EventsForm = ({ handleUpload, handleSubmit, handleChange, data }) => {
   return(
     <form onSubmit={handleSubmit}>
       <div className="field">
@@ -31,7 +31,7 @@ const EventsForm = ({ handleSubmit, handleChange, data }) => {
 
       <div className="field">
         <label className="label">Upload an image</label>
-        <ReactFilestack apikey='A1P1k3n9REqxOW2Z9xz22z' name="image" value={data.image || ''} />
+        <ReactFilestack apikey='A1P1k3n9REqxOW2Z9xz22z' name="image" onSuccess={handleUpload} value={data.image || ''} />
       </div>
 
 

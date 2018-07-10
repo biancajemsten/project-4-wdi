@@ -12,6 +12,10 @@ class EventsNew extends React.Component {
     this.setState({ [name]: value });
   }
 
+  handleUpload = (e) => {
+    this.setState({ image: e.filesUploaded[0].url });
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     axios({
@@ -30,6 +34,7 @@ class EventsNew extends React.Component {
       <EventsForm
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
+        handleUpload={this.handleUpload}
         data={this.state}
       />
     );
