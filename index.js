@@ -4,21 +4,16 @@ const bodyParser = require('body-parser');
 
 const errorHandler = require('./lib/errorHandler');
 
-const { dbURI, port } = require('./config/environment');
-const mongoose = require('mongoose');
-
-
 const router = require('./config/routes');
 
+const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
+const { dbURI, port } = require('./config/environment');
 mongoose.connect(dbURI);
-
-
-app.use(express.static(`${__dirname}/public`));
-
-
-app.get('/*', (req, res) => res.sendFile(`${__dirname}/public/index.html`));
+//
+// app.use(express.static(`${__dirname}/public`));
+// app.get('/*', (req, res) => res.sendFile(`${__dirname}/public/index.html`));
 
 app.use(bodyParser.json());
 app.use('/api', router);
