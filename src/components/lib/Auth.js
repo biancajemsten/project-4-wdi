@@ -4,11 +4,11 @@ class Auth {
     localStorage.removeItem('token');
   }
 
-  static getItem(){
+  static getToken(){
     localStorage.getItem('token');
   }
 
-  static setItem(token){
+  static setToken(token){
     localStorage.setItem('token', token);
   }
 
