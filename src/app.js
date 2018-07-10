@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import 'bulma'; 
-import './style.scss';
+import 'bulma';
+import './scss/style.scss';
 
 class App extends React.Component {
   render() {
