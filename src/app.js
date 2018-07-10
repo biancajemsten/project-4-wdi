@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Home from './components/pages/Home';
 import Navbar from './components/common/Navbar';
 import AuthRegister from './components/auth/Register';
 import AuthLogin from './components/auth/Login';
@@ -14,6 +15,7 @@ class App extends React.Component {
       <BrowserRouter>
         <main>
           <Navbar />
+          <Route exact path="/" component={Home} />
           <section className="section">
             <div className="container">
               <Switch>
