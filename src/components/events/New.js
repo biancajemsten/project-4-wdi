@@ -24,7 +24,12 @@ class EventsNew extends React.Component {
       .catch(err => this.setState({ errors: err.response.data.errors}));
   }
 
+  // uploadImage = () => {
+  //   const { client } = this.props.client
+  // }
+
   render() {
+    console.log(this.props);
     return(
       <EventsForm
         handleChange={this.handleChange}

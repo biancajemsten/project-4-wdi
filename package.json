@@ -46,6 +46,7 @@
     "body-parser": "^1.18.3",
     "bulma": "^0.7.1",
     "express": "^4.16.3",
+    "filestack-js": "^1.2.1",
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.10",
     "mongoose": "^5.2.2",

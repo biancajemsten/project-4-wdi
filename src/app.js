@@ -11,9 +11,9 @@ import AuthLogin from './components/auth/Login';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import FlashMessages from './components/common/FlashMessages';
 
-
 import 'bulma';
 import './scss/style.scss';
+
 
 class App extends React.Component {
   render() {
