@@ -7,6 +7,12 @@ function indexRoute(req, res, next) {
     .catch(next);
 }
 
+
+
+function createRoute(req, res, next){
+  
+}
+
 module.exports = {
   index: indexRoute
 };
