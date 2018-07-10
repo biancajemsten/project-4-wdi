@@ -14,9 +14,11 @@ const eventSchema = new mongoose.Schema({
   timeSlots: [timeSlotSchema],
   length: {type: Number, required: true},
   address: String,
-  private: {type: Boolean, default: true},
+  location: { lat: Number, lng: Number },
+  private: { type: Boolean, default: true },
+  attendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   invitees: [String],
-  pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User', required: true }],
+  pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   image: String,
   organizer: { type: mongoose.Schema.ObjectId, ref: 'User', required: true }
 });
