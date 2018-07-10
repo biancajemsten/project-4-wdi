@@ -7,7 +7,7 @@ class Flash{
     this._messages[type] = message;
   }
 
-  static getMessage(){
+  static getMessages(){
     return this._messages;
   }
 

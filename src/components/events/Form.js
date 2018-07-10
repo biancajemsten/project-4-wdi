@@ -2,7 +2,7 @@ import React from 'react';
 
 const EventsForm = ({ handleSubmit, handleChange, data }) => {
   return(
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="field">
         <label className="label">Event Name</label>
         <input className="input" name="name" onChange={handleChange} value={data.name || ''} />
@@ -16,6 +16,11 @@ const EventsForm = ({ handleSubmit, handleChange, data }) => {
       <div className="field">
         <label className="label">Possible Dates</label>
         <input className="input" name="name" onChange={handleChange} value={data.timeSlots || ''} />
+      </div>
+
+      <div className="field">
+        <label className="label">Event Length</label>
+        <input className="input" name="length" onChange={handleChange} value={data.length || ''} />
       </div>
 
       <div className="field">
@@ -33,30 +38,17 @@ const EventsForm = ({ handleSubmit, handleChange, data }) => {
         <div className="control">
           <div className="select is-fullwidth">
             <select name="private" onChange={handleChange} value={data.privacy || ''}>
-              
+              <option value="" disabled>Set event privacy</option>
+              <option>Private</option>
+              <option>Public</option>
             </select>
-
           </div>
         </div>
       </div>
 
-
-
+      <button className="button">Submit</button>
     </form>
-  )
-}
+  );
+};
 
-
-
-name: {type: String, required: true},
-description: String,
-timeSlots: [timeSlotSchema],
-length: {type: Number, required: true},
-address: String,
-location: { lat: Number, lng: Number },
-private: { type: Boolean, default: true },
-attendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-invitees: [String],
-pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-image: String,
-organizer: { type: mongoose.Schema.ObjectId, ref: 'User' }
+export default EventsForm;

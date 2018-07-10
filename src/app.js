@@ -5,10 +5,11 @@ import Home from './components/pages/Home';
 import NotFound from './components/pages/NotFound';
 import Navbar from './components/common/Navbar';
 import EventsIndex from './components/events/Index';
+import EventsNew from './components/events/New';
 import AuthRegister from './components/auth/Register';
 import AuthLogin from './components/auth/Login';
-// import ProtectedRoute from './components/common/ProtectedRoute';
-// import FlashMessages from './components/common/FlashMessages';
+import ProtectedRoute from './components/common/ProtectedRoute';
+import FlashMessages from './components/common/FlashMessages';
 
 
 import 'bulma';
@@ -20,10 +21,12 @@ class App extends React.Component {
       <BrowserRouter>
         <main>
           <Navbar />
+          <FlashMessages />
           <Route exact path="/" component={Home} />
           <section className="section">
             <div className="container">
               <Switch>
+                <ProtectedRoute path="/events/new" component={EventsNew} />
                 <Route path="/events" component={EventsIndex} />
                 <Route path="/register" component={AuthRegister} />
                 <Route path="/login" component={AuthLogin} />
