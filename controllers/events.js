@@ -3,6 +3,7 @@ const Event = require('../models/event');
 function indexRoute(req, res, next) {
   Event
     .find()
+    .populate('organizer')
     .then(events => res.json(events))
     .catch(next);
 }
@@ -18,7 +19,7 @@ function createRoute(req, res, next){
   req.body.organizer = req.currentUser;
   Event
     .create(req.body)
-    .then(event => req.status(201).json(event))
+    .then(event => res.status(201).json(event))
     .catch(next);
 }
 

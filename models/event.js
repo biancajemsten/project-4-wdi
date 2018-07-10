@@ -20,7 +20,7 @@ const eventSchema = new mongoose.Schema({
   invitees: [String],
   pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   image: String,
-  organizer: { type: mongoose.Schema.ObjectId, ref: 'User', required: true }
+  organizer: { type: mongoose.Schema.ObjectId, ref: 'User' }
 });
 
 module.exports = mongoose.model('Event', eventSchema);
