@@ -12,7 +12,7 @@ router.route('/events/:id')
   .put(events.update)
   .delete(events.delete);
 
-router.put('events/:id/vote', events.update); //needs to be tested in insomnia
+router.put('/events/:id/vote', events.update); //needs to be tested in insomnia
 
 router.post('/register', auth.register);
 router.post('/login', auth.login);
