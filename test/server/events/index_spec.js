@@ -118,7 +118,7 @@ describe('GET /events', ()=>{
           expect(event.location).to.deep.eq(eventData[index].location);
           expect(event.private).to.eq(eventData[index].private);
           expect(event.invitees).to.deep.eq(eventData[index].invitees);
-          expect(event.image).to.eq(eventData[index].image);  
+          expect(event.image).to.eq(eventData[index].image);
         });
         done();
       });
