@@ -41,6 +41,7 @@
   "dependencies": {
     "bcrypt": "^3.0.0",
     "bluebird": "^3.5.1",
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongoose": "^5.2.2",
     "react": "^16.3.1",

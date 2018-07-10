@@ -14,7 +14,17 @@ function showRoute(req, res, next) {
     .catch(next);
 }
 
+function updateRoute(req, res, next) {
+  Event
+    .findById(req.params.id)
+    .then(event => event.set(req.body))
+    .then(event => event.save())
+    .then(event => res.json(event))
+    .catch(next);
+}
+
 module.exports = {
   index: indexRoute,
-  show: showRoute
+  show: showRoute,
+  update: updateRoute
 };
