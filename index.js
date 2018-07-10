@@ -10,7 +10,6 @@ const mongoose = require('mongoose');
 
 const router = require('./config/routes');
 
-const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
 mongoose.connect(dbURI);
