@@ -7,6 +7,14 @@ function indexRoute(req, res, next) {
     .catch(next);
 }
 
+function showRoute(req, res, next) {
+  Event
+    .findById(req.params.id)
+    .then(event => res.json(event))
+    .catch(next);
+}
+
 module.exports = {
-  index: indexRoute
+  index: indexRoute,
+  show: showRoute
 };
