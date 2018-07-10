@@ -57,7 +57,6 @@ class EventsIndex extends React.Component {
         </div>
 
         <table className="table is-striped is-bordered is-hoverable is-fullwidth">
-
           <thead>
             <tr>
               <th>
@@ -81,9 +80,7 @@ class EventsIndex extends React.Component {
               </tr>
             )}
           </tbody>
-
         </table>
-
       </section>
     );
   }
