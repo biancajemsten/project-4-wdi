@@ -4,7 +4,7 @@ const { secret } = require('../config/environment');
 
 function register(req, res, next) {
   User.create(req.body)
-    .then(user => res.json(user))
+    .then(user => res.status(201).json(user))
     .catch(next);
 }
 
