@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './components/pages/Home';
 import Navbar from './components/common/Navbar';
+import EventsIndex from './components/events/Index';
 import AuthRegister from './components/auth/Register';
 import AuthLogin from './components/auth/Login';
 
@@ -19,8 +20,9 @@ class App extends React.Component {
           <section className="section">
             <div className="container">
               <Switch>
-                <Route path="/register" component={AuthRegister}/>
-                <Route path="/login" component={AuthLogin}/>
+                <Route path="/events" component={EventsIndex} />
+                <Route path="/register" component={AuthRegister} />
+                <Route path="/login" component={AuthLogin} />
               </Switch>
             </div>
           </section>
