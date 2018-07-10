@@ -34,6 +34,10 @@ const eventSchema = new mongoose.Schema({
 //   next();
 // });
 
+eventSchema.virtual('eventDates')
+  .get(function() {
+    return Array.from(new Set(this.timeSlots.map(slot => slot.date)));
+  });
 
 timeSlotSchema.path('date')
   .get(function formatDate(date){
@@ -41,10 +45,6 @@ timeSlotSchema.path('date')
   });
 
 
-eventSchema.virtual('eventDates')
-  .get(function() {
-    return Array.from(new Set(this.timeSlots.map(slot => slot.date)));
-  });
 
 eventSchema.set('toJSON', { virtuals: true });
 

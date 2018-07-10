@@ -40,7 +40,7 @@ class EventsIndex extends React.Component {
   }
 
   render() {
-    if(!this.state.events) return <h2 className="title is-2">Loading...</h2>;
+    if(!this.state.events) return <h2 className="title is-2 font-is-light">Loading...</h2>;
     return(
       <section>
         <div className="filters">
