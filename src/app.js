@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Link, Switch } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Home from './components/pages/Home';
 import Navbar from './components/common/Navbar';
 
 import 'bulma';
@@ -12,6 +13,7 @@ class App extends React.Component {
       <BrowserRouter>
         <main>
           <Navbar />
+          <Route exact path="/" component={Home} />
         </main>
       </BrowserRouter>
     );
