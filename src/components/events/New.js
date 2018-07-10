@@ -18,18 +18,14 @@ class EventsNew extends React.Component {
       method: 'POST',
       url: '/api/events',
       data: this.state,
-      headers: { Authorization: `Bearer: ${Auth.getToken()}`}
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
       .then(() => this.props.history.push('/events'))
       .catch(err => this.setState({ errors: err.response.data.errors}));
   }
 
-  // uploadImage = () => {
-  //   const { client } = this.props.client
-  // }
 
   render() {
-    console.log(this.props);
     return(
       <EventsForm
         handleChange={this.handleChange}

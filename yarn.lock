@@ -2523,6 +2523,10 @@ filestack-loader@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/filestack-loader/-/filestack-loader-3.0.4.tgz#f387d14b4b85329f67361f314fa04b5ae41a57a0"
 
+filestack-react@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/filestack-react/-/filestack-react-2.0.0.tgz#3af1d8e8b3da0ab16a92494a303f0f3c6e2e8f66"
+
 fill-range@^2.1.0:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-2.2.4.tgz#eb1e773abb056dcd8df2bfdf6af59b8b3a936565"

@@ -15,7 +15,7 @@ const eventSchema = new mongoose.Schema({
   length: {type: Number, required: true},
   address: String,
   location: { lat: Number, lng: Number },
-  private: { type: Boolean, default: true },
+  private: { type: String, default: 'Private' },
   attendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   invitees: [String],
   pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],

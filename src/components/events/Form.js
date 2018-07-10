@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactFilestack from 'filestack-react';
 
 const EventsForm = ({ handleSubmit, handleChange, data }) => {
   return(
@@ -27,6 +28,12 @@ const EventsForm = ({ handleSubmit, handleChange, data }) => {
         <label className="label">Location</label>
         <input className="input" name="location" onChange={handleChange} value={data.location || ''} />
       </div>
+
+      <div className="field">
+        <label className="label">Upload an image</label>
+        <ReactFilestack apikey='A1P1k3n9REqxOW2Z9xz22z' name="image" value={data.image || ''} />
+      </div>
+
 
       <div className="field">
         <label className="label">Invitees</label>
