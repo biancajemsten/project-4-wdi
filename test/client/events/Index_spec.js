@@ -71,8 +71,8 @@ describe('EventsIndex tests', () => {
 
   it('should render events', done => {
     promise.then(() => {
-      console.log(wrapper);
       wrapper.update();
+      console.log(wrapper);
       expect(wrapper.find('table').length).to.eq(1);
       done();
     })
