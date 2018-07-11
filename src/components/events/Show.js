@@ -84,6 +84,11 @@ class EventsShow extends React.Component{
       });
   }
 
+  checkUserAttending = () =>{
+    const currentUser = Auth.getPayload().sub;
+    if(this.state.event.attendees.includes(currentUser)) return true;
+  }
+
 
 
 
@@ -115,7 +120,7 @@ class EventsShow extends React.Component{
                   <strong>Time: </strong>
                   <p>{timeSlot.startTime} - {this.setEndTime(timeSlot.startTime)}</p>
                   <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
-                  <button className="button" id={timeSlot._id} onClick={this.toggleButton}>Vote</button>
+                  {!this.checkUserAttending() && <button className="button" id={timeSlot._id} onClick={this.toggleButton}>Vote</button>}
                 </div>
               )}
             </div>
