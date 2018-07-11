@@ -38,11 +38,11 @@ mongoose.connect(dbURI, (err, db) => {
         timeSlots: [{
           date: 'Wed, Jul 11th',
           startTime: '12:30',
-          votes: [users[1]]
+          votes: []
         }, {
           date: 'Thu, Jul 12th',
           startTime: '12:30',
-          votes: [users[0], users[2]]
+          votes: []
         }],
         length: 120,
         address: '4 St Olaf\'s Road',
@@ -58,11 +58,11 @@ mongoose.connect(dbURI, (err, db) => {
         timeSlots: [{
           date: 'Fri, Jul 13th',
           startTime: '11:30',
-          votes: [users[0], users[1]]
+          votes: []
         }, {
           date: 'Fri, Jul 13th',
           startTime: '13:30',
-          votes: [users[0], users[2], users[1]]
+          votes: []
         }],
         length: 300,
         address: 'GA, Relay Building',
