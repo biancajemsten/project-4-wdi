@@ -36,12 +36,12 @@ mongoose.connect(dbURI, (err, db) => {
         name: 'Movie Night',
         description: 'Watching films',
         timeSlots: [{
-          date: '2018-07-25',
-          startTime: '2018-07-25',
+          date: 'Wed, Jul 11th',
+          startTime: '12:30',
           votes: [users[1]]
         }, {
-          date: '2018-07-26',
-          startTime: '2018-07-26',
+          date: 'Thu, Jul 12th',
+          startTime: '12:30',
           votes: [users[0], users[2]]
         }],
         length: 120,
@@ -56,12 +56,12 @@ mongoose.connect(dbURI, (err, db) => {
         name: 'Play D&D',
         description: 'Dungeons and dragons, oh my!',
         timeSlots: [{
-          date: '2018-08-12',
-          startTime: '2018-08-12',
+          date: 'Fri, Jul 13th',
+          startTime: '11:30',
           votes: [users[0], users[1]]
         }, {
-          date: '2018-08-19',
-          startTime: '2018-08-19',
+          date: 'Fri, Jul 13th',
+          startTime: '13:30',
           votes: [users[0], users[2], users[1]]
         }],
         length: 300,

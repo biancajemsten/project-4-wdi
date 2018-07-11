@@ -49,8 +49,9 @@ class EventsNew extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const timeSlot = this.state.selectedTimes.map(time => {
-      const date = moment(time, 'ddd, MMM Do, HH:mm').format('YYYY-MM-DD');
+      const date = moment(time, 'ddd, MMM Do, HH:mm').format('ddd, MMM Do');
       const startTime = moment(time, 'ddd, MMM Do, HH:mm').format('HH:mm');
+      console.log(typeof date); 
       return { date: date, startTime: startTime};
     });
     this.setState({ timeSlots: timeSlot });

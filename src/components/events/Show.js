@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import moment from 'moment';
 // import {Link} from 'react-router-dom';
 // import Auth from '../../lib/Auth';
 
@@ -20,7 +19,7 @@ class EventsShow extends React.Component{
 
   //checks the date of the column with the date of the timeSlot
   filterStartTime = (date, i) =>{
-    if(date === moment(this.state.event.timeSlots[i].date).format('ddd, MMM Do')) return true;
+    if(date === this.state.event.timeSlots[i].date) return true;
   };
 
 
