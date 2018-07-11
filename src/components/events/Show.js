@@ -125,7 +125,7 @@ class EventsShow extends React.Component{
               )}
             </div>
           )}
-          <button className="button" onClick={this.handleSubmit}>Submit Votes</button>
+          {!this.checkUserAttending() && <button className="button" onClick={this.handleSubmit}>Submit Votes</button>}
         </div>
       </div>
     );
