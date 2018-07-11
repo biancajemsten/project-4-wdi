@@ -7,7 +7,6 @@ const timeSlotSchema = new mongoose.Schema({
   votes: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
 });
 
-
 const eventSchema = new mongoose.Schema({
   name: {type: String, required: true},
   description: String,
@@ -23,20 +22,12 @@ const eventSchema = new mongoose.Schema({
   organizer: { type: mongoose.Schema.ObjectId, ref: 'User' }
 });
 
-// eventSchema.pre('save', function(next){
-//   this.timeSlots.forEach(timeSlot=>{
-//     const date = timeSlot.date;
-//     timeSlot.date = moment(date).format('YYYY-MM-DD');
-//     console.log(timeSlot.date);
-//     return timeSlot.date;
-//   });
-//   next();
-// });
 
 eventSchema.virtual('eventDates')
   .get(function() {
     return Array.from(new Set(this.timeSlots.map(slot => slot.date)));
   });
+
 
 // timeSlotSchema.path('date')
 //   .get(function formatDate(date){
