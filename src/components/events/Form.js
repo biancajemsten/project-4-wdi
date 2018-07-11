@@ -2,9 +2,10 @@ import React from 'react';
 import ReactFilestack from 'filestack-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import PlacesAutocomplete from 'react-places-autocomplete';
 
 
-const EventsForm = ({ selected, onChange, addTimeSlot, removeTimeSlot, handleUpload, handleSubmit, handleChange, data }) => {
+const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, addTimeSlot, removeTimeSlot, handleUpload, handleSubmit, handleChange, data }) => {
   return(
     <form onSubmit={handleSubmit}>
       <div className="field">
@@ -39,9 +40,47 @@ const EventsForm = ({ selected, onChange, addTimeSlot, removeTimeSlot, handleUpl
         <input className="input" name="length" onChange={handleChange} value={data.length || ''} />
       </div>
 
+
       <div className="field">
         <label className="label">Location</label>
-        <input className="input" name="location" onChange={handleChange} value={data.location || ''} />
+        <PlacesAutocomplete
+          value={data.address}
+          onChange={handleAddressChange}
+          onSelect={handleSelect}
+        >
+          {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+            <div>
+              <input
+                {...getInputProps({
+                  placeholder: 'Search Places ...',
+                  className: 'location-search-input'
+                })}
+              />
+              <div className="autocomplete-dropdown-container">
+                {loading && <div>Loading...</div>}
+                {suggestions.map(suggestion => {
+                  const className = suggestion.active
+                    ? 'suggestion-item--active'
+                    : 'suggestion-item';
+                  // inline style for demonstration purpose
+                  const style = suggestion.active
+                    ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                    : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                  return (
+                    <div key={suggestion}
+                      {...getSuggestionItemProps(suggestion, {
+                        className,
+                        style
+                      })}
+                    >
+                      <span>{suggestion.description}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </PlacesAutocomplete>
       </div>
 
       <div className="field">

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Auth from '../../lib/Auth';
 import moment from 'moment';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
 import EventsForm from './Form';
 
@@ -12,12 +13,25 @@ class EventsNew extends React.Component {
     this.state = {
       startDate: moment(),
       selectedTimes: [],
-      timeSlots: []
+      timeSlots: [],
+      address: ''
     };
     this.onChange = this.onChange.bind(this);
     this.addTimeSlot = this.addTimeSlot.bind(this);
     this.removeTimeSlot = this.removeTimeSlot.bind(this);
   }
+
+  handleAddressChange = address => {
+    this.setState({ address });
+  };
+
+  handleSelect = address => {
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => console.log('Success', latLng))
+      .then(latLng => this.setState({ location: latLng }))
+      .catch(error => console.error('Error', error));
+  };
 
   handleChange = ({ target: { name, value }}) => {
     this.setState({ [name]: value });
@@ -66,8 +80,11 @@ class EventsNew extends React.Component {
 
 
   render() {
+    console.log(this.state.location);
     return(
       <EventsForm
+        handleAddressChange={this.handleAddressChange}
+        handleSelect={this.handleSelect}
         handleChange={this.handleChange}
         addTimeSlot={this.addTimeSlot}
         removeTimeSlot={this.removeTimeSlot}
