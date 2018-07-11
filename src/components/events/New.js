@@ -1,15 +1,43 @@
 import React from 'react';
 import axios from 'axios';
 import Auth from '../../lib/Auth';
+import moment from 'moment';
 
 import EventsForm from './Form';
 
 class EventsNew extends React.Component {
 
-  state = {}
+  constructor (props) {
+    super(props);
+    this.state = {
+      startDate: moment(),
+      selectedTimes: []
+    };
+    this.onChange = this.onChange.bind(this);
+    this.addTimeSlot = this.addTimeSlot.bind(this);
+    this.removeTimeSlot = this.removeTimeSlot.bind(this);
+  }
 
-  handleChange =({ target: { name, value }}) => {
+  handleChange = ({ target: { name, value }}) => {
     this.setState({ [name]: value });
+  }
+
+  onChange(date) {
+    this.setState({ startDate: date });
+  }
+
+  addTimeSlot(e) {
+    e.preventDefault();
+    const selectedTimes = this.state.selectedTimes;
+    selectedTimes.push(this.state.startDate._d.toString());
+    this.setState({ selectedTimes });
+  }
+
+  removeTimeSlot(e) {
+    e.preventDefault();
+    const selectedTimes = this.state.selectedTimes;
+    selectedTimes.splice(selectedTimes.indexOf(e.target.value), 1);
+    this.setState({ selectedTimes });
   }
 
   handleUpload = (e) => {
@@ -33,8 +61,12 @@ class EventsNew extends React.Component {
     return(
       <EventsForm
         handleChange={this.handleChange}
+        addTimeSlot={this.addTimeSlot}
+        removeTimeSlot={this.removeTimeSlot}
         handleSubmit={this.handleSubmit}
         handleUpload={this.handleUpload}
+        selected={this.state.startDate}
+        onChange={this.onChange}
         data={this.state}
       />
     );

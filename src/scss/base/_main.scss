@@ -1,0 +1,23 @@
+html {
+  background-color: $dark-blue;
+  color: $light;
+  strong {
+    color: $light;
+  }
+}
+
+.panda{
+  position:absolute;
+  animation: run 5s;
+}
+
+@keyframes run {
+    0% { transform:  translateX(0vw) rotate(0deg) scale(0.5); }
+    2% { transform:  translateX(0vw) rotate(5deg) scale(0.5); }
+    4% { transform:  translateX(0vw) rotate(-5deg) scale(0.5); }
+    6% { transform:  translateX(0vw) rotate(5deg) scale(0.5); }
+    8% { transform:  translateX(0vw) rotate(-5deg) scale(0.5); }
+    10% { transform:  translateX(0vw) rotate(5deg) scale(0.5); }
+    11% { transform:  translateX(0vw) rotate(0deg) scale(0.5); }
+    100% { transform: translateX(110vw) rotate(-1deg) scale(1.5);; }
+}

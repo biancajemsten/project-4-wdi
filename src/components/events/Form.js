@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactFilestack from 'filestack-react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const EventsForm = ({ handleUpload, handleSubmit, handleChange, data }) => {
+
+const EventsForm = ({ selected, onChange, addTimeSlot, removeTimeSlot, handleUpload, handleSubmit, handleChange, data }) => {
   return(
     <form onSubmit={handleSubmit}>
       <div className="field">
@@ -16,7 +19,19 @@ const EventsForm = ({ handleUpload, handleSubmit, handleChange, data }) => {
 
       <div className="field">
         <label className="label">Possible Dates</label>
-        <input className="input" name="name" onChange={handleChange} value={data.timeSlots || ''} />
+        <DatePicker
+          selected={selected}
+          onChange={onChange}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          dateFormat="LLL"
+          timeCaption="time"
+        />
+        <button className="button" onClick={addTimeSlot}>Add timeslot</button>
+        {data.selectedTimes.map(time =>
+          <span key={time} className="tag is-success">{time.toString()}<button value={time} onClick={removeTimeSlot} className="delete"></button></span>
+        )}
       </div>
 
       <div className="field">
