@@ -27,9 +27,8 @@ class EventsNew extends React.Component {
 
   handleSelect = address => {
     geocodeByAddress(address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
-      .then(latLng => this.setState({ location: latLng }))
+      .then(results => getLatLng(results[0]), console.log(address))
+      .then(latLng => this.setState({ location: latLng, address: address }))
       .catch(error => console.error('Error', error));
   };
 
@@ -80,7 +79,6 @@ class EventsNew extends React.Component {
 
 
   render() {
-    console.log(this.state.location);
     return(
       <EventsForm
         handleAddressChange={this.handleAddressChange}
