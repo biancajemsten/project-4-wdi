@@ -11,7 +11,8 @@ class EventsNew extends React.Component {
     super(props);
     this.state = {
       startDate: moment(),
-      selectedTimes: []
+      selectedTimes: [],
+      timeSlots: []
     };
     this.onChange = this.onChange.bind(this);
     this.addTimeSlot = this.addTimeSlot.bind(this);
@@ -29,7 +30,8 @@ class EventsNew extends React.Component {
   addTimeSlot(e) {
     e.preventDefault();
     const selectedTimes = this.state.selectedTimes;
-    selectedTimes.push(this.state.startDate._d.toString());
+    const formattedTime = moment(this.state.startDate._d).format('ddd, MMM Do, HH:mm');
+    selectedTimes.push(formattedTime);
     this.setState({ selectedTimes });
   }
 
@@ -46,6 +48,12 @@ class EventsNew extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const timeSlot = this.state.selectedTimes.map(time => {
+      const date = moment(time, 'ddd, MMM Do, HH:mm').format('YYYY-MM-DD');
+      const startTime = moment(time, 'ddd, MMM Do, HH:mm').format('HH:mm');
+      return { date: date, startTime: startTime};
+    });
+    this.setState({ timeSlots: timeSlot });
     axios({
       method: 'POST',
       url: '/api/events',

@@ -5,7 +5,7 @@ const moment = require('moment');
 const timeSlotSchema = new mongoose.Schema({
   date: {type: Date, required: true},
   startTime: {type: Date, required: true},
-  votes: [{ type: mongoose.Schema.ObjectId, ref: 'User', required: true }]
+  votes: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
 });
 
 
