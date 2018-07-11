@@ -61,21 +61,24 @@ class EventsNew extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const timeSlot = this.state.selectedTimes.map(time => {
-      const date = moment(time, 'ddd, MMM Do, HH:mm').format('ddd, MMM Do');
-      const startTime = moment(time, 'ddd, MMM Do, HH:mm').format('HH:mm');
-      console.log(typeof date);
-      return { date: date, startTime: startTime};
-    });
-    this.setState({ timeSlots: timeSlot });
-    axios({
-      method: 'POST',
-      url: '/api/events',
-      data: this.state,
-      headers: { Authorization: `Bearer ${Auth.getToken()}`}
+    new Promise(resolve => {
+      const timeSlot = this.state.selectedTimes.map(time => {
+        const date = moment(time, 'ddd, MMM Do, HH:mm').format('ddd, MMM Do');
+        const startTime = moment(time, 'ddd, MMM Do, HH:mm').format('HH:mm');
+        return { date: date, startTime: startTime};
+      });
+      resolve(this.setState({ timeSlots: timeSlot }));
     })
-      .then(() => this.props.history.push('/events'))
-      .catch(err => this.setState({ errors: err.response.data.errors}));
+      .then(() => {
+        axios({
+          method: 'POST',
+          url: '/api/events',
+          data: this.state,
+          headers: { Authorization: `Bearer ${Auth.getToken()}`}
+        })
+          .then(() => this.props.history.push('/events'))
+          .catch(err => this.setState({ errors: err.response.data.errors}));
+      });
   }
 
   componentDidMount() {
