@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const moment = require('moment');
 
 
 const timeSlotSchema = new mongoose.Schema({
-  date: {type: Date, required: true},
-  startTime: {type: Date, required: true},
+  date: {type: String, required: true},
+  startTime: {type: String, required: true},
   votes: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
 });
 
@@ -39,10 +38,10 @@ eventSchema.virtual('eventDates')
     return Array.from(new Set(this.timeSlots.map(slot => slot.date)));
   });
 
-timeSlotSchema.path('date')
-  .get(function formatDate(date){
-    return moment(date).format('ddd, MMM Do');
-  });
+// timeSlotSchema.path('date')
+//   .get(function formatDate(date){
+//     return moment(date).format('ddd, MMM Do');
+//   });
 
 
 
