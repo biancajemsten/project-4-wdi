@@ -5,7 +5,7 @@ class Auth {
   }
 
   static getToken(){
-    localStorage.getItem('token');
+    return localStorage.getItem('token');
   }
 
   static setToken(token){
@@ -16,7 +16,7 @@ class Auth {
     const token = this.getToken();
     if(!token) return null;
     const parts = token.split('.');
-    if(parts.length< 3) return null;
+    if(parts.length !== 3) return null;
     return JSON.parse(atob(parts[1]));
   }
 
