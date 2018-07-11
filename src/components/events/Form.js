@@ -3,9 +3,10 @@ import ReactFilestack from 'filestack-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import PlacesAutocomplete from 'react-places-autocomplete';
+import Select from 'react-select';
 
 
-const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, addTimeSlot, removeTimeSlot, handleUpload, handleSubmit, handleChange, data }) => {
+const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, addTimeSlot, removeTimeSlot, handleUpload, handleSubmit, handleChange, handleSelectChange, data }) => {
   return(
     <form onSubmit={handleSubmit}>
       <div className="field">
@@ -44,7 +45,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
       <div className="field">
         <label className="label">Location</label>
         <PlacesAutocomplete
-          value={data.address}
+          value={data.address || ''}
           onChange={handleAddressChange}
           onSelect={handleSelect}
         >
@@ -91,7 +92,13 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
 
       <div className="field">
         <label className="label">Invitees</label>
-        <input className="input" name="invitees" onChange={handleChange} value={data.invitees || ''} />
+        <Select
+          multi
+          name="invitees"
+          value={data.selectedOptions}
+          onChange={handleSelectChange}
+          options={data.options}
+        />
       </div>
 
       <div className="field">

@@ -64,7 +64,7 @@ class EventsNew extends React.Component {
     const timeSlot = this.state.selectedTimes.map(time => {
       const date = moment(time, 'ddd, MMM Do, HH:mm').format('ddd, MMM Do');
       const startTime = moment(time, 'ddd, MMM Do, HH:mm').format('HH:mm');
-      console.log(typeof date); 
+      console.log(typeof date);
       return { date: date, startTime: startTime};
     });
     this.setState({ timeSlots: timeSlot });
@@ -78,6 +78,23 @@ class EventsNew extends React.Component {
       .catch(err => this.setState({ errors: err.response.data.errors}));
   }
 
+  componentDidMount() {
+    axios({
+      url: '/api/users',
+      method: 'GET'
+    })
+      .then(res => {
+        const options = res.data.map(user => {
+          return { value: user._id, label: user.username };
+        });
+        this.setState({ options });
+      });
+  }
+
+  handleSelectChange = selectedOptions => {
+    const invitees = selectedOptions.map(option => option.value);
+    this.setState({ selectedOptions, invitees });
+  }
 
   render() {
     return(
@@ -89,6 +106,7 @@ class EventsNew extends React.Component {
         removeTimeSlot={this.removeTimeSlot}
         handleSubmit={this.handleSubmit}
         handleUpload={this.handleUpload}
+        handleSelectChange={this.handleSelectChange}
         selected={this.state.startDate}
         onChange={this.onChange}
         data={this.state}
