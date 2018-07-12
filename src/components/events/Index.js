@@ -63,7 +63,13 @@ class EventsIndex extends React.Component {
             <h6 className="title is-6">Organizer</h6>
           </div>
           <div className="is-full-mobile is-full-desktop">
-            
+            {this.sortedAndFilteredEvents(this.state.events).map(event =>
+              <Link to={`/events/${event._id}`} key={event._id}><div>
+                <td>{event.name}</td>
+                <td>{event.address}</td>
+                <td>{event.organizer.username}</td>
+              </div></Link>
+            )}
           </div>
         </div>
 
