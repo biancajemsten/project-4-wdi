@@ -56,19 +56,38 @@ class EventsShow extends React.Component{
     a.classList.remove('unVote');
   }
 
-  toggleButton = (e) => {
-    e.preventDefault();
-    this.state.selectedTimeSlots.includes(e.target.id) ? this.unselectTimeSlot(e) : this.selectTimeSlot(e);
-  };
+  // toggleButton = (e) => {
+  //   e.preventDefault();
+  //   this.state.selectedTimeSlots.includes(e.target.id) ? this.unselectTimeSlot(e) : this.selectTimeSlot(e);
+  // };
 
   selectFinalDates = (e) => {
-    console.log(e.target.dataset.id);
     const finalSelectedDates = this.state.finalSelectedDates;
     finalSelectedDates.push(e.target.dataset.id);
     this.setState({ finalSelectedDates });
     e.target.textContent = 'Selected';
     const btn = document.querySelectorAll(`[data-id='${e.target.dataset.id}']`);
     btn[0].classList.add('unVote');
+  }
+
+  unselectFinalDates = (e) => {
+    const selected = this.state.finalSelectedDates;
+    selected.splice(selected.indexOf(e.target.dataset.id), 1);
+    this.setState({ finalSelectedDates: selected });
+    e.target.textContent = 'Pick Date';
+    const btn = document.querySelectorAll(`[data-id='${e.target.dataset.id}']`);
+    btn[0].classList.remove('unVote');
+  }
+
+  // togglePickDateButton = (e) => {
+  //   e.preventDefault();
+  //   this.state.finalSelectedDates.includes(e.target.dataset.id) ? this.unselectFinalDates(e) : this.selectFinalDates(e);
+  // }
+
+  toggleButton = (e, buttonType, stateProp) => {
+    const targetId = buttonType === 'vote' ? e.target.id : e.target.dataset.id;
+    e.preventDefault();
+    this.state[stateProp].includes(targetId) ? this.unselectButton(e) : this.selectButton(e);
   }
 
   handleSubmit = () =>{
@@ -131,8 +150,8 @@ class EventsShow extends React.Component{
                   <strong>Time: </strong>
                   <p>{timeSlot.startTime} - {this.setEndTime(timeSlot.startTime)}</p>
                   <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
-                  {!this.checkUserAttending() && <button className="button" id={timeSlot._id} onClick={this.toggleButton}>Vote</button>}
-                  {this.checkUserIsOrganizer() && <button className="button" data-id={timeSlot._id} onClick={this.selectFinalDates}>Pick Date</button>}
+                  {!this.checkUserAttending() && <button className="button" id={timeSlot._id} onClick={(e) => this.toggleButton(e, 'vote', 'selectedTimeSlots')}>Vote</button>}
+                  {this.checkUserIsOrganizer() && <button className="button" data-id={timeSlot._id} onClick={(e) => this.toggleButton(e, 'selected', 'finalSelectedDates')}>Pick Date</button>}
                 </div>
               )}
             </div>
