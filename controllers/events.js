@@ -1,4 +1,5 @@
 const Event = require('../models/event');
+const {sendSMS} = require('../config/environment');
 
 function indexRoute(req, res, next) {
   Event
@@ -16,6 +17,7 @@ function showRoute(req, res, next) {
 }
 
 function createRoute(req, res, next){
+  console.log(req.body); 
   req.body.organizer = req.currentUser;
   Event
     .create(req.body)
@@ -24,6 +26,7 @@ function createRoute(req, res, next){
 }
 
 function updateRoute(req, res, next) {
+  // if req.body.finaldates.length 0 do twilio
   Event
     .findById(req.params.id)
     .then(event => event.set(req.body))
