@@ -2,7 +2,23 @@
   background-color: $light;
   box-sizing: border-box;
   border: 2px solid $dark-blue;
+  border-radius: 8px;
   h6{
-    border-bottom: 1px solid $dark-blue; 
+    border-bottom: 1px solid $dark-blue;
   }
+}
+
+div.timeSlotDiv{
+  border: 1px solid $dark-blue;
+  border-radius: 3px;
+  margin: 5px 0;
+  padding: 5px;
+  p, strong{
+    color: $dark-blue;
+  }
+}
+
+button.button.unVote{
+  background-color: $red;
+  color: $light;
 }

@@ -36,40 +36,40 @@ mongoose.connect(dbURI, (err, db) => {
         name: 'Movie Night',
         description: 'Watching films',
         timeSlots: [{
-          date: '2018-07-25',
-          startTime: '2018-07-25',
-          votes: [users[1]]
+          date: 'Wed, Jul 11th',
+          startTime: '12:30',
+          votes: []
         }, {
-          date: '2018-07-26',
-          startTime: '2018-07-26',
-          votes: [users[0], users[2]]
+          date: 'Thu, Jul 12th',
+          startTime: '12:30',
+          votes: []
         }],
         length: 120,
         address: '4 St Olaf\'s Road',
         location: { lat: 51.4798873, lng: -0.2107483 },
         private: true,
-        attendees: [users[1], users[0], users[2]],
-        invitees: [ 'biancajemsten@gmail.com' ],
+        invitees: [users[0], users[2]],
+        attendees: [ users[1] ],
         image: 'http://www.thecumberlandarms.co.uk/wp/wp-content/uploads/2015/04/Cumby-Film-Night-logo-2016-850px-850x478.jpg',
         organizer: [users[1]._id]
       }, {
         name: 'Play D&D',
         description: 'Dungeons and dragons, oh my!',
         timeSlots: [{
-          date: '2018-08-12',
-          startTime: '2018-08-12',
-          votes: [users[0], users[1]]
+          date: 'Fri, Jul 13th',
+          startTime: '11:30',
+          votes: []
         }, {
-          date: '2018-08-19',
-          startTime: '2018-08-19',
-          votes: [users[0], users[2], users[1]]
+          date: 'Fri, Jul 13th',
+          startTime: '13:30',
+          votes: []
         }],
         length: 300,
         address: 'GA, Relay Building',
         location: { lat: 51.5153002, lng: -0.0746125 },
         private: false,
-        attendees: [users[0], users[2]],
-        invitees: [ 'herrkoop@gmail.com' ],
+        invitees: [users[0], users[1]],
+        attendees: [ users[2] ],
         image: 'https://geekandsundry.com/wp-content/uploads/2016/12/featured-dnd-holiday.png',
         organizer: [users[2]._id]
       }]);
