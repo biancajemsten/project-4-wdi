@@ -38,14 +38,14 @@ class EventsShow extends React.Component{
     return tempTime.hours() +':'+ tempTime.minutes();
   }
 
-  selectTimeSlot = (e) => {
-    const selectedTimeSlots = this.state.selectedTimeSlots;
-    selectedTimeSlots.push(e.target.id);
-    this.setState({selectedTimeSlots});
-    e.target.textContent = 'Remove Vote';
-    const a = document.getElementById(e.target.id);
-    a.classList.add('unVote');
-  }
+  // selectTimeSlot = (e) => {
+  //   const selectedTimeSlots = this.state.selectedTimeSlots;
+  //   selectedTimeSlots.push(e.target.id);
+  //   this.setState({selectedTimeSlots});
+  //   e.target.textContent = 'Remove Vote';
+  //   const a = document.getElementById(e.target.id);
+  //   a.classList.add('unVote');
+  // }
 
   unselectTimeSlot = (e) => {
     const selected = this.state.selectedTimeSlots;
@@ -61,12 +61,27 @@ class EventsShow extends React.Component{
   //   this.state.selectedTimeSlots.includes(e.target.id) ? this.unselectTimeSlot(e) : this.selectTimeSlot(e);
   // };
 
-  selectFinalDates = (e) => {
-    const finalSelectedDates = this.state.finalSelectedDates;
-    finalSelectedDates.push(e.target.dataset.id);
-    this.setState({ finalSelectedDates });
+  // selectFinalDates = (e) => {
+  //   const finalSelectedDates = this.state.finalSelectedDates;
+  //   finalSelectedDates.push(e.target.dataset.id);
+  //   this.setState({ finalSelectedDates });
+  //   e.target.textContent = 'Selected';
+  //   const btn = document.querySelectorAll(`[data-id='${e.target.dataset.id}']`);
+  //   btn[0].classList.add('unVote');
+  // }
+
+  selectButton = (e, buttonType, stateProp) => {
+    let btn;
+    const targetId = buttonType === 'vote' ? e.target.id : e.target.dataset.id;
+    stateProp = this.state[stateProp];
+    stateProp.push(targetId);
+    this.setState({ [stateProp]: stateProp });
     e.target.textContent = 'Selected';
-    const btn = document.querySelectorAll(`[data-id='${e.target.dataset.id}']`);
+    if(buttonType === 'vote') {
+      btn = document.querySelectorAll(`[id='${targetId}']`);
+    } else {
+      btn = document.querySelectorAll(`[data-id='${targetId}']`);
+    }
     btn[0].classList.add('unVote');
   }
 
@@ -87,7 +102,7 @@ class EventsShow extends React.Component{
   toggleButton = (e, buttonType, stateProp) => {
     const targetId = buttonType === 'vote' ? e.target.id : e.target.dataset.id;
     e.preventDefault();
-    this.state[stateProp].includes(targetId) ? this.unselectButton(e) : this.selectButton(e);
+    this.state[stateProp].includes(targetId) ? this.unselectButton(e) : this.selectButton(e, buttonType, stateProp);
   }
 
   handleSubmit = () =>{
