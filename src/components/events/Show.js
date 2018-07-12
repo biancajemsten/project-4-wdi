@@ -15,7 +15,6 @@ class EventsShow extends React.Component{
     };
 
     this.setEndTime = this.setEndTime.bind(this);
-    this.selectTimeSlot = this.selectTimeSlot.bind(this);
   }
 
   componentDidMount(){
@@ -38,46 +37,14 @@ class EventsShow extends React.Component{
     return tempTime.hours() +':'+ tempTime.minutes();
   }
 
-  // selectTimeSlot = (e) => {
-  //   const selectedTimeSlots = this.state.selectedTimeSlots;
-  //   selectedTimeSlots.push(e.target.id);
-  //   this.setState({selectedTimeSlots});
-  //   e.target.textContent = 'Remove Vote';
-  //   const a = document.getElementById(e.target.id);
-  //   a.classList.add('unVote');
-  // }
-
-  unselectTimeSlot = (e) => {
-    const selected = this.state.selectedTimeSlots;
-    selected.splice(selected.indexOf(e.target.id),1);
-    this.setState({selectedTimeSlots: selected});
-    e.target.textContent = 'Vote';
-    const a = document.getElementById(e.target.id);
-    a.classList.remove('unVote');
-  }
-
-  // toggleButton = (e) => {
-  //   e.preventDefault();
-  //   this.state.selectedTimeSlots.includes(e.target.id) ? this.unselectTimeSlot(e) : this.selectTimeSlot(e);
-  // };
-
-  // selectFinalDates = (e) => {
-  //   const finalSelectedDates = this.state.finalSelectedDates;
-  //   finalSelectedDates.push(e.target.dataset.id);
-  //   this.setState({ finalSelectedDates });
-  //   e.target.textContent = 'Selected';
-  //   const btn = document.querySelectorAll(`[data-id='${e.target.dataset.id}']`);
-  //   btn[0].classList.add('unVote');
-  // }
-
   selectButton = (e, buttonType, stateProp) => {
     let btn;
-    const targetId = buttonType === 'vote' ? e.target.id : e.target.dataset.id;
+    const targetId = buttonType === 'Vote' ? e.target.id : e.target.dataset.id;
     stateProp = this.state[stateProp];
     stateProp.push(targetId);
     this.setState({ [stateProp]: stateProp });
     e.target.textContent = 'Selected';
-    if(buttonType === 'vote') {
+    if(buttonType === 'Vote') {
       btn = document.querySelectorAll(`[id='${targetId}']`);
     } else {
       btn = document.querySelectorAll(`[data-id='${targetId}']`);
@@ -85,24 +52,25 @@ class EventsShow extends React.Component{
     btn[0].classList.add('unVote');
   }
 
-  unselectFinalDates = (e) => {
-    const selected = this.state.finalSelectedDates;
-    selected.splice(selected.indexOf(e.target.dataset.id), 1);
-    this.setState({ finalSelectedDates: selected });
-    e.target.textContent = 'Pick Date';
-    const btn = document.querySelectorAll(`[data-id='${e.target.dataset.id}']`);
+  unselectButton = (e, buttonType, stateProp) => {
+    let btn;
+    const targetId = buttonType === 'Vote' ? e.target.id : e.target.dataset.id;
+    stateProp = this.state[stateProp];
+    stateProp.splice(stateProp.indexOf(targetId), 1);
+    this.setState({ [stateProp]: stateProp });
+    e.target.textContent = buttonType;
+    if(buttonType === 'Vote') {
+      btn = document.querySelectorAll(`[id='${targetId}']`);
+    } else {
+      btn = document.querySelectorAll(`[data-id='${targetId}']`);
+    }
     btn[0].classList.remove('unVote');
   }
 
-  // togglePickDateButton = (e) => {
-  //   e.preventDefault();
-  //   this.state.finalSelectedDates.includes(e.target.dataset.id) ? this.unselectFinalDates(e) : this.selectFinalDates(e);
-  // }
-
   toggleButton = (e, buttonType, stateProp) => {
-    const targetId = buttonType === 'vote' ? e.target.id : e.target.dataset.id;
+    const targetId = buttonType === 'Vote' ? e.target.id : e.target.dataset.id;
     e.preventDefault();
-    this.state[stateProp].includes(targetId) ? this.unselectButton(e) : this.selectButton(e, buttonType, stateProp);
+    this.state[stateProp].includes(targetId) ? this.unselectButton(e, buttonType, stateProp) : this.selectButton(e, buttonType, stateProp);
   }
 
   handleSubmit = () =>{
@@ -133,9 +101,6 @@ class EventsShow extends React.Component{
     if(this.state.event.attendees.includes(currentUser)) return true;
   }
 
-
-
-
   render(){
     if(!this.state.event) return <h2 className="title">Loading...</h2>;
     return(
@@ -165,8 +130,8 @@ class EventsShow extends React.Component{
                   <strong>Time: </strong>
                   <p>{timeSlot.startTime} - {this.setEndTime(timeSlot.startTime)}</p>
                   <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
-                  {!this.checkUserAttending() && <button className="button" id={timeSlot._id} onClick={(e) => this.toggleButton(e, 'vote', 'selectedTimeSlots')}>Vote</button>}
-                  {this.checkUserIsOrganizer() && <button className="button" data-id={timeSlot._id} onClick={(e) => this.toggleButton(e, 'selected', 'finalSelectedDates')}>Pick Date</button>}
+                  {!this.checkUserAttending() && <button className="button" id={timeSlot._id} onClick={(e) => this.toggleButton(e, 'Vote', 'selectedTimeSlots')}>Vote</button>}
+                  {this.checkUserIsOrganizer() && <button className="button" data-id={timeSlot._id} onClick={(e) => this.toggleButton(e, 'Pick Date', 'finalSelectedDates')}>Pick Date</button>}
                 </div>
               )}
             </div>
