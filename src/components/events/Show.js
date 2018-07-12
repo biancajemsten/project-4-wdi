@@ -10,22 +10,22 @@ class EventsShow extends React.Component{
   constructor(){
     super();
     this.state = {
-      selectedTimeSlots: []
+      selectedTimeSlots: [],
+      finalSelectedDates: []
     };
 
     this.setEndTime = this.setEndTime.bind(this);
-    this.selectTimeSlot = this.selectTimeSlot.bind(this);
   }
 
   componentDidMount(){
-    console.log('did mount');
     axios.get(`/api/events/${this.props.match.params.id}`)
       .then(res => this.setState({event: res.data}))
-      .then(() => console.log(this.state))
-      .then(() => console.log(this.state.timeSlots))
       .catch(err => this.setState({error: err.message}));
   }
 
+  checkUserIsOrganizer = () => {
+    if(Auth.getPayload().sub === this.state.event.organizer) return true;
+  }
   //checks the date of the column with the date of the timeSlot
   filterStartTime = (date, i) =>{
     if(date === this.state.event.timeSlots[i].date) return true;
@@ -37,30 +37,41 @@ class EventsShow extends React.Component{
     return tempTime.hours() +':'+ tempTime.minutes();
   }
 
-  selectTimeSlot = (e) => {
-    const selectedTimeSlots = this.state.selectedTimeSlots;
-    selectedTimeSlots.push(e.target.id);
-    this.setState({selectedTimeSlots});
-    e.target.textContent = 'Remove Vote';
-    const a = document.getElementById(e.target.id);
-    a.classList.add('unVote');
+  selectButton = (e, buttonType, stateProp) => {
+    let btn;
+    const targetId = buttonType === 'Vote' ? e.target.id : e.target.dataset.id;
+    stateProp = this.state[stateProp];
+    stateProp.push(targetId);
+    this.setState({ [stateProp]: stateProp });
+    e.target.textContent = 'Selected';
+    if(buttonType === 'Vote') {
+      btn = document.querySelectorAll(`[id='${targetId}']`);
+    } else {
+      btn = document.querySelectorAll(`[data-id='${targetId}']`);
+    }
+    btn[0].classList.add('unVote');
   }
 
-  unselectTimeSlot = (e) => {
-    const selected = this.state.selectedTimeSlots;
-    console.log('index', selected.indexOf(e.target.id));
-    selected.splice(selected.indexOf(e.target.id),1);
-    this.setState({selectedTimeSlots: selected});
-    e.target.textContent = 'Vote';
-    const a = document.getElementById(e.target.id);
-    a.classList.remove('unVote');
+  unselectButton = (e, buttonType, stateProp) => {
+    let btn;
+    const targetId = buttonType === 'Vote' ? e.target.id : e.target.dataset.id;
+    stateProp = this.state[stateProp];
+    stateProp.splice(stateProp.indexOf(targetId), 1);
+    this.setState({ [stateProp]: stateProp });
+    e.target.textContent = buttonType;
+    if(buttonType === 'Vote') {
+      btn = document.querySelectorAll(`[id='${targetId}']`);
+    } else {
+      btn = document.querySelectorAll(`[data-id='${targetId}']`);
+    }
+    btn[0].classList.remove('unVote');
   }
 
-  toggleButton = (e) => {
+  toggleButton = (e, buttonType, stateProp) => {
+    const targetId = buttonType === 'Vote' ? e.target.id : e.target.dataset.id;
     e.preventDefault();
-    console.log('before select', this.state.selectedTimeSlots);
-    this.state.selectedTimeSlots.includes(e.target.id) ? this.unselectTimeSlot(e) : this.selectTimeSlot(e);
-  };
+    this.state[stateProp].includes(targetId) ? this.unselectButton(e, buttonType, stateProp) : this.selectButton(e, buttonType, stateProp);
+  }
 
   handleSubmit = () =>{
     new Promise((resolve)=>{
@@ -120,7 +131,8 @@ class EventsShow extends React.Component{
                   <strong>Time: </strong>
                   <p>{timeSlot.startTime} - {this.setEndTime(timeSlot.startTime)}</p>
                   <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
-                  {!this.checkUserAttending() && <button className="button" id={timeSlot._id} onClick={this.toggleButton}>Vote</button>}
+                  {!this.checkUserAttending() && <button className="button" id={timeSlot._id} onClick={(e) => this.toggleButton(e, 'Vote', 'selectedTimeSlots')}>Vote</button>}
+                  {this.checkUserIsOrganizer() && <button className="button" data-id={timeSlot._id} onClick={(e) => this.toggleButton(e, 'Pick Date', 'finalSelectedDates')}>Pick Date</button>}
                 </div>
               )}
             </div>

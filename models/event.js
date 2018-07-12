@@ -19,7 +19,8 @@ const eventSchema = new mongoose.Schema({
   invitees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   image: String,
-  organizer: { type: mongoose.Schema.ObjectId, ref: 'User' }
+  organizer: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  finalTimes: [String]
 });
 
 
