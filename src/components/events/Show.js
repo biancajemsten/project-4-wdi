@@ -91,8 +91,6 @@ class EventsShow extends React.Component{
   }
 
 
-
-
   render(){
     if(!this.state.event) return <h2 className="title">Loading...</h2>;
     return(

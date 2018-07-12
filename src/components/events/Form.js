@@ -29,6 +29,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           timeIntervals={15}
           dateFormat="LLL"
           timeCaption="time"
+          className="input"
         />
         <button className="button" onClick={addTimeSlot}>Add timeslot</button>
         {data.selectedTimes.map(time =>
