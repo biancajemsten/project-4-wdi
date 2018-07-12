@@ -39,7 +39,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
         </div>
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
           <label className="label">Event Length</label>
-          <input className="input" name="length" placeHolder="Enter the event length in minutes please" onChange={handleChange} value={data.length || ''} />
+          <input className="input" name="length" placeholder="Enter the event length in minutes please" onChange={handleChange} value={data.length || ''} />
         </div>
 
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">

@@ -28,10 +28,6 @@
       align-items: center;
       width: 100%;
     }
-    div{
-      // border-bottom: 1px solid $dark-blue;
-
-    }
     p{
       color: $dark-blue;
     }
@@ -46,7 +42,26 @@
       border-bottom: 1px solid $dark-blue
       :hover{
         background-color: #DCD4C8;
-        // opacity: 0.6;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 768px){
+  .indexTable{
+    .indexList{
+      p{
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
+@media screen and (max-width: 600px){
+  .indexTable{
+    .indexList{
+      p{
+        font-size: 0.60rem;
       }
     }
   }
