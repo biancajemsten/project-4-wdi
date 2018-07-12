@@ -18,7 +18,7 @@ const users = [
     email: 'richard@test.com',
     password: 'pass',
     passwordConfirmation: 'pass',
-    tel: '+44762948257'
+    tel: '+447762948257'
   }),
   new User({
     username: 'martin',
