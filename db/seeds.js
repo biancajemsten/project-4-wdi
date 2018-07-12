@@ -36,12 +36,10 @@ mongoose.connect(dbURI, (err, db) => {
         name: 'Movie Night',
         description: 'Watching films',
         timeSlots: [{
-          date: 'Wed, Jul 11th',
-          startTime: '12:30',
+          date: '2018-07-11T12:30:00',
           votes: []
         }, {
-          date: 'Thu, Jul 12th',
-          startTime: '12:30',
+          date: '2018-07-13T12:30:00',
           votes: []
         }],
         length: 120,
@@ -56,12 +54,10 @@ mongoose.connect(dbURI, (err, db) => {
         name: 'Play D&D',
         description: 'Dungeons and dragons, oh my!',
         timeSlots: [{
-          date: 'Fri, Jul 13th',
-          startTime: '11:30',
+          date: '2018-07-11T11:30:00',
           votes: []
         }, {
-          date: 'Fri, Jul 13th',
-          startTime: '13:30',
+          date: '2018-07-13T13:30:00',
           votes: []
         }],
         length: 300,
@@ -75,6 +71,6 @@ mongoose.connect(dbURI, (err, db) => {
       }]);
     })
     .then(events => console.log(`${events.length} event(s) created`))
-    .catch(err)
+    .catch(err => console.log(err))
     .finally(() => mongoose.connection.close());
 });

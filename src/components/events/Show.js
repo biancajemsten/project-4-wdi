@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
-// import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Auth from '../../lib/Auth';
 import GoogleMap from '../common/GoogleMap';
 
@@ -11,10 +11,8 @@ class EventsShow extends React.Component{
     super();
     this.state = {
       selectedTimeSlots: [],
-      finalSelectedDates: []
+      finalTimes: []
     };
-
-    this.setEndTime = this.setEndTime.bind(this);
   }
 
   componentDidMount(){
@@ -31,50 +29,44 @@ class EventsShow extends React.Component{
     if(date === this.state.event.timeSlots[i].date) return true;
   };
 
-  setEndTime = (startTime) => {
-    const inMilliseconds = parseInt(moment.duration(startTime, 'HH:mm').asMilliseconds()) + this.state.event.length*60000;
-    const tempTime = moment.duration(inMilliseconds);
-    return tempTime.hours() +':'+ tempTime.minutes();
-  }
+  handleVote = (slotId) => {
+    let selectedTimeSlots;
+    const index = this.state.selectedTimeSlots.indexOf(slotId);
 
-  selectButton = (e, buttonType, stateProp) => {
-    let btn;
-    const targetId = buttonType === 'Vote' ? e.target.id : e.target.dataset.id;
-    stateProp = this.state[stateProp];
-    stateProp.push(targetId);
-    this.setState({ [stateProp]: stateProp });
-    e.target.textContent = 'Selected';
-    if(buttonType === 'Vote') {
-      btn = document.querySelectorAll(`[id='${targetId}']`);
+    if(index === -1) {
+      selectedTimeSlots = this.state.selectedTimeSlots.concat(slotId);
     } else {
-      btn = document.querySelectorAll(`[data-id='${targetId}']`);
+      selectedTimeSlots = this.state.selectedTimeSlots.slice();
+      selectedTimeSlots.splice(index, 1);
     }
-    btn[0].classList.add('unVote');
+
+    this.setState({ selectedTimeSlots });
   }
 
-  unselectButton = (e, buttonType, stateProp) => {
-    let btn;
-    const targetId = buttonType === 'Vote' ? e.target.id : e.target.dataset.id;
-    stateProp = this.state[stateProp];
-    stateProp.splice(stateProp.indexOf(targetId), 1);
-    this.setState({ [stateProp]: stateProp });
-    e.target.textContent = buttonType;
-    if(buttonType === 'Vote') {
-      btn = document.querySelectorAll(`[id='${targetId}']`);
+  isVoted = (slotId) => {
+    return this.state.selectedTimeSlots.includes(slotId);
+  }
+
+  handlePickDate = (slotId) => {
+    let finalTimes;
+    const index = this.state.finalTimes.indexOf(slotId);
+
+    if(index === -1) {
+      finalTimes = this.state.finalTimes.concat(slotId);
     } else {
-      btn = document.querySelectorAll(`[data-id='${targetId}']`);
+      finalTimes = this.state.finalTimes.slice();
+      finalTimes.splice(index, 1);
     }
-    btn[0].classList.remove('unVote');
+
+    this.setState({ finalTimes });
   }
 
-  toggleButton = (e, buttonType, stateProp) => {
-    const targetId = buttonType === 'Vote' ? e.target.id : e.target.dataset.id;
-    e.preventDefault();
-    this.state[stateProp].includes(targetId) ? this.unselectButton(e, buttonType, stateProp) : this.selectButton(e, buttonType, stateProp);
+  isPicked = (slotId) => {
+    return this.state.finalTimes.includes(slotId);
   }
 
-  handleSubmit = () =>{
-    new Promise((resolve)=>{
+  handleVoteSubmit = () =>{
+    new Promise( resolve =>{
       const timeSlots = this.state.event.timeSlots.map(timeSlot =>{
         this.state.selectedTimeSlots.forEach(id => {
           if(timeSlot._id === id) timeSlot.votes.push(Auth.getPayload().sub);
@@ -83,7 +75,7 @@ class EventsShow extends React.Component{
       const attendees = this.state.event.attendees;
       attendees.push(Auth.getPayload().sub);
       this.setState({attendees});
-      resolve(this.setState({timeSlots}));
+      resolve(this.setState({ timeSlots }));
     })
       .then(() => {
         axios({
@@ -92,6 +84,27 @@ class EventsShow extends React.Component{
           data: this.state.event,
           headers: { Authorization: `Bearer ${Auth.getToken()}`}
         })
+          .catch(err => console.log(err));
+      });
+
+  }
+
+  handleSubmit = () => {
+
+    new Promise(resolve => {
+      const finalTimes = this.state.finalTimes;
+      console.log('finalTimes ===>', finalTimes);
+      resolve(this.setState({ ...this.state.event, finalTimes } ));
+    })
+      .then(() => {
+        axios({
+          method: 'PUT',
+          url: `/api/events/${this.props.match.params.id}`,
+          data: this.state,
+          headers: { Authorization: `Bearer ${Auth.getToken()}`}
+        })
+          .then(res => this.setState({ event: res.data }))
+          .then(() => console.log('put axios returned state===>', this.state) )
           .catch(err => console.log(err));
       });
   }
@@ -118,27 +131,29 @@ class EventsShow extends React.Component{
             <p className="font-is-light"><strong>Description: </strong>{this.state.event.description}</p>
             {this.state.event.finalTime && <p><strong>Event Time: </strong>{this.state.event.finalTime}</p>}
           </div>
+          <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>
         </div>
 
-        <div className="columns is-full is-mobile">
+        {!this.state.event.finalTimesChecker && <div className="columns is-full is-mobile">
 
           {this.state.event.eventDates.map((date, i) =>
             <div key={i} className="column is-one-third-mobile dateColumn">
-              <h6 className="title is-6">{date}</h6>
+              <h6 className="title is-6">{moment(date).format('ddd, MMM Do')}</h6>
               {this.state.event.timeSlots.map((timeSlot, i)=>
                 this.filterStartTime(date, i) &&
                 <div className="timeSlotDiv" key={i}>
                   <strong>Time: </strong>
-                  <p>{timeSlot.startTime} - {this.setEndTime(timeSlot.startTime)}</p>
+                  <p>{timeSlot.startTime} - {timeSlot.endTime}</p>
                   <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
-                  {!this.checkUserAttending() && <button className="button" id={timeSlot._id} onClick={(e) => this.toggleButton(e, 'Vote', 'selectedTimeSlots')}>Vote</button>}
-                  {this.checkUserIsOrganizer() && <button className="button" data-id={timeSlot._id} onClick={(e) => this.toggleButton(e, 'Pick Date', 'finalSelectedDates')}>Pick Date</button>}
+                  {!this.checkUserAttending() && <button className="button" onClick={() => this.handleVote(timeSlot._id)}>{this.isVoted(timeSlot._id) ? 'Selected' : 'Vote'}</button>}
+                  {this.checkUserIsOrganizer() && <button className="button" onClick={() => this.handlePickDate(timeSlot._id)}>{this.isPicked(timeSlot._id) ? 'Selected' : 'Pick Date'}</button>}
                 </div>
               )}
             </div>
           )}
-          {!this.checkUserAttending() && <button className="button" onClick={this.handleSubmit}>Submit Votes</button>}
-        </div>
+          {!this.checkUserAttending() && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
+          {this.state.finalTimes.length > 0 && <button className="button" onClick={this.handleSubmit}>Confirm Times</button>}
+        </div>}
 
         <h3 className="title is-3">Location</h3>
         <GoogleMap location={this.state.event.location} />

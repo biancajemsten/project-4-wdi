@@ -42,9 +42,8 @@ class EventsNew extends React.Component {
 
   addTimeSlot(e) {
     e.preventDefault();
-    const selectedTimes = this.state.selectedTimes;
-    const formattedTime = moment(this.state.startDate._d).format('ddd, MMM Do, HH:mm');
-    selectedTimes.push(formattedTime);
+    const selectedTimes = this.state.selectedTimes.slice();
+    selectedTimes.push(this.state.startDate._d);
     this.setState({ selectedTimes });
   }
 
@@ -62,12 +61,11 @@ class EventsNew extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     new Promise(resolve => {
-      const timeSlot = this.state.selectedTimes.map(time => {
-        const date = moment(time, 'ddd, MMM Do, HH:mm').format('ddd, MMM Do');
-        const startTime = moment(time, 'ddd, MMM Do, HH:mm').format('HH:mm');
-        return { date: date, startTime: startTime};
+      const timeSlots = this.state.selectedTimes.map(time => {
+        const date = time;
+        return { date: date };
       });
-      resolve(this.setState({ timeSlots: timeSlot }));
+      resolve(this.setState({ timeSlots }));
     })
       .then(() => {
         axios({

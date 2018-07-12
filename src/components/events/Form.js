@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import Select from 'react-select';
+import moment from 'moment';
 
 
 const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, addTimeSlot, removeTimeSlot, handleUpload, handleSubmit, handleChange, handleSelectChange, data }) => {
@@ -33,7 +34,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
         />
         <button className="button" onClick={addTimeSlot}>Add timeslot</button>
         {data.selectedTimes.map(time =>
-          <span key={time} className="tag is-success">{time.toString()}<button value={time} onClick={removeTimeSlot} className="delete"></button></span>
+          <span key={time} className="tag is-success">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time} onClick={removeTimeSlot} className="delete"></button></span>
         )}
       </div>
 
