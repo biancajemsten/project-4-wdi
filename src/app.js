@@ -37,16 +37,16 @@ class App extends React.Component {
           <Konami easterEgg={this.konami}></Konami>
           <Navbar />
           <FlashMessages />
-          <Route exact path="/" component={Home} />
           <section className="section">
             <div className="container">
               <Switch>
+                <Route exact path="/" component={Home} />
                 <ProtectedRoute path="/events/new" component={EventsNew} />
                 <Route path="/events/:id" component={EventsShow}/>
                 <Route path="/events" component={EventsIndex} />
                 <Route path="/register" component={AuthRegister} />
                 <Route path="/login" component={AuthLogin} />
-                <Route component={NotFound} />
+                <Route exact component={NotFound} />
               </Switch>
             </div>
           </section>

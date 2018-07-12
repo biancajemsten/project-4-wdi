@@ -6,6 +6,10 @@ html {
   }
 }
 
+input.input, textarea.input{
+  background-color: $light;
+}
+
 .panda{
   position:absolute;
   animation: run 5s;
