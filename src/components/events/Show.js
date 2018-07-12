@@ -10,7 +10,8 @@ class EventsShow extends React.Component{
   constructor(){
     super();
     this.state = {
-      selectedTimeSlots: []
+      selectedTimeSlots: [],
+      finalSelectedDates: []
     };
 
     this.setEndTime = this.setEndTime.bind(this);
@@ -18,14 +19,14 @@ class EventsShow extends React.Component{
   }
 
   componentDidMount(){
-    console.log('did mount');
     axios.get(`/api/events/${this.props.match.params.id}`)
       .then(res => this.setState({event: res.data}))
-      .then(() => console.log(this.state))
-      .then(() => console.log(this.state.timeSlots))
       .catch(err => this.setState({error: err.message}));
   }
 
+  checkUserIsOrganizer = () => {
+    if(Auth.getPayload().sub === this.state.event.organizer) return true;
+  }
   //checks the date of the column with the date of the timeSlot
   filterStartTime = (date, i) =>{
     if(date === this.state.event.timeSlots[i].date) return true;
@@ -48,7 +49,6 @@ class EventsShow extends React.Component{
 
   unselectTimeSlot = (e) => {
     const selected = this.state.selectedTimeSlots;
-    console.log('index', selected.indexOf(e.target.id));
     selected.splice(selected.indexOf(e.target.id),1);
     this.setState({selectedTimeSlots: selected});
     e.target.textContent = 'Vote';
@@ -58,9 +58,18 @@ class EventsShow extends React.Component{
 
   toggleButton = (e) => {
     e.preventDefault();
-    console.log('before select', this.state.selectedTimeSlots);
     this.state.selectedTimeSlots.includes(e.target.id) ? this.unselectTimeSlot(e) : this.selectTimeSlot(e);
   };
+
+  selectFinalDates = (e) => {
+    console.log(e.target.dataset.id);
+    const finalSelectedDates = this.state.finalSelectedDates;
+    finalSelectedDates.push(e.target.dataset.id);
+    this.setState({ finalSelectedDates });
+    e.target.textContent = 'Selected';
+    const btn = document.querySelectorAll(`[data-id='${e.target.dataset.id}']`);
+    btn[0].classList.add('unVote');
+  }
 
   handleSubmit = () =>{
     new Promise((resolve)=>{
@@ -123,6 +132,7 @@ class EventsShow extends React.Component{
                   <p>{timeSlot.startTime} - {this.setEndTime(timeSlot.startTime)}</p>
                   <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
                   {!this.checkUserAttending() && <button className="button" id={timeSlot._id} onClick={this.toggleButton}>Vote</button>}
+                  {this.checkUserIsOrganizer() && <button className="button" data-id={timeSlot._id} onClick={this.selectFinalDates}>Pick Date</button>}
                 </div>
               )}
             </div>
