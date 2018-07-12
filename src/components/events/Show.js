@@ -93,7 +93,6 @@ class EventsShow extends React.Component{
 
     new Promise(resolve => {
       const finalTimes = this.state.finalTimes;
-      console.log('finalTimes ===>', finalTimes);
       resolve(this.setState({ ...this.state.event, finalTimes } ));
     })
       .then(() => {
@@ -153,6 +152,18 @@ class EventsShow extends React.Component{
           )}
           {!this.checkUserAttending() && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
           {this.state.finalTimes.length > 0 && <button className="button" onClick={this.handleSubmit}>Confirm Times</button>}
+        </div>}
+
+        {this.state.event.finalTimesChecker && <div className="columns is-full is-mobile">
+          <div className="column is-one-third-mobile">
+            <h3 className="title is-3">Selected Times</h3>
+            <div>
+              {this.state.event.timeSlots.map(timeSlot =>
+                this.state.event.finalTimes.includes(timeSlot._id) && <div key={timeSlot._id}>{moment(timeSlot.date).format('ddd, MMM Do, HH:mm')}</div>
+              )}
+            </div>
+          </div>
+
         </div>}
 
         <h3 className="title is-3">Location</h3>

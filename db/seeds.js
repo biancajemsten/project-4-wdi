@@ -39,7 +39,7 @@ mongoose.connect(dbURI, (err, db) => {
           date: '2018-07-11T12:30:00',
           votes: []
         }, {
-          date: '2018-07-13T12:30:00',
+          date: '2018-07-13T15:15:00',
           votes: []
         }],
         length: 120,
@@ -54,10 +54,10 @@ mongoose.connect(dbURI, (err, db) => {
         name: 'Play D&D',
         description: 'Dungeons and dragons, oh my!',
         timeSlots: [{
-          date: '2018-07-11T11:30:00',
+          date: '2018-07-21T08:30:00',
           votes: []
         }, {
-          date: '2018-07-13T13:30:00',
+          date: '2018-08-13T13:30:00',
           votes: []
         }],
         length: 300,
