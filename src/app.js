@@ -7,6 +7,7 @@ import NotFound from './components/pages/NotFound';
 import Navbar from './components/common/Navbar';
 import EventsIndex from './components/events/Index';
 import EventsNew from './components/events/New';
+import EventsEdit from './components/events/Edit';
 import AuthRegister from './components/auth/Register';
 import AuthLogin from './components/auth/Login';
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -37,16 +38,17 @@ class App extends React.Component {
           <Konami easterEgg={this.konami}></Konami>
           <Navbar />
           <FlashMessages />
-          <Route exact path="/" component={Home} />
           <section className="section">
             <div className="container">
               <Switch>
+                <Route exact path="/" component={Home} />
                 <ProtectedRoute path="/events/new" component={EventsNew} />
+                <Route path="/events/:id/edit" component={EventsEdit}/>
                 <Route path="/events/:id" component={EventsShow}/>
                 <Route path="/events" component={EventsIndex} />
                 <Route path="/register" component={AuthRegister} />
                 <Route path="/login" component={AuthLogin} />
-                <Route component={NotFound} />
+                <Route exact component={NotFound} />
               </Switch>
             </div>
           </section>

@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import Select from 'react-select';
+import moment from 'moment';
 
 
 const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, addTimeSlot, removeTimeSlot, handleUpload, handleSubmit, handleChange, handleSelectChange, data }) => {
@@ -29,10 +30,11 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           timeIntervals={15}
           dateFormat="LLL"
           timeCaption="time"
+          className = "input"
         />
         <button className="button" onClick={addTimeSlot}>Add timeslot</button>
         {data.selectedTimes.map(time =>
-          <span key={time} className="tag is-success">{time.toString()}<button value={time} onClick={removeTimeSlot} className="delete"></button></span>
+          <span key={time} className="tag is-success">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time} onClick={removeTimeSlot} className="delete"></button></span>
         )}
       </div>
 
@@ -84,7 +86,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
         </PlacesAutocomplete>
       </div>
 
-      <div className="field">
+      <div className="field filePicker">
         <label className="label">Upload an image</label>
         <ReactFilestack apikey='A1P1k3n9REqxOW2Z9xz22z' name="image" onSuccess={handleUpload} value={data.image || ''} />
       </div>
