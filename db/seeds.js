@@ -10,19 +10,22 @@ const users = [
     username: 'bianca',
     email: 'bianca@test.com',
     password: 'pass',
-    passwordConfirmation: 'pass'
+    passwordConfirmation: 'pass',
+    tel: '+46702549294'
   }),
   new User({
     username: 'richard',
     email: 'richard@test.com',
     password: 'pass',
-    passwordConfirmation: 'pass'
+    passwordConfirmation: 'pass',
+    tel: '+447762948257'
   }),
   new User({
     username: 'martin',
     email: 'martin@test.com',
     password: 'pass',
-    passwordConfirmation: 'pass'
+    passwordConfirmation: 'pass',
+    tel: '+447377103864'
   })
 ];
 

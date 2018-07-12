@@ -6,7 +6,6 @@ import PlacesAutocomplete from 'react-places-autocomplete';
 import Select from 'react-select';
 import moment from 'moment';
 
-
 const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, addTimeSlot, removeTimeSlot, handleUpload, handleSubmit, handleChange, handleSelectChange, data }) => {
   return(
     <form onSubmit={handleSubmit}>
