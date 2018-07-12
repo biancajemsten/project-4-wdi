@@ -2,7 +2,7 @@
   color: $light;
 }
 
-div.field{
+div.field.filePicker{
   button{
     background-color: $light;
     font-family: $main-font;
@@ -21,6 +21,10 @@ div.field{
     vertical-align: top;
     color: #363636;
   }
+}
+
+div.field{
+
   span.tag{
     background-color: $light;
     color: $dark-blue;
