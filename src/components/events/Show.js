@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 // import {Link} from 'react-router-dom';
 import Auth from '../../lib/Auth';
+import GoogleMap from '../common/GoogleMap';
 
 class EventsShow extends React.Component{
 
@@ -109,6 +110,7 @@ class EventsShow extends React.Component{
             {this.state.event.finalTime && <p><strong>Event Time: </strong>{this.state.event.finalTime}</p>}
           </div>
         </div>
+
         <div className="columns is-full is-mobile">
 
           {this.state.event.eventDates.map((date, i) =>
@@ -127,6 +129,9 @@ class EventsShow extends React.Component{
           )}
           {!this.checkUserAttending() && <button className="button" onClick={this.handleSubmit}>Submit Votes</button>}
         </div>
+
+        <h3 className="title is-3">Location</h3>
+        <GoogleMap location={this.state.event.location} />
       </div>
     );
   }

@@ -65,7 +65,6 @@ class EventsNew extends React.Component {
       const timeSlot = this.state.selectedTimes.map(time => {
         const date = moment(time, 'ddd, MMM Do, HH:mm').format('ddd, MMM Do');
         const startTime = moment(time, 'ddd, MMM Do, HH:mm').format('HH:mm');
-        console.log(typeof date);
         return { date: date, startTime: startTime};
       });
       resolve(this.setState({ timeSlots: timeSlot }));
