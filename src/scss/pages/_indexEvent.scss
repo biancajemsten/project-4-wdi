@@ -1,0 +1,15 @@
+.indexTable{
+  margin: 10px 0 0 0;
+  color: $dark-blue;
+  background-color: $light;
+  .indexHeader{
+    .title{
+      color: $dark-blue;
+    }
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border-bottom: 1px solid $dark-blue; 
+  }
+
+}

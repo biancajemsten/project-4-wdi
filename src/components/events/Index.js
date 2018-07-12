@@ -56,6 +56,17 @@ class EventsIndex extends React.Component {
           </div>
         </div>
 
+        <div className="columns is-multiline is-mobile indexTable">
+          <div className="column is-full-mobile is-full-desktop indexHeader">
+            <h6 className="title is-6">Event</h6>
+            <h6 className="title is-6">Location</h6>
+            <h6 className="title is-6">Organizer</h6>
+          </div>
+          <div className="is-full-mobile is-full-desktop">
+            
+          </div>
+        </div>
+
         <table className="table is-striped is-bordered is-hoverable is-fullwidth">
           <thead>
             <tr>
