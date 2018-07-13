@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.virtual('events', {
   localField: '_id',
-  foreignField: 'invitees',
+  foreignField: 'organizer',
   ref: 'Event'
 });
 
