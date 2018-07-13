@@ -24,7 +24,7 @@ function createRoute(req, res, next){
       res.status(201).json(event);
       if(req.body.selectedOptions) {
         req.body.selectedOptions.forEach(person =>{
-          const body = `Hi ${person.label}! You have been invited to ${req.body.name} by ${req.body.organizer.username}. Visit http://localhost:8000/events/${event._id} to view the event and vote on which days are best for you.`;
+          const body = `Hi ${person.label}! You have been invited to ${req.body.name} by ${req.body.organizer.username}. Visit http://localhost:8000/events/${event._id} to view the event and vote on which dates are best for you.`;
           const tel = person.tel;
           sendSMS(body, tel);
         });
@@ -34,7 +34,6 @@ function createRoute(req, res, next){
 }
 
 function updateRoute(req, res, next) {
-  // if req.body.finaldates.length 0 do twilio
   Event
     .findById(req.params.id)
     .then(event => event.set(req.body))
