@@ -46,21 +46,23 @@ class EventsShow extends React.Component{
     return this.state.selectedTimeSlots.includes(slotId);
   }
 
-  handlePickDate = (slotId) => {
+  handlePickDate = (date) => {
     let finalTimes;
-    const index = this.state.finalTimes.indexOf(slotId);
+    const index = this.state.finalTimes.indexOf(date);
 
     if(index === -1) {
-      finalTimes = this.state.finalTimes.concat(slotId);
+      finalTimes = this.state.finalTimes.concat(date);
     } else {
       finalTimes = this.state.finalTimes.slice();
       finalTimes.splice(index, 1);
     }
     this.setState({ finalTimes });
+    console.log('state.finalTimes ====> ', this.state.finalTimes);
   }
 
-  isPicked = (slotId) => {
-    return this.state.finalTimes.includes(slotId);
+  isPicked = (date) => {
+    console.log('isPicked date =====> ', date);
+    return this.state.finalTimes.includes(date);
   }
 
   handleVoteSubmit = () =>{
@@ -155,7 +157,7 @@ class EventsShow extends React.Component{
                     <p>{timeSlot.startTime} - {timeSlot.endTime}</p>
                     <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
                     {!this.checkUserAttending() && <button className={`button${this.isVoted(timeSlot._id) ? ' selected' : ''}`} onClick={() => this.handleVote(timeSlot._id)} >{this.isVoted(timeSlot._id) ? 'Selected' : 'Vote'}</button>}
-                    {this.checkUserIsOrganizer() && <button className={`button${this.isPicked(timeSlot._id) ? ' selected' : ''}`} onClick={() => this.handlePickDate(timeSlot._id)}>{this.isPicked(timeSlot._id) ? 'Selected' : 'Pick Date'}</button>}
+                    {this.checkUserIsOrganizer() && <button className={`button${this.isPicked(timeSlot.date) ? ' selected' : ''}`} onClick={() => this.handlePickDate(timeSlot.date)}>{this.isPicked(timeSlot.date) ? 'Selected' : 'Pick Date'}</button>}
                   </div>
                 )}
 
