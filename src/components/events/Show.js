@@ -149,7 +149,7 @@ class EventsShow extends React.Component{
                     <p>{timeSlot.startTime} - {timeSlot.endTime}</p>
                     <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
                     {!this.checkUserAttending() && <button className={`button${this.isVoted(timeSlot._id) ? ' selected' : ''}`} onClick={() => this.handleVote(timeSlot._id)} >{this.isVoted(timeSlot._id) ? 'Selected' : 'Vote'}</button>}
-                    {this.checkUserIsOrganizer() && <button className={`button${this.isPicked(timeSlot._id) ? ' selected' : ''}`} onClick={() => this.handlePickDate(timetimeSlot._id)}>{this.isPicked(timeSlot._id) ? 'Selected' : 'Pick Date'}</button>}
+                    {this.checkUserIsOrganizer() && <button className={`button${this.isPicked(timeSlot._id) ? ' selected' : ''}`} onClick={() => this.handlePickDate(timeSlot._id)}>{this.isPicked(timeSlot._id) ? 'Selected' : 'Pick Date'}</button>}
                   </div>
                 )}
 
