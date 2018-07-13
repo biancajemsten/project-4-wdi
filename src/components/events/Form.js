@@ -101,7 +101,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           <label className="label">Set Privacy</label>
           <div className="control">
             <div className="select is-fullwidth">
-              <select name="private" onChange={handleChange} value={data.privacy || ''}>
+              <select name="privacy" onChange={handleChange} value={data.privacy || ''}>
                 <option value="" disabled>Set event privacy</option>
                 <option>Private</option>
                 <option>Public</option>

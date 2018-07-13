@@ -85,7 +85,6 @@ class EventsEdit extends React.Component {
       method: 'GET'
     })
       .then(res => {
-        console.log(res.data);
         const event = res.data;
         const selectedOptions = event.invitees.map(invitee => {
           return { value: invitee._id, label: invitee.username };
