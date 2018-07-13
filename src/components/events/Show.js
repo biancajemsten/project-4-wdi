@@ -57,11 +57,9 @@ class EventsShow extends React.Component{
       finalTimes.splice(index, 1);
     }
     this.setState({ finalTimes });
-    console.log('state.finalTimes ====> ', this.state.finalTimes);
   }
 
   isPicked = (date) => {
-    console.log('isPicked date =====> ', date);
     return this.state.finalTimes.includes(date);
   }
 
