@@ -10,7 +10,7 @@ function indexRoute(req, res, next) {
 function showRoute(req, res, next) {
   User
     .findById(req.params.id)
-    .populate('events')
+    .populate('myEvents invitedToEvents finalTimes')
     .then(user => res.json(user))
     .catch(next);
 }
