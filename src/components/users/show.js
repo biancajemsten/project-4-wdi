@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 class UsersShow extends React.Component {
 
@@ -36,7 +37,11 @@ class UsersShow extends React.Component {
                   <div className="column is-two-thirds-mobile">
                     <p className="font-is-light"><strong>Address: </strong>{event.address}</p>
                     <p className="font-is-light"><strong>Description: </strong>{event.description}</p>
-                    {event.finalTime && <p><strong>Event Time: </strong>{event.finalTimes}</p>}
+                    <p><strong>Event Time{event.finalTimes.length > 1 && <span>s</span>}: </strong>
+                      {event.finalTimes && event.finalTimes.map(finalTime =>
+                        <span key={finalTime}>{moment(finalTime).format('ddd, MMM Do, HH:mm')}<br/></span>
+                      )}
+                    </p>
                   </div>
                 </Link>
                 <Link to={`/events/${event.id}/edit`} className="button">Edit Event</Link>
@@ -58,7 +63,7 @@ class UsersShow extends React.Component {
                   <div className="column is-two-thirds-mobile">
                     <p className="font-is-light"><strong>Address: </strong>{event.address}</p>
                     <p className="font-is-light"><strong>Description: </strong>{event.description}</p>
-                    {event.finalTime && <p><strong>Event Time: </strong>{event.finalTimes}</p>}
+                    {event.finalTimes && <p><strong>Event Time: </strong>{event.finalTimes}</p>}
                   </div>
                 </Link>
               </div>
