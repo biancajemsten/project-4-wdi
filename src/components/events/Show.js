@@ -26,7 +26,7 @@ class EventsShow extends React.Component{
   }
   //checks the date of the column with the date of the timeSlot
   filterStartTime = (date, i) =>{
-    if(date === this.state.event.timeSlots[i].date) return true;
+    if(date === moment(this.state.event.timeSlots[i].date).format('ddd, MMM Do')) return true;
   };
 
   handleVote = (slotId) => {
@@ -86,7 +86,6 @@ class EventsShow extends React.Component{
         })
           .catch(err => console.log(err));
       });
-
   }
 
   handleSubmit = () => {
@@ -113,6 +112,10 @@ class EventsShow extends React.Component{
     if(this.state.event.attendees.includes(currentUser)) return true;
   }
 
+  columnCounter = () => {
+    if(this.state.event.eventDates.length>1) return true;
+  }
+
 
   render(){
     if(!this.state.event) return <h2 className="title">Loading...</h2>;
@@ -133,26 +136,31 @@ class EventsShow extends React.Component{
           <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>
         </div>
 
-        {!this.state.event.finalTimesChecker && <div className="columns is-full is-mobile">
+        {!this.state.event.finalTimesChecker && <div className="columns is-mobile is-multiline">
 
           {this.state.event.eventDates.map((date, i) =>
-            <div key={i} className="column is-one-third-mobile dateColumn">
-              <h6 className="title is-6">{moment(date).format('ddd, MMM Do')}</h6>
-              {this.state.event.timeSlots.map((timeSlot, i)=>
-                this.filterStartTime(date, i) &&
-                <div className="timeSlotDiv" key={i}>
-                  <strong>Time: </strong>
-                  <p>{timeSlot.startTime} - {timeSlot.endTime}</p>
-                  <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
-                  {!this.checkUserAttending() && <button className="button" onClick={() => this.handleVote(timeSlot._id)}>{this.isVoted(timeSlot._id) ? 'Selected' : 'Vote'}</button>}
-                  {this.checkUserIsOrganizer() && <button className="button" onClick={() => this.handlePickDate(timeSlot._id)}>{this.isPicked(timeSlot._id) ? 'Selected' : 'Pick Date'}</button>}
-                </div>
-              )}
+            <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : 'is-full-mobile'}`}>
+              <div className="columns is-multiline">
+                <div className="column is-full"><h6 className="title is-6">{date}</h6></div>
+                {this.state.event.timeSlots.map((timeSlot, i)=>
+                  this.filterStartTime(date, i) &&
+                  <div className="timeSlotDiv column is-one-third-desktop is-full-mobile is-full-tablet" key={i}>
+                    <strong>Time: </strong>
+                    <p>{timeSlot.startTime} - {timeSlot.endTime}</p>
+                    <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
+                    {!this.checkUserAttending() && <button className={`button${this.isVoted(timeSlot._id) ? ' selected' : ''}`} onClick={() => this.handleVote(timeSlot._id)} >{this.isVoted(timeSlot._id) ? 'Selected' : 'Vote'}</button>}
+                    {this.checkUserIsOrganizer() && <button className={`button${this.isPicked(timeSlot._id) ? ' selected' : ''}`} onClick={() => this.handlePickDate(timeSlot._id)}>{this.isPicked(timeSlot._id) ? 'Selected' : 'Pick Date'}</button>}
+                  </div>
+                )}
+
+              </div>
             </div>
           )}
-          {!this.checkUserAttending() && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
-          {this.state.finalTimes.length > 0 && <button className="button" onClick={this.handleSubmit}>Confirm Times</button>}
         </div>}
+        <div className="buttonDiv">
+          {this.state.finalTimes.length > 0 && <button className="button" onClick={this.handleSubmit}>Confirm Times</button>}
+          {!this.checkUserAttending() && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
+        </div>
 
         {this.state.event.finalTimesChecker && <div className="columns is-full is-mobile">
           <div className="column is-one-third-mobile">

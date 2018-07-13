@@ -49,7 +49,7 @@ const eventSchema = new mongoose.Schema({
 
 eventSchema.virtual('eventDates')
   .get(function() {
-    return Array.from(new Set(this.timeSlots.map(slot => slot.date)));
+    return Array.from(new Set(this.timeSlots.map(slot => moment(slot.date).format('ddd, MMM Do'))));
   });
 
 
