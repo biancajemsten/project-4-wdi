@@ -39,7 +39,6 @@ class EventsShow extends React.Component{
       selectedTimeSlots = this.state.selectedTimeSlots.slice();
       selectedTimeSlots.splice(index, 1);
     }
-
     this.setState({ selectedTimeSlots });
   }
 
@@ -57,7 +56,6 @@ class EventsShow extends React.Component{
       finalTimes = this.state.finalTimes.slice();
       finalTimes.splice(index, 1);
     }
-
     this.setState({ finalTimes });
   }
 
@@ -89,7 +87,6 @@ class EventsShow extends React.Component{
   }
 
   handleSubmit = () => {
-
     new Promise(resolve => {
       const finalTimes = this.state.finalTimes;
       resolve(this.setState({ ...this.state.event, finalTimes } ));
@@ -116,6 +113,14 @@ class EventsShow extends React.Component{
     if(this.state.event.eventDates.length>1) return true;
   }
 
+  handleDelete = () => {
+    axios({
+      method: 'DELETE',
+      url: `/api/events/${this.props.match.params.id}`,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
+    })
+      .then(() => this.props.history.push('/events'));
+  }
 
   render(){
     if(!this.state.event) return <h2 className="title">Loading...</h2>;
@@ -134,6 +139,7 @@ class EventsShow extends React.Component{
             {this.state.event.finalTime && <p><strong>Event Time: </strong>{this.state.event.finalTime}</p>}
           </div>
           <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>
+          <button className="button" onClick={this.handleDelete}>Delete Event</button>
         </div>
 
         {!this.state.event.finalTimesChecker && <div className="columns is-mobile is-multiline">

@@ -36,7 +36,7 @@ class UsersShow extends React.Component {
                   <div className="column is-two-thirds-mobile">
                     <p className="font-is-light"><strong>Address: </strong>{event.address}</p>
                     <p className="font-is-light"><strong>Description: </strong>{event.description}</p>
-                    {event.finalTime && <p><strong>Event Time: </strong>{event.finalTimes[0]}</p>}
+                    {event.finalTime && <p><strong>Event Time: </strong>{event.finalTimes}</p>}
                   </div>
                 </Link>
                 <Link to={`/events/${event.id}/edit`} className="button">Edit Event</Link>
