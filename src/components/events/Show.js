@@ -108,7 +108,7 @@ class EventsShow extends React.Component{
       });
   }
 
-  checkUserAttending = () =>{
+  checkUserAttending = () => {
     const currentUser = Auth.getPayload().sub;
     if(this.state.event.attendees.includes(currentUser)) return true;
   }

@@ -86,7 +86,7 @@ class EventsNew extends React.Component {
     })
       .then(res => {
         const options = res.data.map(user => {
-          return { value: user._id, label: user.username };
+          return { value: user._id, label: user.username, tel: user.tel };
         });
         this.setState({ options });
       });
