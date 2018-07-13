@@ -136,16 +136,18 @@ class EventsShow extends React.Component{
           <div className="column is-two-thirds-mobile">
             <p className="font-is-light"><strong>Address: </strong>{this.state.event.address}</p>
             <p className="font-is-light"><strong>Description: </strong>{this.state.event.description}</p>
-            {this.state.event.finalTime && <p><strong>Event Time: </strong>{this.state.event.finalTime}</p>}
+            {this.state.event.finalTimes.length > 0 && <p><strong>Event Times: </strong>{this.state.event.finalTimes.map(time =>
+              time
+            )}</p>}
           </div>
-          <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>
-          <button className="button" onClick={this.handleDelete}>Delete Event</button>
+          {this.checkUserIsOrganizer() && <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>}
+          {this.checkUserIsOrganizer() && <button className="button" onClick={this.handleDelete}>Delete Event</button>}
         </div>
 
         {!this.state.event.finalTimesChecker && <div className="columns is-mobile is-multiline">
 
           {this.state.event.eventDates.map((date, i) =>
-            <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : 'is-full-mobile'}`}>
+            <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
               <div className="columns is-multiline">
                 <div className="column is-full"><h6 className="title is-6">{date}</h6></div>
                 {this.state.event.timeSlots.map((timeSlot, i)=>

@@ -13,6 +13,7 @@ function showRoute(req, res, next) {
   Event
     .findById(req.params.id)
     .populate('invitees')
+    .populate('finalTimes')
     .then(event => res.json(event))
     .catch(next);
 }
