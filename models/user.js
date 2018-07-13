@@ -11,6 +11,13 @@ const userSchema = new mongoose.Schema({
   id: false
 });
 
+userSchema.virtual('events', {
+  localField: '_id',
+  foreignField: 'invitees',
+  ref: 'Event'
+});
+
+
 userSchema.set('toJSON', {
   virtuals: true,
   transform(doc, json) {

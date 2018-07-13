@@ -12,6 +12,7 @@ function indexRoute(req, res, next) {
 function showRoute(req, res, next) {
   Event
     .findById(req.params.id)
+    .populate('invitees')
     .then(event => res.json(event))
     .catch(next);
 }

@@ -46,7 +46,6 @@ const eventSchema = new mongoose.Schema({
   finalTimes: [String]
 });
 
-
 eventSchema.virtual('eventDates')
   .get(function() {
     return Array.from(new Set(this.timeSlots.map(slot => slot.date)));
