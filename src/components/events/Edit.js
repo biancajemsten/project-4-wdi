@@ -42,9 +42,8 @@ class EventsEdit extends React.Component {
 
   addTimeSlot(e) {
     e.preventDefault();
-    const selectedTimes = this.state.selectedTimes;
-    const formattedTime = moment(this.state.startDate._d).format('ddd, MMM Do, HH:mm');
-    selectedTimes.push(formattedTime);
+    const selectedTimes = this.state.selectedTimes.slice();
+    selectedTimes.push(this.state.startDate._d);
     this.setState({ selectedTimes });
   }
 
@@ -62,17 +61,16 @@ class EventsEdit extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     new Promise(resolve => {
-      const timeSlot = this.state.selectedTimes.map(time => {
-        const date = moment(time, 'ddd, MMM Do, HH:mm').format('ddd, MMM Do');
-        const startTime = moment(time, 'ddd, MMM Do, HH:mm').format('HH:mm');
-        return { date: date, startTime: startTime};
+      const timeSlots = this.state.selectedTimes.map(time => {
+        const date = time;
+        return { date: date };
       });
-      resolve(this.setState({ timeSlots: timeSlot }));
+      resolve(this.setState({ timeSlots }));
     })
       .then(() => {
         axios({
           method: 'PUT',
-          url: '/api/events',
+          url: `/api/events/${this.props.match.params.id}`,
           data: this.state,
           headers: { Authorization: `Bearer ${Auth.getToken()}`}
         })
@@ -83,14 +81,32 @@ class EventsEdit extends React.Component {
 
   componentDidMount() {
     axios({
-      url: '/api/events',
+      url: `/api/events/${this.props.match.params.id}`,
       method: 'GET'
     })
       .then(res => {
-        const options = res.data.map(user => {
-          return { value: user._id, label: user.username };
+        const event = res.data;
+        const selectedOptions = event.invitees.map(invitee => {
+          return { value: invitee._id, label: invitee.username };
         });
-        console.log(res.data);
+        const selectedTimes = event.timeSlots.map(timeSlot => {
+          return timeSlot.date;
+        });
+
+        this.setState({ selectedTimes, selectedOptions, ...event });
+      })
+      .then(() => {
+        axios({
+          url: '/api/users',
+          method: 'GET'
+        })
+          .then(res => {
+            const users = res.data;
+            const options = users.map(user => {
+              return { value: user._id, label: user.username };
+            });
+            this.setState({ options });
+          });
       });
   }
 

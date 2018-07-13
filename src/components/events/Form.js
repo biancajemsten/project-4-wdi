@@ -34,7 +34,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           </div>
           <button className="button addTimeSlot" onClick={addTimeSlot}>Add timeslot</button>
           {data.selectedTimes.map(time =>
-            <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time} onClick={removeTimeSlot} className="delete"></button></span>
+            <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time || ''} onClick={removeTimeSlot} className="delete"></button></span>
           )}
         </div>
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
@@ -101,7 +101,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           <label className="label">Set Privacy</label>
           <div className="control">
             <div className="select is-fullwidth">
-              <select name="private" onChange={handleChange} value={data.privacy || ''}>
+              <select name="privacy" onChange={handleChange} value={data.privacy || ''}>
                 <option value="" disabled>Set event privacy</option>
                 <option>Private</option>
                 <option>Public</option>

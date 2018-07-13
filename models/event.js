@@ -37,7 +37,7 @@ const eventSchema = new mongoose.Schema({
   length: {type: Number, required: true},
   address: String,
   location: { lat: Number, lng: Number },
-  private: { type: String, default: 'Private' },
+  privacy: { type: String, enum: ['Private', 'Public'] },
   attendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   invitees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
@@ -45,7 +45,6 @@ const eventSchema = new mongoose.Schema({
   organizer: { type: mongoose.Schema.ObjectId, ref: 'User' },
   finalTimes: [String]
 });
-
 
 eventSchema.virtual('eventDates')
   .get(function() {
