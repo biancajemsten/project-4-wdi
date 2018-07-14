@@ -19,6 +19,7 @@ class EventsEdit extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.addTimeSlot = this.addTimeSlot.bind(this);
     this.removeTimeSlot = this.removeTimeSlot.bind(this);
+    this.handleClearSelectedTimes = this.handleClearSelectedTimes.bind(this);
   }
 
   handleAddressChange = address => {
@@ -52,6 +53,13 @@ class EventsEdit extends React.Component {
     const selectedTimes = this.state.selectedTimes;
     selectedTimes.splice(selectedTimes.indexOf(e.target.value), 1);
     this.setState({ selectedTimes });
+  }
+
+  handleClearSelectedTimes(e) {
+    e.preventDefault();
+    const finalTimes = this.state.finalTimes.slice();
+    finalTimes.splice(0, finalTimes.length);
+    this.setState({ finalTimes });
   }
 
   handleUpload = (e) => {
@@ -123,6 +131,7 @@ class EventsEdit extends React.Component {
         handleChange={this.handleChange}
         addTimeSlot={this.addTimeSlot}
         removeTimeSlot={this.removeTimeSlot}
+        handleClearSelectedTimes={this.handleClearSelectedTimes}
         handleSubmit={this.handleSubmit}
         handleUpload={this.handleUpload}
         handleSelectChange={this.handleSelectChange}
