@@ -22,6 +22,7 @@ class EventsShow extends React.Component{
   }
 
   checkUserIsOrganizer = () => {
+    if(!Auth.getPayload()) return false;
     if(Auth.getPayload().sub === this.state.event.organizer) return true;
   }
 
@@ -110,8 +111,22 @@ class EventsShow extends React.Component{
   }
 
   checkUserAttending = () => {
+    if(!Auth.getPayload()) return false;
     const currentUser = Auth.getPayload().sub;
     if(this.state.event.attendees.includes(currentUser)) return true;
+  }
+
+  checkUserIsInvitee = () => {
+    if(!Auth.getPayload()) return false;
+    const currentUser = Auth.getPayload().sub;
+    const invitees = this.state.event.invitees;
+    let isInvitee;
+    invitees.forEach(invitee => {
+      if(invitee._id === currentUser) {
+        isInvitee = true;
+      }
+    });
+    return isInvitee;
   }
 
   columnCounter = () => {
@@ -148,6 +163,7 @@ class EventsShow extends React.Component{
           </div>
           {this.checkUserIsOrganizer() && <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>}
           {this.checkUserIsOrganizer() && <button className="button" onClick={this.handleDelete}>Delete Event</button>}
+          {this.checkUserIsInvitee() && !this.checkUserIsOrganizer() && Auth.isAuthenticated() && <button className="button" onClick={this.handleDeclineInvitation}>Decline Invitation</button>}
         </div>
 
         {!this.state.event.finalTimesChecker && <div className="columns is-mobile is-multiline">
