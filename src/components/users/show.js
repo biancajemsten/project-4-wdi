@@ -62,7 +62,7 @@ class UsersShow extends React.Component {
                   <div className="column is-two-thirds-mobile">
                     <p className="font-is-light"><strong>Address: </strong>{event.address}</p>
                     <p className="font-is-light"><strong>Description: </strong>{event.description}</p>
-                    {event.finalTimes && <p><strong>Event Time: </strong>{event.finalTimes}</p>}
+                    {event.finalTimes && event.finalTimes.length > 0 && <p><strong>Event Time{event.finalTimes.length > 1 && <span>s</span>}: </strong>{event.finalTimes}</p>}
                   </div>
                 </Link>
               </div>
