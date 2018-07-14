@@ -131,6 +131,7 @@ class EventsShow extends React.Component{
   handleDeclineInvitation = () => {
     new Promise(resolve => {
       const currentUser = Auth.getPayload().sub;
+      console.log(currentUser);
       let invitees = this.state.event.invitees.slice();
       invitees = invitees.filter(invitee => {
         return invitee._id !== currentUser;
@@ -144,7 +145,7 @@ class EventsShow extends React.Component{
           data: this.state,
           headers: { Authorization: `Bearer ${Auth.getToken()}`}
         })
-          .then(res => this.setState({ event: res.data }))
+          .then(() => this.props.history.push(`/users/${Auth.getPayload().sub}`))
           .catch(err => console.log(err));
       });
   }
