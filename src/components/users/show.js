@@ -50,7 +50,7 @@ class UsersShow extends React.Component {
                             {event.description && <p>{event.description}</p>}
                           </div>
                           <div className="column is-hidden-mobile is-one-third-tablet is-one-third-desktop">
-                            <p className="font-is-dark"><strong>Address: </strong>{event.address}</p>
+                            <p className="font-is-dark">{event.address}</p>
                             {event.finalTimes && event.finalTimes.length > 0 && <p><strong>Event Time{event.finalTimes.length > 1 && <span>s</span>}: </strong><br/>{event.finalTimes && event.finalTimes.map(finalTime =>
                               <span key={finalTime}>{moment(finalTime).format('ddd, MMM Do, HH:mm')}<br/></span>
                             )}</p>}
@@ -88,7 +88,7 @@ class UsersShow extends React.Component {
                           {event.description && <p>{event.description}</p>}
                         </div>
                         <div className="column is-hidden-mobile is-one-third-tablet is-one-third-desktop">
-                          <p className="font-is-dark"><strong>Address: </strong>{event.address}</p>
+                          <p className="font-is-dark">{event.address}</p>
                           {event.finalTimes && event.finalTimes.length > 0 && <p><strong>Event Time{event.finalTimes.length > 1 && <span>s</span>}: </strong><br/>{event.finalTimes && event.finalTimes.map(finalTime =>
                             <span key={finalTime}>{moment(finalTime).format('ddd, MMM Do, HH:mm')}<br/></span>
                           )}</p>}
