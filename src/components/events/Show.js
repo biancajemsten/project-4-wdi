@@ -196,6 +196,7 @@ class EventsShow extends React.Component{
                 {this.state.event.timeSlots.map((timeSlot, i)=>
                   this.filterStartTime(date, i) &&
                   <div className="timeSlotDiv column is-one-third-desktop is-full-mobile is-full-tablet" key={i}>
+                    {this.isVoted(timeSlot._id) && <div><img className="checkIcon" src="../../assets/images/checklogo.png"/></div>}
                     <strong>Time: </strong>
                     <p>{timeSlot.startTime} - {timeSlot.endTime}</p>
                     <p><strong>Votes:</strong> {timeSlot.votes.length}</p>

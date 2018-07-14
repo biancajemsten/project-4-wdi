@@ -4,7 +4,7 @@
 div.Select-input{
   width: 100%;
   input{
-    min-width: 100%; 
+    min-width: 100%;
     background: transparent;
     border: none;
     border-bottom: 1px dashed #83A4C5;
@@ -13,6 +13,10 @@ div.Select-input{
     color: $light;
     border-radius: 0;
     box-shadow: none;;
+    &:focus{
+      outline: none;
+      border-bottom: 1px dashed $red;
+    }
   }
 }
 
@@ -38,7 +42,19 @@ div.field.filePicker{
 }
 
 div.field{
-
+  .tagContainer{
+    margin-top: 15px;
+    .tag{
+      margin: 5px 2px 5px 2px;
+    }
+  }
+  figure{
+    margin-bottom: 5px;
+    img{
+      height: 150px;
+      width: 150px;
+    }
+  }
   span{
     .Select-multi-value-wrapper{
       color: $light;

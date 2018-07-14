@@ -36,10 +36,12 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, han
             />
           </div>
           <button className="button addTimeSlot" onClick={addTimeSlot}>Add timeslot</button>
-          {data.selectedTimes.map(time =>
-            <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time || ''} onClick={removeTimeSlot} className="delete"></button></span>
-          )}
-          {/* {data.errors.date && <small>{data.errors.date}</small>} */}
+          <div className="tagContainer">
+            {data.selectedTimes.map(time =>
+              <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time || ''} onClick={removeTimeSlot} className="delete"></button></span>
+            )}
+            {/* {data.errors.date && <small>{data.errors.date}</small>} */}
+          </div>
         </div>}
 
         {data.finalTimesChecker && <div className="field column is-full-mobile is-full-desktop is-full-tablet">
@@ -98,11 +100,6 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, han
           </PlacesAutocomplete>
         </div>
 
-        <div className="field column filePicker is-half-mobile is-half-desktop is-half-tablet">
-          <label className="label">Upload an image</label>
-          <ReactFilestack apikey='A1P1k3n9REqxOW2Z9xz22z' name="image" onSuccess={handleUpload} value={data.image || ''} />
-        </div>
-
         <div className="field column is-half-mobile is-half-desktop is-half-tablet">
           <label className="label">Invitees</label>
           <Select
@@ -114,7 +111,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, han
           />
         </div>
 
-        <div className="field column is-full-mobile is-full-desktop is-full-tablet">
+        <div className="field column is-half-mobile is-half-desktop is-half-tablet">
           <label className="label">Set Privacy</label>
           <div className="control">
             <div className="select is-fullwidth">
@@ -126,6 +123,14 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, han
             </div>
           </div>
           {data.errors.privacy && <small>{data.errors.privacy}</small>}
+        </div>
+
+        <div className="field column filePicker is-half-mobile is-one-third-desktop is-one-third-tablet">
+          <label className="label">Upload an image</label>
+          <figure className="image is-90x90">
+            <img src={data.image} alt="user upload"/>
+          </figure>
+          <ReactFilestack apikey='A1P1k3n9REqxOW2Z9xz22z' name="image" onSuccess={handleUpload} value={data.image || ''} />
         </div>
       </div>
       <button className="button">Submit</button>

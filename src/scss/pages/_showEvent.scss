@@ -26,6 +26,16 @@ div.timeSlotDiv{
   p, strong{
     color: $dark-blue;
   }
+  div{
+    float:right; 
+    .checkIcon{
+      margin-left: auto;
+      margin-right: 0;
+      height: 20px;
+      width: 20px;
+
+    }
+  }
 }
 
 // button.button.unVote{

@@ -19,6 +19,11 @@ input.input, textarea.input{
   .location-search-input{
     color: $light;
   }
+  &:focus{
+    outline: none;
+    box-shadow: none; 
+    border-bottom: 1px dashed $red;
+  }
 }
 
 input.input::placeholder{
