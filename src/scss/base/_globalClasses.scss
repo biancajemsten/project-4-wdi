@@ -7,5 +7,13 @@
 }
 
 .background-is-light{
-  background-color: $light; 
+  background-color: $light;
+}
+
+button.button.selected{
+  background-color: $red;
+  color: $light;
+  &:active{
+    color: $light;
+  }
 }

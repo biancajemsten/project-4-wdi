@@ -37,19 +37,23 @@ const eventSchema = new mongoose.Schema({
   length: {type: Number, required: true},
   address: String,
   location: { lat: Number, lng: Number },
-  private: { type: String, default: 'Private' },
+  privacy: { type: String, enum: ['Private', 'Public'] },
   attendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   invitees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   image: String,
   organizer: { type: mongoose.Schema.ObjectId, ref: 'User' },
-  finalTimes: [String]
+  finalTimes: [Date]
 });
-
 
 eventSchema.virtual('eventDates')
   .get(function() {
-    return Array.from(new Set(this.timeSlots.map(slot => slot.date)));
+    return Array.from(new Set(this.timeSlots.map(slot => moment(slot.date).format('ddd, MMM Do'))));
+  });
+
+eventSchema.virtual('finalEventDates')
+  .get(function(){
+    return Array.from(new Set(this.finalTimes.map(time => moment(time).format('ddd, MMM Do'))));
   });
 
 

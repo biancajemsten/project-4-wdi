@@ -13,11 +13,13 @@ router.route('/events/:id')
   .put(secureRoute, events.update)
   .delete(secureRoute, events.delete);
 
-// router.put('/events/:id/vote', secureRoute, events.update); //needs to be tested in insomnia
-
 router.post('/register', auth.register);
 router.post('/login', auth.login);
 
 router.get('/users', users.index);
+
+router.route('/users/:id')
+  .get(users.show)
+  .put(users.update);
 
 module.exports = router;

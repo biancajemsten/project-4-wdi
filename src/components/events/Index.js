@@ -11,7 +11,11 @@ class EventsIndex extends React.Component {
 
   componentDidMount() {
     axios.get('/api/events')
-      .then(res => this.setState({ events: res.data }));
+      .then(res => {
+        let events = res.data;
+        events = events.filter(event => event.privacy === 'Public');
+        this.setState({ events });
+      });
   }
 
   handleSearch = (e) => {
@@ -21,7 +25,7 @@ class EventsIndex extends React.Component {
   filteredEvents = (events) => {
     const re = new RegExp(this.state.search, 'i');
     return events.filter(event => {
-      return re.test(event.name) || re.test(event.organizer.username);
+      return re.test(event.organizer.username) || re.test(event.name);
     });
   }
 
@@ -72,8 +76,6 @@ class EventsIndex extends React.Component {
             )}
           </div>
         </div>
-
-        <p className ="font-is-light"><strong>Lorem ipsum dolor sit amet</strong>, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
       </section>
     );
   }

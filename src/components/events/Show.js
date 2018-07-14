@@ -24,9 +24,14 @@ class EventsShow extends React.Component{
   checkUserIsOrganizer = () => {
     if(Auth.getPayload().sub === this.state.event.organizer) return true;
   }
+
   //checks the date of the column with the date of the timeSlot
   filterStartTime = (date, i) =>{
-    if(date === this.state.event.timeSlots[i].date) return true;
+    if(this.state.event.finalTimes.length > 0){
+      if(date === moment(this.state.event.finalTimes[i]).format('ddd, MMM Do')) return true;
+    } else{
+      if(date === moment(this.state.event.timeSlots[i].date).format('ddd, MMM Do')) return true;
+    }
   };
 
   handleVote = (slotId) => {
@@ -39,7 +44,6 @@ class EventsShow extends React.Component{
       selectedTimeSlots = this.state.selectedTimeSlots.slice();
       selectedTimeSlots.splice(index, 1);
     }
-
     this.setState({ selectedTimeSlots });
   }
 
@@ -47,22 +51,21 @@ class EventsShow extends React.Component{
     return this.state.selectedTimeSlots.includes(slotId);
   }
 
-  handlePickDate = (slotId) => {
+  handlePickDate = (date) => {
     let finalTimes;
-    const index = this.state.finalTimes.indexOf(slotId);
+    const index = this.state.finalTimes.indexOf(date);
 
     if(index === -1) {
-      finalTimes = this.state.finalTimes.concat(slotId);
+      finalTimes = this.state.finalTimes.concat(date);
     } else {
       finalTimes = this.state.finalTimes.slice();
       finalTimes.splice(index, 1);
     }
-
     this.setState({ finalTimes });
   }
 
-  isPicked = (slotId) => {
-    return this.state.finalTimes.includes(slotId);
+  isPicked = (date) => {
+    return this.state.finalTimes.includes(date);
   }
 
   handleVoteSubmit = () =>{
@@ -86,11 +89,9 @@ class EventsShow extends React.Component{
         })
           .catch(err => console.log(err));
       });
-
   }
 
   handleSubmit = () => {
-
     new Promise(resolve => {
       const finalTimes = this.state.finalTimes;
       resolve(this.setState({ ...this.state.event, finalTimes } ));
@@ -113,6 +114,22 @@ class EventsShow extends React.Component{
     if(this.state.event.attendees.includes(currentUser)) return true;
   }
 
+  columnCounter = () => {
+    if(this.state.finalTimes.length > 1){
+      if(this.state.event.finalEventDates.length > 1) return true;
+    } else{
+      if(this.state.event.eventDates.length > 1) return true;
+    }
+  }
+
+  handleDelete = () => {
+    axios({
+      method: 'DELETE',
+      url: `/api/events/${this.props.match.params.id}`,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
+    })
+      .then(() => this.props.history.push('/events'));
+  }
 
   render(){
     if(!this.state.event) return <h2 className="title">Loading...</h2>;
@@ -128,42 +145,51 @@ class EventsShow extends React.Component{
           <div className="column is-two-thirds-mobile">
             <p className="font-is-light"><strong>Address: </strong>{this.state.event.address}</p>
             <p className="font-is-light"><strong>Description: </strong>{this.state.event.description}</p>
-            {this.state.event.finalTime && <p><strong>Event Time: </strong>{this.state.event.finalTime}</p>}
           </div>
-          <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>
+          {this.checkUserIsOrganizer() && <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>}
+          {this.checkUserIsOrganizer() && <button className="button" onClick={this.handleDelete}>Delete Event</button>}
         </div>
 
-        {!this.state.event.finalTimesChecker && <div className="columns is-full is-mobile">
+        {!this.state.event.finalTimesChecker && <div className="columns is-mobile is-multiline">
 
           {this.state.event.eventDates.map((date, i) =>
-            <div key={i} className="column is-one-third-mobile dateColumn">
-              <h6 className="title is-6">{moment(date).format('ddd, MMM Do')}</h6>
-              {this.state.event.timeSlots.map((timeSlot, i)=>
-                this.filterStartTime(date, i) &&
-                <div className="timeSlotDiv" key={i}>
-                  <strong>Time: </strong>
-                  <p>{timeSlot.startTime} - {timeSlot.endTime}</p>
-                  <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
-                  {!this.checkUserAttending() && <button className="button" onClick={() => this.handleVote(timeSlot._id)}>{this.isVoted(timeSlot._id) ? 'Selected' : 'Vote'}</button>}
-                  {this.checkUserIsOrganizer() && <button className="button" onClick={() => this.handlePickDate(timeSlot._id)}>{this.isPicked(timeSlot._id) ? 'Selected' : 'Pick Date'}</button>}
-                </div>
-              )}
+            <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
+              <div className="columns is-multiline">
+                <div className="column is-full"><h6 className="title is-6">{date}</h6></div>
+                {this.state.event.timeSlots.map((timeSlot, i)=>
+                  this.filterStartTime(date, i) &&
+                  <div className="timeSlotDiv column is-one-third-desktop is-full-mobile is-full-tablet" key={i}>
+                    <strong>Time: </strong>
+                    <p>{timeSlot.startTime} - {timeSlot.endTime}</p>
+                    <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
+                    {!this.checkUserAttending() && <button className={`button${this.isVoted(timeSlot._id) ? ' selected' : ''}`} onClick={() => this.handleVote(timeSlot._id)} >{this.isVoted(timeSlot._id) ? 'Selected' : 'Vote'}</button>}
+                    {this.checkUserIsOrganizer() && <button className={`button${this.isPicked(timeSlot.date) ? ' selected' : ''}`} onClick={() => this.handlePickDate(timeSlot.date)}>{this.isPicked(timeSlot.date) ? 'Selected' : 'Pick Date'}</button>}
+                  </div>
+                )}
+
+              </div>
             </div>
           )}
-          {!this.checkUserAttending() && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
-          {this.state.finalTimes.length > 0 && <button className="button" onClick={this.handleSubmit}>Confirm Times</button>}
         </div>}
-
-        {this.state.event.finalTimesChecker && <div className="columns is-full is-mobile">
-          <div className="column is-one-third-mobile">
-            <h3 className="title is-3">Selected Times</h3>
-            <div>
-              {this.state.event.timeSlots.map(timeSlot =>
-                this.state.event.finalTimes.includes(timeSlot._id) && <div key={timeSlot._id}>{moment(timeSlot.date).format('ddd, MMM Do, HH:mm')}</div>
-              )}
+        <div className="buttonDiv">
+          {this.state.finalTimes.length > 0 && <button className="button" onClick={this.handleSubmit}>Confirm Times</button>}
+          {!this.checkUserAttending() && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
+        </div>
+        {this.state.event.finalTimesChecker && <div className="columns is-full is-mobile is-multiline">
+          {this.state.event.finalEventDates.map((date, i) =>
+            <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
+              <div className="columns is-multiline">
+                <div className="column is-full"><h6 className="title is-6">{date}</h6></div>
+                {this.state.event.finalTimes.map((time, i)=>
+                  this.filterStartTime(date, i) &&
+                  <div className="timeSlotDiv column is-one-third-desktop is-full-mobile is-full-tablet" key={i}>
+                    <strong>Time: </strong>
+                    <p>{moment(time).format('HH:mm')} - {moment(time).add(this.state.event.length, 'minutes').format('HH:mm')}</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-
+          )}
         </div>}
 
         <h3 className="title is-3">Location</h3>

@@ -6,7 +6,7 @@ import PlacesAutocomplete from 'react-places-autocomplete';
 import Select from 'react-select';
 import moment from 'moment';
 
-const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, addTimeSlot, removeTimeSlot, handleUpload, handleSubmit, handleChange, handleSelectChange, data }) => {
+const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, addTimeSlot, removeTimeSlot, handleClearSelectedTimes, handleUpload, handleSubmit, handleChange, handleSelectChange, data }) => {
   return(
     <form onSubmit={handleSubmit}>
       <div className="columns is-mobile is-multiline">
@@ -14,11 +14,13 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           <label className="label">Event Name</label>
           <input className="input" name="name" onChange={handleChange} value={data.name || ''} />
         </div>
+
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
           <label className="label">Description</label>
           <textarea className="input" name="description" onChange={handleChange} value={data.description || ''} />
         </div>
-        <div className="field field column is-full-mobile is-full-desktop is-full-tablet">
+
+        {!data.finalTimesChecker && <div className="field column is-full-mobile is-full-desktop is-full-tablet">
           <label className="label">Possible Dates</label>
           <div className="datePicker">
             <DatePicker
@@ -34,9 +36,18 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           </div>
           <button className="button addTimeSlot" onClick={addTimeSlot}>Add timeslot</button>
           {data.selectedTimes.map(time =>
-            <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time} onClick={removeTimeSlot} className="delete"></button></span>
+            <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time || ''} onClick={removeTimeSlot} className="delete"></button></span>
           )}
-        </div>
+        </div>}
+
+        {data.finalTimesChecker && <div className="field column is-full-mobile is-full-desktop is-full-tablet">
+          <label className="label">Selected Times</label>
+          {data.finalTimes.map(date =>
+            <p key={date}>{moment(date).format('ddd, MMM Do, HH:mm')}</p>
+          )}
+          <button className="button" onClick={handleClearSelectedTimes}>Clear Selected Times</button>
+        </div>}
+
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
           <label className="label">Event Length</label>
           <input className="input" name="length" placeholder="Enter the event length in minutes please" onChange={handleChange} value={data.length || ''} />
@@ -83,10 +94,12 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
             )}
           </PlacesAutocomplete>
         </div>
+
         <div className="field column filePicker is-half-mobile is-half-desktop is-half-tablet">
           <label className="label">Upload an image</label>
           <ReactFilestack apikey='A1P1k3n9REqxOW2Z9xz22z' name="image" onSuccess={handleUpload} value={data.image || ''} />
         </div>
+
         <div className="field column is-half-mobile is-half-desktop is-half-tablet">
           <label className="label">Invitees</label>
           <Select
@@ -97,11 +110,12 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
             options={data.options}
           />
         </div>
+
         <div className="field column is-full-mobile is-full-desktop is-full-tablet">
           <label className="label">Set Privacy</label>
           <div className="control">
             <div className="select is-fullwidth">
-              <select name="private" onChange={handleChange} value={data.privacy || ''}>
+              <select name="privacy" onChange={handleChange} value={data.privacy || ''}>
                 <option value="" disabled>Set event privacy</option>
                 <option>Private</option>
                 <option>Public</option>
