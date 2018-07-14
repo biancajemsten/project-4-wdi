@@ -28,7 +28,12 @@ class AuthRegister extends React.Component{
   }
 
   handleBlur = ({target: { name, value }}) => {
-    const errorMessage = value.length === 0 ? 'This field is required' : '';
+    let errorMessage;
+    if(name !== 'passwordConfirmation') {
+      errorMessage = value.length === 0 ? 'This field is required' : '';
+    } else {
+      errorMessage = value !== this.state.password ? 'Passwords do not match' : '';
+    }
     const errors = this.state.errors;
     for(let field in errors) {
       field = name;
@@ -37,15 +42,15 @@ class AuthRegister extends React.Component{
     }
   }
 
-  checkPasswordsMatch = ({target: { name, value}}) => {
-    const errors = this.state.errors;
-    const errorMessage = value !== this.state.password ? 'Passwords do not match' : '';
-    for(let field in errors) {
-      field = name;
-      errors[field] = errorMessage;
-      return this.setState({ errors });
-    }
-  }
+  // checkPasswordsMatch = ({target: { name, value}}) => {
+  //   const errors = this.state.errors;
+  //   const
+  //   for(let field in errors) {
+  //     field = name;
+  //     errors[field] = errorMessage;
+  //     return this.setState({ errors });
+  //   }
+  // }
 
   render() {
     return(
@@ -72,7 +77,7 @@ class AuthRegister extends React.Component{
         </div>
         <div className="field">
           <label className="passwordConfirmation">Password Confirmation</label>
-          <input className="input" type="password" name="passwordConfirmation" placeholder="Password Confirmation" onChange={this.handleChange} onBlur={this.checkPasswordsMatch}/>
+          <input className="input" type="password" name="passwordConfirmation" placeholder="Password Confirmation" onChange={this.handleChange} onBlur={this.handleBlur}/>
           {this.state.errors.passwordConfirmation && <small>{this.state.errors.passwordConfirmation}</small>}
         </div>
 
