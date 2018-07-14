@@ -143,21 +143,25 @@ class EventsEdit extends React.Component {
 
   render() {
     return(
-      <EventsForm
-        handleAddressChange={this.handleAddressChange}
-        handleSelect={this.handleSelect}
-        handleChange={this.handleChange}
-        handleBlur={this.handleBlur}
-        addTimeSlot={this.addTimeSlot}
-        removeTimeSlot={this.removeTimeSlot}
-        handleClearSelectedTimes={this.handleClearSelectedTimes}
-        handleSubmit={this.handleSubmit}
-        handleUpload={this.handleUpload}
-        handleSelectChange={this.handleSelectChange}
-        selected={this.state.startDate}
-        onChange={this.onChange}
-        data={this.state}
-      />
+      <div>
+        <h2 className="title is-2">Edit your event</h2>
+        <hr/>
+        <EventsForm
+          handleAddressChange={this.handleAddressChange}
+          handleSelect={this.handleSelect}
+          handleChange={this.handleChange}
+          handleBlur={this.handleBlur}
+          addTimeSlot={this.addTimeSlot}
+          removeTimeSlot={this.removeTimeSlot}
+          handleClearSelectedTimes={this.handleClearSelectedTimes}
+          handleSubmit={this.handleSubmit}
+          handleUpload={this.handleUpload}
+          handleSelectChange={this.handleSelectChange}
+          selected={this.state.startDate}
+          onChange={this.onChange}
+          data={this.state}
+        />
+      </div>
     );
   }
 }

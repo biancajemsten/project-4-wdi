@@ -1,4 +1,5 @@
 .eventTable{
+  border-radius: 5px; 
 background-color: $light;
 .columns{
   margin: 0;
@@ -13,7 +14,7 @@ background-color: $light;
     display:flex;
     flex-direction: row;
     justify-content: space-around;
-    border-bottom: 1px solid $dark-blue;
+    border-bottom: 1px solid $red;
     align-items: center;
   }
   .eventTableContent{
@@ -22,6 +23,7 @@ background-color: $light;
       margin:0;
     }
     .columns{
+      border-top: 1px solid $red;
       &:hover{
         border: rgb(224,224,224) 1px solid;
         box-sizing: border;

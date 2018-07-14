@@ -24,8 +24,9 @@ class UsersShow extends React.Component {
     return(
       <div>
         {this.state.user && <h1 className="title is-1">{`${this.state.user.username}'s events`}</h1>}
+        <hr/>
         <div className="columns">
-          <div className="column is-half">
+          {this.state.user && this.state.user.myEvents.length > 0 && <div className="column is-half">
             <h2 className="title is-2">Your events</h2>
             <div className="eventTable">
               <div className="columns is-multiline is-mobile">
@@ -45,11 +46,11 @@ class UsersShow extends React.Component {
                             </figure>
                           </div>
                           <div className="column is-one-half-mobile is-one-third-tablet is-one-third-desktop">
-                            <p><strong>Name: </strong>{event.name}</p>
-                            {event.description && <p><strong>Description: </strong>{event.description}</p>}
+                            <p><strong className="is-underlined">{event.name}</strong></p>
+                            {event.description && <p>{event.description}</p>}
                           </div>
                           <div className="column is-hidden-mobile is-one-third-tablet is-one-third-desktop">
-                            <p className="font-is-dark"><strong>Address: </strong>{event.address}</p>
+                            <p className="font-is-dark">{event.address}</p>
                             {event.finalTimes && event.finalTimes.length > 0 && <p><strong>Event Time{event.finalTimes.length > 1 && <span>s</span>}: </strong><br/>{event.finalTimes && event.finalTimes.map(finalTime =>
                               <span key={finalTime}>{moment(finalTime).format('ddd, MMM Do, HH:mm')}<br/></span>
                             )}</p>}
@@ -63,8 +64,8 @@ class UsersShow extends React.Component {
               </div>
 
             </div>
-          </div>
-          <div className="column is-half">
+          </div>}
+          {this.state.user && this.state.user.invitedToEvents.length > 0 && <div className="column is-half">
             <h2 className="title is-2">Invited to</h2>
             <div className="eventTable">
               <div className="columns is-multiline is-mobile">
@@ -83,11 +84,11 @@ class UsersShow extends React.Component {
                           </figure>
                         </div>
                         <div className="column is-half-mobile is-one-third-tablet is-one-third-desktop">
-                          <p><strong>Name: </strong>{event.name}</p>
-                          {event.description && <p><strong>Description: </strong>{event.description}</p>}
+                          <p><strong className="is-underlined">{event.name}</strong></p>
+                          {event.description && <p>{event.description}</p>}
                         </div>
                         <div className="column is-hidden-mobile is-one-third-tablet is-one-third-desktop">
-                          <p className="font-is-dark"><strong>Address: </strong>{event.address}</p>
+                          <p className="font-is-dark">{event.address}</p>
                           {event.finalTimes && event.finalTimes.length > 0 && <p><strong>Event Time{event.finalTimes.length > 1 && <span>s</span>}: </strong><br/>{event.finalTimes && event.finalTimes.map(finalTime =>
                             <span key={finalTime}>{moment(finalTime).format('ddd, MMM Do, HH:mm')}<br/></span>
                           )}</p>}
@@ -98,11 +99,12 @@ class UsersShow extends React.Component {
                 </div>
               </div>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     );
   }
+
 }
 
 export default UsersShow;

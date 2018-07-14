@@ -50,7 +50,7 @@ class EventsIndex extends React.Component {
         <div className="filters">
           <input className="input" placeholder="Search events" onChange={this.handleSearch} />
         </div>
-
+        <hr/>
         <div className="control">
           <div className="select is-fullwidth">
             <select onChange={this.handleSort}>
