@@ -105,7 +105,6 @@ class EventsShow extends React.Component{
           headers: { Authorization: `Bearer ${Auth.getToken()}`}
         })
           .then(res => this.setState({ event: res.data }))
-          .then(() => console.log(this.state.event))
           .catch(err => console.log(err));
       });
   }
@@ -217,12 +216,13 @@ class EventsShow extends React.Component{
           {this.state.event.finalEventDates.map((date, i) =>
             <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
               <div className="columns is-multiline">
-                <div className="column is-full"><h6 className="title is-6">{date}</h6></div>
+                <div className="column is-full">
+                  <h6 className="title is-6">{date}</h6>
+                </div>
                 {this.state.event.finalTimes.map((time, i)=>
                   this.filterStartTime(date, i) &&
                   <div className="timeSlotDiv column is-one-third-desktop is-full-mobile is-full-tablet" key={i}>
-                    <strong>Time: </strong>
-                    <p>{moment(time).format('HH:mm')} - {moment(time).add(this.state.event.length, 'minutes').format('HH:mm')}</p>
+                    <p><strong>Time: </strong> {moment(time).format('HH:mm')} - {moment(time).add(this.state.event.length, 'minutes').format('HH:mm')}</p>
                   </div>
                 )}
               </div>
