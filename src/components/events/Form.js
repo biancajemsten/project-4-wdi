@@ -13,6 +13,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
           <label className="label">Event Name</label>
           <input className="input" name="name" onChange={handleChange} value={data.name || ''} />
+          {data.errors.name && <small>{data.errors.name}</small>}
         </div>
 
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
@@ -38,6 +39,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           {data.selectedTimes.map(time =>
             <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time || ''} onClick={removeTimeSlot} className="delete"></button></span>
           )}
+          {/* {data.errors.date && <small>{data.errors.date}</small>} */}
         </div>}
 
         {data.finalTimesChecker && <div className="field column is-full-mobile is-full-desktop is-full-tablet">
@@ -51,6 +53,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
           <label className="label">Event Length</label>
           <input className="input" name="length" placeholder="Enter the event length in minutes please" onChange={handleChange} value={data.length || ''} />
+          {data.errors.length && <small>{data.errors.length}</small>}
         </div>
 
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
@@ -122,6 +125,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
               </select>
             </div>
           </div>
+          {data.errors.privacy && <small>{data.errors.privacy}</small>}
         </div>
       </div>
       <button className="button">Submit</button>

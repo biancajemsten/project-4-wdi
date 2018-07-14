@@ -14,7 +14,8 @@ class EventsNew extends React.Component {
       startDate: moment(),
       selectedTimes: [],
       timeSlots: [],
-      address: ''
+      address: '',
+      errors: {}
     };
     this.onChange = this.onChange.bind(this);
     this.addTimeSlot = this.addTimeSlot.bind(this);
