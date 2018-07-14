@@ -1,0 +1,30 @@
+
+  .field{
+    button, button.button, button.button.addTimeSlot{
+      background-color: $red;
+      color: $light;
+      border-color: $red;
+      &:hover{
+        border: 1px $light outset;
+      }
+    }
+  }
+  div.field.filePicker button{
+    background-color: $red;
+    color: $light;
+    border-color: $red;
+    &:hover{
+      border: 1px $light outset;
+    }
+  }
+form{
+    button.button{
+      background-color: $red;
+      color: $light;
+      border-color: $red;
+      &:hover{
+        border: 1px $light outset;
+        color: $light; 
+      }
+  }
+}

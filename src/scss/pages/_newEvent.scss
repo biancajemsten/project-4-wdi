@@ -1,6 +1,20 @@
 .Select-placeholder{
   color: $light;
 }
+div.Select-input{
+  width: 100%;
+  input{
+    min-width: 100%; 
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed #83A4C5;
+    outline: none;
+    padding: 0px 0px 0px 0px;
+    color: $light;
+    border-radius: 0;
+    box-shadow: none;;
+  }
+}
 
 div.field.filePicker{
   button{
@@ -24,6 +38,7 @@ div.field.filePicker{
 }
 
 div.field{
+
   span{
     .Select-multi-value-wrapper{
       color: $light;

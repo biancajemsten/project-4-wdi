@@ -171,13 +171,14 @@ class EventsShow extends React.Component{
     return(
       <div>
         <h2 className="title is-2 font-is-light">{this.state.event.name}</h2>
+        <hr/>
         <div className="columns is-multiline is-mobile">
-          <div className="column is-one-third-mobile">
-            <figure className="image is-128x128">
+          <div className="column is-two-fifths-mobile">
+            <figure className="image is-138x138">
               <img src={this.state.event.image}/>
             </figure>
           </div>
-          <div className="column is-two-thirds-mobile">
+          <div className="column is-three-fifths-mobile">
             <p className="font-is-light"><strong>Address: </strong>{this.state.event.address}</p>
             <p className="font-is-light"><strong>Description: </strong>{this.state.event.description}</p>
           </div>

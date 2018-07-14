@@ -113,20 +113,24 @@ class EventsNew extends React.Component {
 
   render() {
     return(
-      <EventsForm
-        handleAddressChange={this.handleAddressChange}
-        handleSelect={this.handleSelect}
-        handleChange={this.handleChange}
-        handleBlur={this.handleBlur}
-        addTimeSlot={this.addTimeSlot}
-        removeTimeSlot={this.removeTimeSlot}
-        handleSubmit={this.handleSubmit}
-        handleUpload={this.handleUpload}
-        handleSelectChange={this.handleSelectChange}
-        selected={this.state.startDate}
-        onChange={this.onChange}
-        data={this.state}
-      />
+      <div>
+        <h2 className="title is-2">Create a new event</h2>
+        <hr/>
+        <EventsForm
+          handleAddressChange={this.handleAddressChange}
+          handleSelect={this.handleSelect}
+          handleChange={this.handleChange}
+          handleBlur={this.handleBlur}
+          addTimeSlot={this.addTimeSlot}
+          removeTimeSlot={this.removeTimeSlot}
+          handleSubmit={this.handleSubmit}
+          handleUpload={this.handleUpload}
+          handleSelectChange={this.handleSelectChange}
+          selected={this.state.startDate}
+          onChange={this.onChange}
+          data={this.state}
+        />
+      </div>
     );
   }
 }
