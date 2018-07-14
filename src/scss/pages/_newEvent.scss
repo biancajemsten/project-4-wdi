@@ -24,7 +24,17 @@ div.field.filePicker{
 }
 
 div.field{
-
+  span{
+    .Select-multi-value-wrapper{
+      color: $light;
+    }
+  }
+  button.addTimeSlot, .datePicker{
+    display: inline-block;
+  }
+  .datePicker{
+    margin-right: 0.5rem;
+  }
   span.tag{
     background-color: $light;
     color: $dark-blue;
@@ -67,7 +77,9 @@ div.field{
   }
 }
 
-
+div.Select-control{
+  color: $light;
+}
 .Select-menu-outer{
   color: $light;
 }

@@ -5,9 +5,22 @@ const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  tel: { type: String, required: true }
 }, {
   id: false
+});
+
+userSchema.virtual('myEvents', {
+  localField: '_id',
+  foreignField: 'organizer',
+  ref: 'Event'
+});
+
+userSchema.virtual('invitedToEvents', {
+  localField: '_id',
+  foreignField: 'invitees',
+  ref: 'Event'
 });
 
 userSchema.set('toJSON', {
