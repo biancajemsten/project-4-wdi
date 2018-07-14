@@ -24,6 +24,7 @@ class AuthRegister extends React.Component{
   }
 
   handleChange = ({target: { name, value }}) => {
+    this.handleBlur({target: { name, value }});
     this.setState({ [name]: value });
   }
 
