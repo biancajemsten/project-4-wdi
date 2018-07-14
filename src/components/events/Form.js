@@ -20,7 +20,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           <textarea className="input" name="description" onChange={handleChange} value={data.description || ''} />
         </div>
 
-        <div className="field column is-full-mobile is-full-desktop is-full-tablet">
+        {!data.finalTimesChecker && <div className="field column is-full-mobile is-full-desktop is-full-tablet">
           <label className="label">Possible Dates</label>
           <div className="datePicker">
             <DatePicker
@@ -38,7 +38,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           {data.selectedTimes.map(time =>
             <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time || ''} onClick={removeTimeSlot} className="delete"></button></span>
           )}
-        </div>
+        </div>}
 
         {data.finalTimesChecker && <div className="field column is-full-mobile is-full-desktop is-full-tablet">
           <label className="label">Selected Times</label>

@@ -59,7 +59,11 @@ class EventsEdit extends React.Component {
     e.preventDefault();
     const finalTimes = this.state.finalTimes.slice();
     finalTimes.splice(0, finalTimes.length);
-    this.setState({ finalTimes });
+    const selectedTimes = this.state.selectedTimes.slice();
+    selectedTimes.splice(0, selectedTimes.length);
+    let finalTimesChecker = this.state.finalTimesChecker;
+    finalTimesChecker = false;
+    this.setState({ finalTimes, selectedTimes, finalTimesChecker });
   }
 
   handleUpload = (e) => {
@@ -82,7 +86,7 @@ class EventsEdit extends React.Component {
           data: this.state,
           headers: { Authorization: `Bearer ${Auth.getToken()}`}
         })
-          .then(() => this.props.history.push('/events'))
+          .then(() => this.props.history.push(`/events/${this.props.match.params.id}`))
           .catch(err => this.setState({ errors: err.response.data.errors}));
       });
   }
