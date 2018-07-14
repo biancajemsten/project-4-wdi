@@ -24,9 +24,14 @@ class EventsShow extends React.Component{
   checkUserIsOrganizer = () => {
     if(Auth.getPayload().sub === this.state.event.organizer) return true;
   }
+
   //checks the date of the column with the date of the timeSlot
   filterStartTime = (date, i) =>{
-    if(date === moment(this.state.event.timeSlots[i].date).format('ddd, MMM Do')) return true;
+    if(this.state.event.finalTimes.length > 0){
+      if(date === moment(this.state.event.finalTimes[i]).format('ddd, MMM Do')) return true;
+    } else{
+      if(date === moment(this.state.event.timeSlots[i].date).format('ddd, MMM Do')) return true;
+    }
   };
 
   handleVote = (slotId) => {
@@ -110,7 +115,11 @@ class EventsShow extends React.Component{
   }
 
   columnCounter = () => {
-    if(this.state.event.eventDates.length>1) return true;
+    if(this.state.finalTimes.length > 1){
+      if(this.state.event.finalEventDates.length > 1) return true;
+    } else{
+      if(this.state.event.eventDates.length > 1) return true;
+    }
   }
 
   handleDelete = () => {
@@ -136,16 +145,15 @@ class EventsShow extends React.Component{
           <div className="column is-two-thirds-mobile">
             <p className="font-is-light"><strong>Address: </strong>{this.state.event.address}</p>
             <p className="font-is-light"><strong>Description: </strong>{this.state.event.description}</p>
-            {this.state.event.finalTime && <p><strong>Event Time: </strong>{this.state.event.finalTime}</p>}
           </div>
-          <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>
-          <button className="button" onClick={this.handleDelete}>Delete Event</button>
+          {this.checkUserIsOrganizer() && <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>}
+          {this.checkUserIsOrganizer() && <button className="button" onClick={this.handleDelete}>Delete Event</button>}
         </div>
 
         {!this.state.event.finalTimesChecker && <div className="columns is-mobile is-multiline">
 
           {this.state.event.eventDates.map((date, i) =>
-            <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : 'is-full-mobile'}`}>
+            <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
               <div className="columns is-multiline">
                 <div className="column is-full"><h6 className="title is-6">{date}</h6></div>
                 {this.state.event.timeSlots.map((timeSlot, i)=>
@@ -167,17 +175,21 @@ class EventsShow extends React.Component{
           {this.state.finalTimes.length > 0 && <button className="button" onClick={this.handleSubmit}>Confirm Times</button>}
           {!this.checkUserAttending() && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
         </div>
-
-        {this.state.event.finalTimesChecker && <div className="columns is-full is-mobile">
-          <div className="column is-one-third-mobile">
-            <h3 className="title is-3">Selected Times</h3>
-            <div>
-              {this.state.event.timeSlots.map(timeSlot =>
-                this.state.event.finalTimes.includes(timeSlot._id) && <div key={timeSlot._id}>{moment(timeSlot.date).format('ddd, MMM Do, HH:mm')}</div>
-              )}
+        {this.state.event.finalTimesChecker && <div className="columns is-full is-mobile is-multiline">
+          {this.state.event.finalEventDates.map((date, i) =>
+            <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
+              <div className="columns is-multiline">
+                <div className="column is-full"><h6 className="title is-6">{date}</h6></div>
+                {this.state.event.finalTimes.map((time, i)=>
+                  this.filterStartTime(date, i) &&
+                  <div className="timeSlotDiv column is-one-third-desktop is-full-mobile is-full-tablet" key={i}>
+                    <strong>Time: </strong>
+                    <p>{moment(time).format('HH:mm')} - {moment(time).add(this.state.event.length, 'minutes').format('HH:mm')}</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-
+          )}
         </div>}
 
         <h3 className="title is-3">Location</h3>

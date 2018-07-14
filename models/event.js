@@ -51,6 +51,11 @@ eventSchema.virtual('eventDates')
     return Array.from(new Set(this.timeSlots.map(slot => moment(slot.date).format('ddd, MMM Do'))));
   });
 
+eventSchema.virtual('finalEventDates')
+  .get(function(){
+    return Array.from(new Set(this.finalTimes.map(time => moment(time).format('ddd, MMM Do'))));
+  });
+
 
 eventSchema.virtual('finalTimesChecker')
   .get(function() {
