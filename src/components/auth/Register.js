@@ -28,16 +28,12 @@ class AuthRegister extends React.Component{
   }
 
   handleBlur = ({target: { name, value }}) => {
-    if(value.length === 0) {
-      // const errorMessage = 'This field is required';
-      // console.log(this.state.errors);
-      const errors = this.state.errors;
-      const errorMessage = 'This field is required';
-      for(let field in errors) {
-        field = name;
-        errors[field] = errorMessage;
-        return this.setState({errors});
-      }
+    const errorMessage = value.length === 0 ? 'This field is required' : '';
+    const errors = this.state.errors;
+    for(let field in errors) {
+      field = name;
+      errors[field] = errorMessage;
+      return this.setState({errors});
     }
   }
 
@@ -49,24 +45,21 @@ class AuthRegister extends React.Component{
           <label className="username">Username</label>
           <input className="input" name="username" placeholder="Username" onChange={this.handleChange} onBlur={this.handleBlur}/>
           {this.state.errors.username && <small>{this.state.errors.username}</small>}
-          {/* {this.state.errorMessage && <small>{this.state.errorMessage}</small>} */}
         </div>
         <div className="field">
           <label className="email">Email</label>
           <input className="input" name="email" placeholder="Email" onChange={this.handleChange} onBlur={this.handleBlur} />
           {this.state.errors.email && <small>{this.state.errors.email}</small>}
-          {/* {this.state.errorMessage && <small>{this.state.errorMessage}</small>} */}
         </div>
         <div className="field">
           <label className="tel">Telephone Number</label>
           <input className="input" name="tel" placeholder="Telephone Number" onChange={this.handleChange} onBlur={this.handleBlur} />
           {this.state.errors.tel && <small>{this.state.errors.tel}</small>}
-          {/* {this.state.errorMessage && <small>{this.state.errorMessage}</small>} */}
         </div>
         <div className="field">
           <label className="password">Password</label>
           <input className="input" type="password" name="password" placeholder="Password" onChange={this.handleChange} onBlur={this.handleBlur} />
-          {/* {this.state.errorMessage && <small>{this.state.errorMessage}</small>} */}
+          {this.state.errors.password && <small>{this.state.errors.password}</small>}
         </div>
         <div className="field">
           <label className="passwordConfirmation">Password Confirmation</label>
