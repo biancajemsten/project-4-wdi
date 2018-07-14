@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Auth from '../../lib/Auth';
 import GoogleMap from '../common/GoogleMap';
 
@@ -27,7 +27,7 @@ class EventsShow extends React.Component{
   }
 
   //checks the date of the column with the date of the timeSlot
-  filterStartTime = (date, i) =>{
+  filterStartTime = (date, i) => {
     if(this.state.event.finalTimes.length > 0){
       if(date === moment(this.state.event.finalTimes[i]).format('ddd, MMM Do')) return true;
     } else{
@@ -131,12 +131,11 @@ class EventsShow extends React.Component{
   handleDeclineInvitation = () => {
     new Promise(resolve => {
       const currentUser = Auth.getPayload().sub;
-      console.log(currentUser);
       let invitees = this.state.event.invitees.slice();
       invitees = invitees.filter(invitee => {
         return invitee._id !== currentUser;
       });
-      resolve(this.setState({ ...this.state.event, invitees  } ));
+      resolve(this.setState({ ...this.state.event, invitees }));
     })
       .then(() => {
         axios({
@@ -151,7 +150,7 @@ class EventsShow extends React.Component{
   }
 
   columnCounter = () => {
-    if(this.state.finalTimes.length > 1){
+    if(this.state.finalTimes.length > 1) {
       if(this.state.event.finalEventDates.length > 1) return true;
     } else{
       if(this.state.event.eventDates.length > 1) return true;
