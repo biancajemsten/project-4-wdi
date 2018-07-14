@@ -14,12 +14,16 @@ class EventsEdit extends React.Component {
       startDate: moment(),
       selectedTimes: [],
       timeSlots: [],
-      address: ''
+      address: '',
+      errors: {
+        name: ''
+      }
     };
     this.onChange = this.onChange.bind(this);
     this.addTimeSlot = this.addTimeSlot.bind(this);
     this.removeTimeSlot = this.removeTimeSlot.bind(this);
     this.handleClearSelectedTimes = this.handleClearSelectedTimes.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   handleAddressChange = address => {
@@ -68,6 +72,16 @@ class EventsEdit extends React.Component {
 
   handleUpload = (e) => {
     this.setState({ image: e.filesUploaded[0].url });
+  }
+
+  handleBlur = ({target: { name, value }}) => {
+    const errorMessage = value.length === 0 ? 'This field is required' : '';
+    const errors = this.state.errors;
+    for(let field in errors) {
+      field = name;
+      errors[field] = errorMessage;
+      return this.setState({ errors });
+    }
   }
 
   handleSubmit = (e) => {
@@ -133,6 +147,7 @@ class EventsEdit extends React.Component {
         handleAddressChange={this.handleAddressChange}
         handleSelect={this.handleSelect}
         handleChange={this.handleChange}
+        handleBlur={this.handleBlur}
         addTimeSlot={this.addTimeSlot}
         removeTimeSlot={this.removeTimeSlot}
         handleClearSelectedTimes={this.handleClearSelectedTimes}

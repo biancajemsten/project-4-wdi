@@ -15,11 +15,14 @@ class EventsNew extends React.Component {
       selectedTimes: [],
       timeSlots: [],
       address: '',
-      errors: {}
+      errors: {
+        name: ''
+      }
     };
     this.onChange = this.onChange.bind(this);
     this.addTimeSlot = this.addTimeSlot.bind(this);
     this.removeTimeSlot = this.removeTimeSlot.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   handleAddressChange = address => {
@@ -35,6 +38,16 @@ class EventsNew extends React.Component {
 
   handleChange = ({ target: { name, value }}) => {
     this.setState({ [name]: value });
+  }
+
+  handleBlur = ({target: { name, value }}) => {
+    const errorMessage = value.length === 0 ? 'This field is required' : '';
+    const errors = this.state.errors;
+    for(let field in errors) {
+      field = name;
+      errors[field] = errorMessage;
+      return this.setState({ errors });
+    }
   }
 
   onChange(date) {
@@ -104,6 +117,7 @@ class EventsNew extends React.Component {
         handleAddressChange={this.handleAddressChange}
         handleSelect={this.handleSelect}
         handleChange={this.handleChange}
+        handleBlur={this.handleBlur}
         addTimeSlot={this.addTimeSlot}
         removeTimeSlot={this.removeTimeSlot}
         handleSubmit={this.handleSubmit}

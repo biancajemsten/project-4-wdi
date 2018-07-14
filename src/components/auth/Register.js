@@ -48,7 +48,6 @@ class AuthRegister extends React.Component{
   }
 
   render() {
-    console.log(this.state.errors);
     return(
       <form onSubmit={this.handleSubmit}>
         <div className="field">

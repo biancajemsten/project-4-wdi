@@ -6,13 +6,13 @@ import PlacesAutocomplete from 'react-places-autocomplete';
 import Select from 'react-select';
 import moment from 'moment';
 
-const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, addTimeSlot, removeTimeSlot, handleClearSelectedTimes, handleUpload, handleSubmit, handleChange, handleSelectChange, data }) => {
+const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, handleBlur, addTimeSlot, removeTimeSlot, handleClearSelectedTimes, handleUpload, handleSubmit, handleChange, handleSelectChange, data }) => {
   return(
     <form onSubmit={handleSubmit}>
       <div className="columns is-mobile is-multiline">
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
           <label className="label">Event Name</label>
-          <input className="input" name="name" onChange={handleChange} value={data.name || ''} />
+          <input className="input" name="name" onChange={handleChange} onBlur={handleBlur} value={data.name || ''} />
           {data.errors.name && <small>{data.errors.name}</small>}
         </div>
 
@@ -52,7 +52,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
 
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
           <label className="label">Event Length</label>
-          <input className="input" name="length" placeholder="Enter the event length in minutes please" onChange={handleChange} value={data.length || ''} />
+          <input className="input" name="length" placeholder="Enter the event length in minutes please" onChange={handleChange} onBlur={handleBlur} value={data.length || ''} />
           {data.errors.length && <small>{data.errors.length}</small>}
         </div>
 
@@ -118,7 +118,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           <label className="label">Set Privacy</label>
           <div className="control">
             <div className="select is-fullwidth">
-              <select name="privacy" onChange={handleChange} value={data.privacy || ''}>
+              <select name="privacy" onChange={handleChange} onBlur={handleBlur} value={data.privacy || ''}>
                 <option value="" disabled>Set event privacy</option>
                 <option>Private</option>
                 <option>Public</option>
