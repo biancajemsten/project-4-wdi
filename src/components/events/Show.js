@@ -69,16 +69,16 @@ class EventsShow extends React.Component{
     return this.state.finalTimes.includes(date);
   }
 
-  handleVoteSubmit = () =>{
-    new Promise( resolve =>{
-      const timeSlots = this.state.event.timeSlots.map(timeSlot =>{
+  handleVoteSubmit = () => {
+    new Promise( resolve => {
+      const timeSlots = this.state.event.timeSlots.map(timeSlot => {
         this.state.selectedTimeSlots.forEach(id => {
           if(timeSlot._id === id) timeSlot.votes.push(Auth.getPayload().sub);
         });
       });
       const attendees = this.state.event.attendees;
       attendees.push(Auth.getPayload().sub);
-      this.setState({attendees});
+      this.setState({ attendees });
       resolve(this.setState({ timeSlots }));
     })
       .then(() => {
@@ -105,7 +105,6 @@ class EventsShow extends React.Component{
           headers: { Authorization: `Bearer ${Auth.getToken()}`}
         })
           .then(res => this.setState({ event: res.data }))
-          .then(() => console.log('put axios returned state===>', this.state) )
           .catch(err => console.log(err));
       });
   }
@@ -127,6 +126,27 @@ class EventsShow extends React.Component{
       }
     });
     return isInvitee;
+  }
+
+  handleDeclineInvitation = () => {
+    new Promise(resolve => {
+      const currentUser = Auth.getPayload().sub;
+      let invitees = this.state.event.invitees.slice();
+      invitees = invitees.filter(invitee => {
+        return invitee._id !== currentUser;
+      });
+      resolve(this.setState({ ...this.state.event, invitees  } ));
+    })
+      .then(() => {
+        axios({
+          method: 'PUT',
+          url: `/api/events/${this.props.match.params.id}`,
+          data: this.state,
+          headers: { Authorization: `Bearer ${Auth.getToken()}`}
+        })
+          .then(res => this.setState({ event: res.data }))
+          .catch(err => console.log(err));
+      });
   }
 
   columnCounter = () => {
