@@ -29,10 +29,10 @@ class AuthRegister extends React.Component{
 
   handleBlur = ({target: { name, value }}) => {
     let errorMessage;
-    if(name !== 'passwordConfirmation') {
-      errorMessage = value.length === 0 ? 'This field is required' : '';
-    } else {
+    if(name === 'passwordConfirmation') {
       errorMessage = value !== this.state.password ? 'Passwords do not match' : '';
+    } else {
+      errorMessage = value.length === 0 ? 'This field is required' : '';
     }
     const errors = this.state.errors;
     for(let field in errors) {
