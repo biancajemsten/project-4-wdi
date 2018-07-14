@@ -67,8 +67,8 @@ class AuthRegister extends React.Component{
           {this.state.errors.password && <small>{this.state.errors.password}</small>}
         </div>
         <div className="field">
-          <label className="passwordConfirmation">Password Confirmation</label>
-          <input className="input" type="password" name="passwordConfirmation" placeholder="Password Confirmation" onChange={this.handleChange} onBlur={this.handleBlur}/>
+          <label className="passwordConfirmation">Confirm Password</label>
+          <input className="input" type="password" name="passwordConfirmation" placeholder="Confirm Password" onChange={this.handleChange} onBlur={this.handleBlur}/>
           {this.state.errors.passwordConfirmation && <small>{this.state.errors.passwordConfirmation}</small>}
         </div>
 
