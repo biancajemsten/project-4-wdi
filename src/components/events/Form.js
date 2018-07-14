@@ -35,7 +35,7 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
             />
           </div>
           <button className="button addTimeSlot" onClick={addTimeSlot}>Add timeslot</button>
-          {data.selectedTimes && data.selectedTimes.map(time =>
+          {data.selectedTimes.map(time =>
             <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time || ''} onClick={removeTimeSlot} className="delete"></button></span>
           )}
         </div>}

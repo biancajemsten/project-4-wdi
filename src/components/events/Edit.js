@@ -20,7 +20,6 @@ class EventsEdit extends React.Component {
     this.addTimeSlot = this.addTimeSlot.bind(this);
     this.removeTimeSlot = this.removeTimeSlot.bind(this);
     this.handleClearSelectedTimes = this.handleClearSelectedTimes.bind(this);
-    this.clearTimesArray = this.clearTimesArray.bind(this);
   }
 
   handleAddressChange = address => {
@@ -58,16 +57,13 @@ class EventsEdit extends React.Component {
 
   handleClearSelectedTimes(e) {
     e.preventDefault();
-    const finalTimes = this.clearTimesArray(this.state.finalTimes);
-    const selectedTimes = this.clearTimesArray(this.state.selectedTimes);
+    const finalTimes = this.state.finalTimes.slice();
+    finalTimes.splice(0, finalTimes.length);
+    const selectedTimes = this.state.selectedTimes.slice();
+    selectedTimes.splice(0, selectedTimes.length);
     let finalTimesChecker = this.state.finalTimesChecker;
     finalTimesChecker = false;
     this.setState({ finalTimes, selectedTimes, finalTimesChecker });
-  }
-
-  clearTimesArray = (arrayToClear) => {
-    const clearedTimes = arrayToClear.slice();
-    clearedTimes.splice(0, clearedTimes.length);
   }
 
   handleUpload = (e) => {
