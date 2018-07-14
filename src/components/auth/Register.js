@@ -42,16 +42,6 @@ class AuthRegister extends React.Component{
     }
   }
 
-  // checkPasswordsMatch = ({target: { name, value}}) => {
-  //   const errors = this.state.errors;
-  //   const
-  //   for(let field in errors) {
-  //     field = name;
-  //     errors[field] = errorMessage;
-  //     return this.setState({ errors });
-  //   }
-  // }
-
   render() {
     return(
       <form onSubmit={this.handleSubmit}>
