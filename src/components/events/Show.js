@@ -150,7 +150,7 @@ class EventsShow extends React.Component{
   }
 
   columnCounter = () => {
-    if(this.state.finalTimes.length > 1) {
+    if(this.state.event.finalTimes.length > 0) {
       if(this.state.event.finalEventDates.length > 1) return true;
     } else{
       if(this.state.event.eventDates.length > 1) return true;
