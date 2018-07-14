@@ -1,0 +1,42 @@
+.eventTable{
+background-color: $light;
+.columns{
+  margin: 0;
+  .eventTableHeader{
+    h6{
+      color: $dark-blue;
+      margin: 0;
+    }
+    .emptyTableItem{
+      flex-basis: 90px , auto;
+    }
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border-bottom: 1px solid $dark-blue;
+    align-items: center;
+  }
+  .eventTableContent{
+    padding: 0;
+    .columns{
+      margin:0;
+    }
+    .columns{
+      &:hover{
+        border: rgb(224,224,224) 1px solid;
+        box-sizing: border;
+      }
+
+    }
+  }
+}
+p{
+  color: $dark-blue;
+  strong{
+    color: $dark-blue;
+  }
+  span{
+    color: $dark-blue;
+  }
+}
+}
