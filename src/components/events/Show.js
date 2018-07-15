@@ -18,12 +18,13 @@ class EventsShow extends React.Component{
   componentDidMount(){
     axios.get(`/api/events/${this.props.match.params.id}`)
       .then(res => this.setState({event: res.data}))
+      .then(() => console.log(this.state))
       .catch(err => this.setState({error: err.message}));
   }
 
   checkUserIsOrganizer = () => {
     if(!Auth.getPayload()) return false;
-    if(Auth.getPayload().sub === this.state.event.organizer) return true;
+    if(Auth.getPayload().sub === this.state.event.organizer._id) return true;
   }
 
   //checks the date of the column with the date of the timeSlot
