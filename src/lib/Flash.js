@@ -1,4 +1,4 @@
-class Flash{
+class Flash {
 
   _messages = null;
 

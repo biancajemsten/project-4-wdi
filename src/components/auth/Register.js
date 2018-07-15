@@ -32,6 +32,9 @@ class AuthRegister extends React.Component{
     let errorMessage;
     if(name === 'passwordConfirmation') {
       errorMessage = value !== this.state.password ? 'Passwords do not match' : '';
+    } else if(name === 'email') {
+      const re = new RegExp(/.+@.+\..+/);
+      errorMessage = re.test(value) ? '' : 'Please enter a valid email address';
     } else {
       errorMessage = value.length === 0 ? 'This field is required' : '';
     }
@@ -67,8 +70,8 @@ class AuthRegister extends React.Component{
           {this.state.errors.password && <small>{this.state.errors.password}</small>}
         </div>
         <div className="field">
-          <label className="passwordConfirmation">Password Confirmation</label>
-          <input className="input" type="password" name="passwordConfirmation" placeholder="Password Confirmation" onChange={this.handleChange} onBlur={this.handleBlur}/>
+          <label className="passwordConfirmation">Confirm Password</label>
+          <input className="input" type="password" name="passwordConfirmation" placeholder="Confirm Password" onChange={this.handleChange} onBlur={this.handleBlur}/>
           {this.state.errors.passwordConfirmation && <small>{this.state.errors.passwordConfirmation}</small>}
         </div>
 
