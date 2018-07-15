@@ -164,7 +164,7 @@ class EventsShow extends React.Component{
       url: `/api/events/${this.props.match.params.id}`,
       headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
-      .then(() => this.props.history.push('/events'));
+      .then(() => this.props.history.push(`/users/${Auth.getPayload().sub}`));
   }
 
   render(){
@@ -214,7 +214,7 @@ class EventsShow extends React.Component{
         </div>}
         <div className="buttonDiv">
           {!this.state.event.finalTimesChecker && this.state.finalTimes.length > 0 && <button className="button" onClick={this.handleSubmit}>Confirm Times</button>}
-          {!this.checkUserAttending() && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
+          {!this.checkUserAttending() && !this.state.event.finalTimesChecker && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
         </div>
         {this.state.event.finalTimesChecker && <h2 className="title is-2">Selected Times</h2>}
         {this.state.event.finalTimesChecker && <div className="columns is-full is-mobile is-multiline">

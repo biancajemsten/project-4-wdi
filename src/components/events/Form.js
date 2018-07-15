@@ -127,9 +127,9 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, han
 
         <div className="field column filePicker is-half-mobile is-one-third-desktop is-one-third-tablet">
           <label className="label">Upload an image</label>
-          <figure className="image is-90x90">
+          {data.image && <figure className="image is-90x90">
             <img src={data.image} alt="user upload"/>
-          </figure>
+          </figure>}
           <ReactFilestack apikey='A1P1k3n9REqxOW2Z9xz22z' name="image" onSuccess={handleUpload} value={data.image || ''} />
         </div>
       </div>
