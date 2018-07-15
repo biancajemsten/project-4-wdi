@@ -23,7 +23,7 @@ class Navbar extends React.Component {
       <nav className="navbar" role="navigation" aria-label="main-navigation">
         <div className="navbar-brand">
           <Link to="/" className="navbar-item">
-            <img src="https://images-eu.ssl-images-amazon.com/images/I/51c%2B4XiU5vL._SL500_AC_SS350_.jpg" height="50" />
+            <img src="../../../assets/images/checklogo.png" height="50" />
           </Link>
 
           <a

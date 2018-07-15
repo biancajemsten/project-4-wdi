@@ -1,0 +1,22 @@
+nav.navbar{
+  background-color: $dark-blue;
+  border-bottom: 2px solid $red;
+  .navbar-burger{
+    color: $light;
+  }
+  .navbar-item{
+    color: $light;
+    &:hover{
+      background-color: $red;
+    }
+  }
+  div.navbar-brand a.navbar-item{
+    &:hover{
+      background-color: $dark-blue;
+    }
+  }
+  .navbar-menu.is-active{
+    background-color: $dark-blue; 
+  }
+
+}
