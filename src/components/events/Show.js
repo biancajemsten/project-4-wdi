@@ -164,7 +164,7 @@ class EventsShow extends React.Component{
       url: `/api/events/${this.props.match.params.id}`,
       headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
-      .then(() => this.props.history.push('/events'));
+      .then(() => this.props.history.push(`/users/${Auth.getPayload().sub}`));
   }
 
   render(){
