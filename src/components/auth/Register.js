@@ -32,6 +32,9 @@ class AuthRegister extends React.Component{
     let errorMessage;
     if(name === 'passwordConfirmation') {
       errorMessage = value !== this.state.password ? 'Passwords do not match' : '';
+    } else if(name === 'email') {
+      const re = new RegExp(/.+@.+\..+/);
+      errorMessage = re.test(value) ? '' : 'Please enter a valid email address';
     } else {
       errorMessage = value.length === 0 ? 'This field is required' : '';
     }
