@@ -6,13 +6,14 @@ import PlacesAutocomplete from 'react-places-autocomplete';
 import Select from 'react-select';
 import moment from 'moment';
 
-const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, addTimeSlot, removeTimeSlot, handleClearSelectedTimes, handleUpload, handleSubmit, handleChange, handleSelectChange, data }) => {
+const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, handleBlur, addTimeSlot, removeTimeSlot, handleClearSelectedTimes, handleUpload, handleSubmit, handleChange, handleSelectChange, data }) => {
   return(
     <form onSubmit={handleSubmit}>
       <div className="columns is-mobile is-multiline">
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
           <label className="label">Event Name</label>
-          <input className="input" name="name" onChange={handleChange} value={data.name || ''} />
+          <input className="input" name="name" onChange={handleChange} onBlur={handleBlur} value={data.name || ''} />
+          {data.errors.name && <small>{data.errors.name}</small>}
         </div>
 
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
@@ -35,9 +36,12 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
             />
           </div>
           <button className="button addTimeSlot" onClick={addTimeSlot}>Add timeslot</button>
-          {data.selectedTimes.map(time =>
-            <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time || ''} onClick={removeTimeSlot} className="delete"></button></span>
-          )}
+          <div className="tagContainer">
+            {data.selectedTimes.map(time =>
+              <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time || ''} onClick={removeTimeSlot} className="delete"></button></span>
+            )}
+            {/* {data.errors.date && <small>{data.errors.date}</small>} */}
+          </div>
         </div>}
 
         {data.finalTimesChecker && <div className="field column is-full-mobile is-full-desktop is-full-tablet">
@@ -50,7 +54,8 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
 
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
           <label className="label">Event Length</label>
-          <input className="input" name="length" placeholder="Enter the event length in minutes please" onChange={handleChange} value={data.length || ''} />
+          <input className="input" name="length" placeholder="Enter the event length in minutes please" onChange={handleChange} onBlur={handleBlur} value={data.length || ''} />
+          {data.errors.length && <small>{data.errors.length}</small>}
         </div>
 
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
@@ -95,11 +100,6 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           </PlacesAutocomplete>
         </div>
 
-        <div className="field column filePicker is-half-mobile is-half-desktop is-half-tablet">
-          <label className="label">Upload an image</label>
-          <ReactFilestack apikey='A1P1k3n9REqxOW2Z9xz22z' name="image" onSuccess={handleUpload} value={data.image || ''} />
-        </div>
-
         <div className="field column is-half-mobile is-half-desktop is-half-tablet">
           <label className="label">Invitees</label>
           <Select
@@ -111,17 +111,26 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, add
           />
         </div>
 
-        <div className="field column is-full-mobile is-full-desktop is-full-tablet">
+        <div className="field column is-half-mobile is-half-desktop is-half-tablet">
           <label className="label">Set Privacy</label>
           <div className="control">
             <div className="select is-fullwidth">
-              <select name="privacy" onChange={handleChange} value={data.privacy || ''}>
+              <select name="privacy" onChange={handleChange} onBlur={handleBlur} value={data.privacy || ''}>
                 <option value="" disabled>Set event privacy</option>
                 <option>Private</option>
                 <option>Public</option>
               </select>
             </div>
           </div>
+          {data.errors.privacy && <small>{data.errors.privacy}</small>}
+        </div>
+
+        <div className="field column filePicker is-half-mobile is-one-third-desktop is-one-third-tablet">
+          <label className="label">Upload an image</label>
+          <figure className="image is-90x90">
+            <img src={data.image} alt="user upload"/>
+          </figure>
+          <ReactFilestack apikey='A1P1k3n9REqxOW2Z9xz22z' name="image" onSuccess={handleUpload} value={data.image || ''} />
         </div>
       </div>
       <button className="button">Submit</button>

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 
 const timeSlotSchema = new mongoose.Schema({
-  date: {type: Date, required: true},
+  date: { type: Date },
   votes: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
 });
 
@@ -31,13 +31,13 @@ timeSlotSchema.virtual('endTime')
 timeSlotSchema.set('toJSON', { getters: true, virtuals: true });
 
 const eventSchema = new mongoose.Schema({
-  name: {type: String, required: true},
+  name: {type: String, required: 'Event name is required'},
   description: String,
   timeSlots: [timeSlotSchema],
-  length: {type: Number, required: true},
+  length: {type: Number, required: 'Event length is required'},
   address: String,
   location: { lat: Number, lng: Number },
-  privacy: { type: String, enum: ['Private', 'Public'] },
+  privacy: { type: String, enum: ['Private', 'Public'], required: 'Privacy level is required' },
   attendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   invitees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
