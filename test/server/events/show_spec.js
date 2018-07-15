@@ -7,17 +7,20 @@ const userData = [
     username: 'bianca',
     email: 'bianca@test.com',
     password: 'pass',
-    passwordConfirmation: 'pass'
+    passwordConfirmation: 'pass',
+    tel: '+46702549294'
   },{
     username: 'richard',
     email: 'richard@test.com',
     password: 'pass',
-    passwordConfirmation: 'pass'
+    passwordConfirmation: 'pass',
+    tel: '+447762948257'
   },{
     username: 'martin',
     email: 'martin@test.com',
     password: 'pass',
-    passwordConfirmation: 'pass'
+    passwordConfirmation: 'pass',
+    tel: '+447377103864'
   }
 ];
 
@@ -25,21 +28,20 @@ const eventData = {
   name: 'Movie Night',
   description: 'Watching films',
   timeSlots: [{
-    date: '2018-07-25',
-    startTime: '2018-07-25',
-    votes: [userData[1]]
+    date: '2018-07-11T12:30:00',
+    votes: []
   }, {
-    date: '2018-07-26',
-    startTime: '2018-07-26',
-    votes: [userData[0], userData[2]]
+    date: '2018-07-13T15:15:00',
+    votes: []
   }],
   length: 120,
   address: '4 St Olaf\'s Road',
   location: { lat: 51.4798873, lng: -0.2107483 },
-  private: true,
-  attendees: [userData[1], userData[0], userData[2]],
-  invitees: [ 'biancajemsten@gmail.com' ],
-  image: 'http://www.thecumberlandarms.co.uk/wp/wp-content/uploads/2015/04/Cumby-Film-Night-logo-2016-850px-850x478.jpg'
+  privacy: 'Private',
+  invitees: [userData[0], userData[2]],
+  attendees: [ userData[1] ],
+  image: 'http://www.thecumberlandarms.co.uk/wp/wp-content/uploads/2015/04/Cumby-Film-Night-logo-2016-850px-850x478.jpg',
+  organizer: [userData[1]._id]
 };
 
 let eventId;
@@ -90,9 +92,8 @@ describe('GET /events/:id', ()=>{
         expect(res.body.length).to.eq(eventData.length);
         expect(res.body.address).to.eq(eventData.address);
         expect(res.body.location).to.deep.eq(eventData.location);
-        expect(res.body.private).to.eq(eventData.private);
-        expect(res.body.invitees).to.deep.eq(eventData.invitees);
-        expect(res.body.image).to.eq(eventData.image);
+        expect(res.body.privacy).to.eq(eventData.privacy);
+        expect(res.body.image).to.deep.eq(eventData.image);
         done();
       });
   });

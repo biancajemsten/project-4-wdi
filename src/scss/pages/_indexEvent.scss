@@ -1,5 +1,5 @@
 .indexTable{
-  border-radius: 5px; 
+  border-radius: 5px;
   margin: 10px 0 0 0;
   color: $dark-blue;
   background-color: $light;
@@ -32,38 +32,36 @@
     p{
       color: $dark-blue;
     }
-    .leftItem{
-      border-left: 1px solid grey;
-    }
-    .rightItem{
+    .middleItem{
       border-right: 1px solid grey;
+      border-left: 1px solid grey;
     }
     .column.columns{
       padding: 0px;
-      border-bottom: 1px solid $dark-blue
-      :hover{
-        background-color: #DCD4C8;
+      border-bottom: 1px solid $dark-blue;
+      &:hover{
+        background-color: $table-hover;
       }
     }
   }
 }
 
 
-@media screen and (max-width: 768px){
-  .indexTable{
-    .indexList{
-      p{
-        font-size: 0.75rem;
-      }
-    }
-  }
-}
-@media screen and (max-width: 600px){
-  .indexTable{
-    .indexList{
-      p{
-        font-size: 0.60rem;
-      }
-    }
-  }
-}
+// @media screen and (max-width: 768px){
+//   .indexTable{
+//     .indexList{
+//       p{
+//         font-size: 0.75rem;
+//       }
+//     }
+//   }
+// }
+// @media screen and (max-width: 600px){
+//   .indexTable{
+//     .indexList{
+//       p{
+//         font-size: 0.60rem;
+//       }
+//     }
+//   }
+// }

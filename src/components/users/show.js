@@ -57,7 +57,6 @@ class UsersShow extends React.Component {
                           </div>
                         </div>
                       </Link>
-                      <Link to={`/events/${event.id}/edit`} className="button">Edit Event</Link>
                     </div>
                   )}
                 </div>
