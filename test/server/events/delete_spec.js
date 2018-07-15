@@ -9,17 +9,26 @@ const userData =
     username: 'test',
     email: 'test@test.com',
     password: 'pass',
-    passwordConfirmation: 'pass'
+    passwordConfirmation: 'pass',
+    tel: '+447377103864'
   };
 
 const eventData = {
   name: 'Movie Night',
   description: 'Watching films',
+  timeSlots: [{
+    date: '2018-07-11T12:30:00',
+    votes: []
+  }, {
+    date: '2018-07-13T15:15:00',
+    votes: []
+  }],
   length: 120,
   address: '4 St Olaf\'s Road',
   location: { lat: 51.4798873, lng: -0.2107483 },
-  private: true,
-  invitees: [ 'biancajemsten@gmail.com' ],
+  privacy: 'Private',
+  invitees: [userData[0], userData[2]],
+  attendees: [ userData[1] ],
   image: 'http://www.thecumberlandarms.co.uk/wp/wp-content/uploads/2015/04/Cumby-Film-Night-logo-2016-850px-850x478.jpg'
 };
 

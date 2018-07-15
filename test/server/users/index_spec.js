@@ -6,17 +6,20 @@ const userData = [
     username: 'bianca',
     email: 'bianca@test.com',
     password: 'pass',
-    passwordConfirmation: 'pass'
+    passwordConfirmation: 'pass',
+    tel: '+46702549294'
   },{
     username: 'richard',
     email: 'richard@test.com',
     password: 'pass',
-    passwordConfirmation: 'pass'
+    passwordConfirmation: 'pass',
+    tel: '+447762948257'
   },{
     username: 'martin',
     email: 'martin@test.com',
     password: 'pass',
-    passwordConfirmation: 'pass'
+    passwordConfirmation: 'pass',
+    tel: '+447377103864'
   }
 ];
 

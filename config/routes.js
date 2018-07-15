@@ -20,6 +20,6 @@ router.get('/users', users.index);
 
 router.route('/users/:id')
   .get(users.show)
-  .put(users.update);
+  .put(secureRoute, users.update);
 
 module.exports = router;
