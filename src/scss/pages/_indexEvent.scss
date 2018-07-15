@@ -38,9 +38,9 @@
     }
     .column.columns{
       padding: 0px;
-      border-bottom: 1px solid $dark-blue
-      :hover{
-        background-color: #DCD4C8;
+      border-bottom: 1px solid $dark-blue;
+      &:hover{
+        background-color: $table-hover;
       }
     }
   }
