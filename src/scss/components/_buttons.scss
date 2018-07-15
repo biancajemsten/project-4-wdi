@@ -9,7 +9,7 @@
       }
     }
   }
-  div.field.filePicker button{
+  div.field.filePicker button, button.deleteEvent{
     background-color: $red;
     color: $light;
     border-color: $red;
@@ -24,7 +24,15 @@ form{
       border-color: $red;
       &:hover{
         border: 1px $light outset;
-        color: $light; 
+        color: $light;
       }
   }
+}
+
+
+div.columns.buttonContainer{
+  margin-top: 15px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-around;
 }

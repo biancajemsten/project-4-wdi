@@ -174,17 +174,19 @@ class EventsShow extends React.Component{
         <h2 className="title is-2 font-is-light">{this.state.event.name}</h2>
         <hr/>
         <div className="columns is-multiline is-mobile">
-          <div className="column is-two-fifths-mobile">
+          <div className="column is-two-fifths">
             <figure className="image is-138x138">
               <img src={this.state.event.image}/>
             </figure>
           </div>
-          <div className="column is-three-fifths-mobile">
+          <div className="column is-three-fifths">
             <p className="font-is-light"><strong>Address: </strong>{this.state.event.address}</p>
             <p className="font-is-light"><strong>Description: </strong>{this.state.event.description}</p>
           </div>
+        </div>
+        <div className="columns buttonContainer">
           {this.checkUserIsOrganizer() && <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>}
-          {this.checkUserIsOrganizer() && <button className="button" onClick={this.handleDelete}>Delete Event</button>}
+          {this.checkUserIsOrganizer() && <button className="button deleteEvent" onClick={this.handleDelete}>Delete Event</button>}
           {this.checkUserIsInvitee() && !this.checkUserIsOrganizer() && Auth.isAuthenticated() && <button className="button" onClick={this.handleDeclineInvitation}>Decline Invitation</button>}
         </div>
 
