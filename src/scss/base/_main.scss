@@ -21,7 +21,7 @@ input.input, textarea.input{
   }
   &:focus{
     outline: none;
-    box-shadow: none; 
+    box-shadow: none;
     border-bottom: 1px dashed $red;
   }
 }
@@ -40,6 +40,14 @@ hr{
 .panda{
   position:absolute;
   animation: run 5s;
+}
+
+.loadContainer{
+  display: flex;
+  flex-direction: column;
+  h2{
+    text-align: center; 
+  }
 }
 
 @keyframes run {
