@@ -59,15 +59,22 @@ class EventsEdit extends React.Component {
     this.setState({ selectedTimes });
   }
 
+  // clearArray = (array) => {
+  //   const arrayToClear = array.slice();
+  //   return arrayToClear.splice(0, arrayToClear.length);
+  // }
+
   handleClearSelectedTimes(e) {
     e.preventDefault();
     const finalTimes = this.state.finalTimes.slice();
     finalTimes.splice(0, finalTimes.length);
     const selectedTimes = this.state.selectedTimes.slice();
     selectedTimes.splice(0, selectedTimes.length);
+    const attendees = this.state.attendees.slice();
+    attendees.splice(0, attendees.length);
     let finalTimesChecker = this.state.finalTimesChecker;
     finalTimesChecker = false;
-    this.setState({ finalTimes, selectedTimes, finalTimesChecker });
+    this.setState({ finalTimes, selectedTimes, attendees, finalTimesChecker });
   }
 
   handleUpload = (e) => {
