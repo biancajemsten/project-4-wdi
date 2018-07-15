@@ -15,4 +15,8 @@ nav.navbar{
       background-color: $dark-blue;
     }
   }
+  .navbar-menu.is-active{
+    background-color: $dark-blue; 
+  }
+
 }
