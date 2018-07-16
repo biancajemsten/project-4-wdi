@@ -1,17 +1,18 @@
 import React from 'react';
 import axios from 'axios';
-import moment from 'moment';
-import { Link } from 'react-router-dom';
 import Auth from '../../lib/Auth';
-import GoogleMap from '../common/GoogleMap';
+import PendingRequests from './PendingRequests';
+import SelectedTimes from './SelectedTimes';
+import Votes from './Votes';
+import Location from './Location';
+import Hero from './Hero';
 
 class EventsShow extends React.Component{
 
   constructor(){
     super();
     this.state = {
-      selectedTimeSlots: [],
-      finalTimes: []
+      selectedTimeSlots: []
     };
   }
 
@@ -21,43 +22,34 @@ class EventsShow extends React.Component{
       .catch(err => this.setState({error: err.message}));
   }
 
-  checkUserIsOrganizer = () => {
-    if(!Auth.getPayload()) return false;
-    if(Auth.getPayload().sub === this.state.event.organizer._id) return true;
-  }
+  // allows selecting the final times (ADMIN)
+  handlePickDate = (date) => {
+    let finalTimes;
+    const index = this.state.event.finalTimes.indexOf(date);
 
-  checkUserAttending = () => {
-    if(!Auth.getPayload()) return false;
-    const currentUser = Auth.getPayload().sub;
-    if(this.state.event.attendees.includes(currentUser)) return true;
-  }
-
-  checkUserIsInvitee = () => {
-    if(!Auth.getPayload()) return false;
-    const currentUser = Auth.getPayload().sub;
-    const invitees = this.state.event.invitees;
-    let isInvitee;
-    invitees.forEach(invitee => {
-      if(invitee._id === currentUser) {
-        isInvitee = true;
-      }
-    });
-    return isInvitee;
-  }
-
-  pendingRequestToJoin = () => {
-    if(this.state.event.joinRequests.includes(Auth.getPayload().sub)) return true;
-  }
-
-  //checks the date of the column with the date of the timeSlot
-  filterStartTime = (date, i) => {
-    if(this.state.event.finalTimes.length > 0){
-      if(date === moment(this.state.event.finalTimes[i]).format('ddd, MMM Do')) return true;
-    } else{
-      if(date === moment(this.state.event.timeSlots[i].date).format('ddd, MMM Do')) return true;
+    if(index === -1) {
+      finalTimes = this.state.event.finalTimes.concat(date);
+    } else {
+      finalTimes = this.state.event.finalTimes.slice();
+      finalTimes.splice(index, 1);
     }
-  };
+    const event = { ...this.state.event, finalTimes };
+    this.setState({ event });
+  }
 
+  // persist the final times (ADMIN)
+  handleConfirmFinalTimes = () => {
+    axios({
+      method: 'PUT',
+      url: `/api/events/${this.props.match.params.id}`,
+      data: this.state.event,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
+    })
+      .then(res => this.setState({ event: res.data }))
+      .catch(err => console.log(err));
+  }
+
+  // allows a user to vote on a timeslot
   handleVote = (slotId) => {
     let selectedTimeSlots;
     const index = this.state.selectedTimeSlots.indexOf(slotId);
@@ -71,156 +63,88 @@ class EventsShow extends React.Component{
     this.setState({ selectedTimeSlots });
   }
 
-  isVoted = (slotId) => {
-    return this.state.selectedTimeSlots.includes(slotId);
-  }
-
-  handlePickDate = (date) => {
-    let finalTimes;
-    const index = this.state.finalTimes.indexOf(date);
-
-    if(index === -1) {
-      finalTimes = this.state.finalTimes.concat(date);
-    } else {
-      finalTimes = this.state.finalTimes.slice();
-      finalTimes.splice(index, 1);
-    }
-    this.setState({ finalTimes });
-  }
-
-  isPicked = (date) => {
-    return this.state.finalTimes.includes(date);
-  }
-
+  // allows a user to submit their vote
   handleVoteSubmit = () => {
-    new Promise( resolve => {
-      const timeSlots = this.state.event.timeSlots.map(timeSlot => {
-        this.state.selectedTimeSlots.forEach(id => {
-          if(timeSlot._id === id) timeSlot.votes.push(Auth.getPayload().sub);
-        });
-      });
-      const attendees = this.state.event.attendees;
-      attendees.push(Auth.getPayload().sub);
-      this.setState({ attendees });
-      resolve(this.setState({ timeSlots }));
+    const timeSlots = this.state.event.timeSlots.map(timeSlot => {
+      const slot = { ...timeSlot };
+      if(this.state.selectedTimeSlots.includes(slot._id)) slot.votes.push(Auth.getPayload().sub);
+      return slot;
+    });
+    const attendees = this.state.event.attendees.concat(Auth.getPayload().sub);
+    const event = { ...this.state.event, attendees, timeSlots };
+
+    axios({
+      method: 'PUT',
+      url: `/api/events/${this.props.match.params.id}`,
+      data: event,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
-      .then(() => {
-        axios({
-          method: 'PUT',
-          url: `/api/events/${this.props.match.params.id}`,
-          data: this.state.event,
-          headers: { Authorization: `Bearer ${Auth.getToken()}`}
-        })
-          .catch(err => console.log(err));
-      });
+      .then(res => this.setState({ event: res.data }))
+      .catch(err => console.log(err));
   }
 
-  handleSubmit = () => {
-    new Promise(resolve => {
-      const finalTimes = this.state.finalTimes;
-      resolve(this.setState({ ...this.state.event, finalTimes } ));
-    })
-      .then(() => {
-        axios({
-          method: 'PUT',
-          url: `/api/events/${this.props.match.params.id}`,
-          data: this.state,
-          headers: { Authorization: `Bearer ${Auth.getToken()}`}
-        })
-          .then(res => this.setState({ event: res.data }))
-          .catch(err => console.log(err));
-      });
-  }
-
-
-
+  // allows a user to decline an event that they are already attending
   handleDeclineInvitation = () => {
-    new Promise(resolve => {
-      const currentUser = Auth.getPayload().sub;
-      let invitees = this.state.event.invitees.slice();
-      invitees = invitees.filter(invitee => {
-        return invitee._id !== currentUser;
-      });
-      resolve(this.setState({ ...this.state.event, invitees }));
+    const invitees = this.state.event.invitees.filter(invitee => invitee._id !== Auth.getPayload().sub);
+    const event = { ...this.state.event, invitees };
+    axios({
+      method: 'PUT',
+      url: `/api/events/${this.props.match.params.id}`,
+      data: event,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
-      .then(() => {
-        axios({
-          method: 'PUT',
-          url: `/api/events/${this.props.match.params.id}`,
-          data: this.state,
-          headers: { Authorization: `Bearer ${Auth.getToken()}`}
-        })
-          .then(() => this.props.history.push(`/users/${Auth.getPayload().sub}`))
-          .catch(err => console.log(err));
-      });
+      .then(() => this.props.history.push(`/users/${Auth.getPayload().sub}`))
+      .catch(err => console.log(err));
   }
 
-  columnCounter = () => {
-    if(this.state.event.finalTimes.length > 0) {
-      if(this.state.event.finalEventDates.length > 1) return true;
-    } else{
-      if(this.state.event.eventDates.length > 1) return true;
-    }
-  }
+  // allows a user to request joining this event
+  handleJoinRequest = () => {
+    const joinRequests = this.state.event.joinRequests.concat(Auth.getPayload().sub);
+    const event = { ...this.state.event, joinRequests };
 
-  submitRequestToJoin = () => {
-    new Promise(resolve => {
-      const user = Auth.getPayload().sub;
-      const joinRequests = this.state.event.joinRequests.slice();
-      joinRequests.push(user);
-      resolve(this.setState({...this.state.event, joinRequests}));
+    axios({
+      method: 'PUT',
+      url: `/api/events/${this.props.match.params.id}`,
+      data: event,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
-      .then(() => {
-        axios({
-          method: 'PUT',
-          url: `/api/events/${this.props.match.params.id}`,
-          data: this.state,
-          headers: { Authorization: `Bearer ${Auth.getToken()}`}
-        })
-          .then(res => this.setState({ event: res.data }))
-          .catch(err => console.log(err));
-      });
+      .then(res => this.setState({ event: res.data }))
+      .catch(err => console.log(err));
   }
 
+  // accepts a user's request to this event (ADMIN)
   acceptRequest = (id) => {
-    new Promise(resolve => {
-      const invitees = this.state.event.invitees.slice();
-      const joinRequests = this.state.event.joinRequests.slice();
-      joinRequests.splice(joinRequests.indexOf(id), 1);
-      invitees.push(id);
-      resolve(this.setState({ ...this.state.event, joinRequests, invitees }));
+    const joinRequests = this.state.event.joinRequests.slice();
+    joinRequests.splice(joinRequests.indexOf(id), 1);
+    const invitees = this.state.event.invitees.concat(id);
+    const event = { ...this.state.event, joinRequests, invitees };
+
+    axios({
+      method: 'PUT',
+      url: `/api/events/${this.props.match.params.id}`,
+      data: event,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
-      .then(() => {
-        axios({
-          method: 'PUT',
-          url: `/api/events/${this.props.match.params.id}`,
-          data: this.state,
-          headers: { Authorization: `Bearer ${Auth.getToken()}`}
-        })
-          .then(res => this.setState({ event: res.data }))
-          .catch(err => console.log(err));
-      });
+      .then(res => this.setState({ event: res.data }))
+      .catch(err => console.log(err));
   }
 
+  // declines a user's request to this event (ADMIN)
   declineRequest = (id) => {
-    new Promise(resolve => {
-      const joinRequests = this.state.event.joinRequests.slice();
-      joinRequests.splice(joinRequests.indexOf(id), 1);
-      resolve(this.setState({ ...this.state.event, joinRequests }));
+    const joinRequests = this.state.event.joinRequests.slice();
+    joinRequests.splice(joinRequests.indexOf(id), 1);
+    const event = { ...this.state.event, joinRequests };
+    axios({
+      method: 'PUT',
+      url: `/api/events/${this.props.match.params.id}`,
+      data: event,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
-      .then(() => {
-        axios({
-          method: 'PUT',
-          url: `/api/events/${this.props.match.params.id}`,
-          data: this.state,
-          headers: { Authorization: `Bearer ${Auth.getToken()}`}
-        })
-          .then(res => this.setState({ event: res.data }))
-          .catch(err => console.log(err));
-      });
+      .then(res => this.setState({ event: res.data }))
+      .catch(err => console.log(err));
   }
 
-
+  // deletes the event
   handleDelete = () => {
     axios({
       method: 'DELETE',
@@ -231,92 +155,34 @@ class EventsShow extends React.Component{
   }
 
   render(){
-    if(!this.state.event) return <div className="loadContainer"><img src="../../assets/images/Pacman.svg"/><h2 className="title">Loading...</h2></div>;
-    console.log(this.state);
+    if(!this.state.event) return <div className="loadContainer"><img src="/assets/images/Pacman.svg"/><h2 className="title">Loading...</h2></div>;
     return(
       <div>
-        <h2 className="title is-2 font-is-light">{this.state.event.name}</h2>
-        {!this.checkUserAttending() && !this.checkUserIsInvitee() && !this.pendingRequestToJoin() && !this.checkUserIsOrganizer() && <button className="button" onClick={this.submitRequestToJoin}>Request to join</button>}
-        {!this.checkUserAttending() && !this.checkUserIsInvitee() &&this.pendingRequestToJoin() && <div className="button">Pending...</div>}
-        <hr/>
-        <div className="columns is-multiline is-mobile">
-          <div className="column is-two-fifths">
-            <figure className="image is-138x138">
-              <img src={this.state.event.image}/>
-            </figure>
-          </div>
-          <div className="column is-three-fifths">
-            {this.state.event.location && <p className="font-is-light"><strong>Address: </strong>{this.state.event.address}</p>}
-            {this.state.event.description && <p className="font-is-light"><strong>Description: </strong>{this.state.event.description}</p>}
-          </div>
-        </div>
-        <div className="columns buttonContainer">
-          {this.checkUserIsOrganizer() && <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>}
-          {this.checkUserIsOrganizer() && <button className="button deleteEvent" onClick={this.handleDelete}>Delete Event</button>}
-          {this.checkUserIsInvitee() && !this.checkUserIsOrganizer() && Auth.isAuthenticated() && !this.checkUserAttending() && <button className="button" onClick={this.handleDeclineInvitation}>Decline Invitation</button>}
-        </div>
+        <Hero
+          event={this.state.event}
+          handleDelete={this.handleDelete}
+          handleDeclineInvitation={this.handleDeclineInvitation}
+          handleJoinRequest={this.handleJoinRequest}
+        />
 
-        {!this.state.event.finalTimesChecker && (this.checkUserIsInvitee() || this.checkUserIsOrganizer()) && <div className="columns is-mobile is-multiline">
+        <Votes
+          event={this.state.event}
+          handleVote={this.handleVote}
+          handlePickDate={this.handlePickDate}
+          handleConfirmFinalTimes={this.handleConfirmFinalTimes}
+          handleVoteSubmit={this.handleVoteSubmit}
+          selectedTimeSlots={this.state.selectedTimeSlots}
+        />
 
-          {this.state.event.eventDates.map((date, i) =>
-            <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
-              <div className="columns is-multiline">
-                <div className="column is-full"><h6 className="title is-6">{date}</h6></div>
-                {this.state.event.timeSlots.map((timeSlot, i)=>
-                  this.filterStartTime(date, i) &&
-                  <div className="timeSlotDiv column is-one-third-desktop is-full-mobile is-full-tablet" key={i}>
-                    {this.isVoted(timeSlot._id) && <div><img className="checkIcon" src="../../assets/images/checklogo.png"/></div>}
-                    <strong>Time: </strong>
-                    <p>{timeSlot.startTime} - {timeSlot.endTime}</p>
-                    <p><strong>Votes:</strong> {timeSlot.votes.length}</p>
-                    {!this.checkUserAttending() && <button className={`button${this.isVoted(timeSlot._id) ? ' selected' : ''}`} onClick={() => this.handleVote(timeSlot._id)} >{this.isVoted(timeSlot._id) ? 'Selected' : 'Vote'}</button>}
-                    {this.checkUserIsOrganizer() && <button className={`button${this.isPicked(timeSlot.date) ? ' selected' : ''}`} onClick={() => this.handlePickDate(timeSlot.date)}>{this.isPicked(timeSlot.date) ? 'Selected' : 'Pick Date'}</button>}
-                  </div>
-                )}
+        {this.state.event.finalTimesChecker &&
+          <SelectedTimes
+            event={this.state.event}
+          />
+        }
 
-              </div>
-            </div>
-          )}
-        </div>}
-        <div className="buttonDiv">
-          {!this.state.event.finalTimesChecker && this.state.finalTimes.length > 0 && <button className="button" onClick={this.handleSubmit}>Confirm Times</button>}
-          {!this.checkUserAttending() && !this.state.event.finalTimesChecker && (this.checkUserIsInvitee() || this.checkUserIsOrganizer()) && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
-        </div>
-        {this.state.event.finalTimesChecker && <h2 className="title is-2">Selected Times</h2>}
-        {this.state.event.finalTimesChecker && <div className="columns is-full is-mobile is-multiline">
-          {this.state.event.finalEventDates.map((date, i) =>
-            <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
-              <div className="columns is-multiline">
-                <div className="column is-full">
-                  <h6 className="title is-6">{date}</h6>
-                </div>
-                {this.state.event.finalTimes.map((time, i)=>
-                  this.filterStartTime(date, i) &&
-                  <div className="timeSlotDiv column is-one-third-desktop is-full-mobile is-full-tablet" key={i}>
-                    <p><strong>Time: </strong> {moment(time).format('HH:mm')} - {moment(time).add(this.state.event.length, 'minutes').format('HH:mm')}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>}
+        {this.state.event.location && <Location event={this.state.event} />}
 
-        {this.state.event.location &&
-        <div>
-          <h3 className="title is-3">Location</h3>
-          <GoogleMap location={this.state.event.location} />
-        </div>}
-
-        {this.checkUserIsOrganizer() && <div>
-          <h3 className="title is-3">Pending Requests</h3>
-          {this.state.event.joinRequests.map(request =>
-            <div key={request._id}>
-              <p>{request.username}</p>
-              <button onClick={() => this.acceptRequest(request._id)} className="button">Accept</button>
-              <button onClick={() => this.declineRequest(request._id)} className="button">Decline</button>
-            </div>
-          )}
-        </div>}
+        {Auth.getPayload() && Auth.getPayload().sub === this.state.event.organizer._id && <PendingRequests event={this.state.event} />}
 
       </div>
     );

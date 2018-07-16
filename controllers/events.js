@@ -39,6 +39,7 @@ function createRoute(req, res, next){
 function updateRoute(req, res, next) {
   Event
     .findById(req.params.id)
+    .populate('organizer')
     .then(event => event.set(req.body))
     .then(event => event.save())
     .then(event => {
