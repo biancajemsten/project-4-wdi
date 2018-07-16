@@ -15,24 +15,37 @@ import ProtectedRoute from './components/common/ProtectedRoute';
 import FlashMessages from './components/common/FlashMessages';
 import EventsShow from './components/events/Show';
 import Konami from 'react-konami';
+import Push from './lib/Push';
 
 import 'bulma';
 import './scss/style.scss';
 
 
 class App extends React.Component {
-//currently works once per refresh. Find better method than remove();
+
+  state = {
+    easterEggActive: false,
+    pushRegistered: false
+  };
+
+  componentDidMount = () => {
+    Push.register()
+      .then(res => {
+        console.log('REGISTERED', res);
+        this.setState({ pushRegistered: true });
+      });
+  }
+
+  //currently works once per refresh. Find better method than remove();
   konami = () =>{
-    const element = (
-      <img id="panda" className="panda" src="https://vignette.wikia.nocookie.net/epic-rap-battles-of-cartoons/images/0/00/Panda.png/revision/latest?cb=20170812052841"/>
-    );
-    ReactDOM.render(element, document.getElementById('konami'));
+    this.setState({ easterEggActive: true });
     setTimeout(() => {
-      document.getElementById('panda').remove();
+      this.setState({ easterEggActive: false });
     },5000);
   }
 
   render() {
+    if(!this.state.pushRegistered) return <h1>Connecting...</h1>;
     return (
       <BrowserRouter>
         <main>
@@ -54,6 +67,9 @@ class App extends React.Component {
               </Switch>
             </div>
           </section>
+          {this.state.easterEggActive && <img
+            className="panda" src="https://vignette.wikia.nocookie.net/epic-rap-battles-of-cartoons/images/0/00/Panda.png/revision/latest?cb=20170812052841"
+          />}
         </main>
       </BrowserRouter>
     );
