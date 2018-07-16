@@ -256,7 +256,7 @@ class EventsShow extends React.Component{
           {this.checkUserIsInvitee() && !this.checkUserIsOrganizer() && Auth.isAuthenticated() && !this.checkUserAttending() && <button className="button" onClick={this.handleDeclineInvitation}>Decline Invitation</button>}
         </div>
 
-        {!this.state.event.finalTimesChecker && <div className="columns is-mobile is-multiline">
+        {!this.state.event.finalTimesChecker && (this.checkUserIsInvitee() || this.checkUserIsOrganizer()) && <div className="columns is-mobile is-multiline">
 
           {this.state.event.eventDates.map((date, i) =>
             <div key={i} className={`column dateColumn${this.columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
@@ -280,7 +280,7 @@ class EventsShow extends React.Component{
         </div>}
         <div className="buttonDiv">
           {!this.state.event.finalTimesChecker && this.state.finalTimes.length > 0 && <button className="button" onClick={this.handleSubmit}>Confirm Times</button>}
-          {!this.checkUserAttending() && !this.state.event.finalTimesChecker && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
+          {!this.checkUserAttending() && !this.state.event.finalTimesChecker && (this.checkUserIsInvitee() || this.checkUserIsOrganizer()) && <button className="button" onClick={this.handleVoteSubmit}>Submit Votes</button>}
         </div>
         {this.state.event.finalTimesChecker && <h2 className="title is-2">Selected Times</h2>}
         {this.state.event.finalTimesChecker && <div className="columns is-full is-mobile is-multiline">

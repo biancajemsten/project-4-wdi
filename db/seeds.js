@@ -11,7 +11,7 @@ const users = [
     email: 'bianca@test.com',
     password: 'pass',
     passwordConfirmation: 'pass',
-    tel: '+46702549294'
+    tel: '+447762948257'
   }),
   new User({
     username: 'richard',
@@ -50,7 +50,7 @@ mongoose.connect(dbURI, (err, db) => {
         location: { lat: 51.4798873, lng: -0.2107483 },
         privacy: 'Private',
         invitees: [users[0], users[2]],
-        attendees: [ users[1] ],
+        attendees: [ ],
         image: 'http://www.thecumberlandarms.co.uk/wp/wp-content/uploads/2015/04/Cumby-Film-Night-logo-2016-850px-850x478.jpg',
         organizer: [users[1]._id]
       }, {
@@ -68,7 +68,7 @@ mongoose.connect(dbURI, (err, db) => {
         location: { lat: 51.5153002, lng: -0.0746125 },
         privacy: 'Public',
         invitees: [ users[1]],
-        attendees: [ users[2] ],
+        attendees: [],
         image: 'https://geekandsundry.com/wp-content/uploads/2016/12/featured-dnd-holiday.png',
         organizer: [users[2]._id]
       }]);
