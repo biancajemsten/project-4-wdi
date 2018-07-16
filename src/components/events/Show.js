@@ -179,7 +179,7 @@ class EventsShow extends React.Component{
             </figure>
           </div>
           <div className="column is-three-fifths">
-            <p className="font-is-light"><strong>Address: </strong>{this.state.event.address}</p>
+            {this.state.event.location && <p className="font-is-light"><strong>Address: </strong>{this.state.event.address}</p>}
             <p className="font-is-light"><strong>Description: </strong>{this.state.event.description}</p>
           </div>
         </div>
@@ -234,8 +234,11 @@ class EventsShow extends React.Component{
           )}
         </div>}
 
-        <h3 className="title is-3">Location</h3>
-        <GoogleMap location={this.state.event.location} />
+        {this.state.event.location &&
+        <div>
+          <h3 className="title is-3">Location</h3>
+          <GoogleMap location={this.state.event.location} />
+        </div>}
       </div>
     );
   }
