@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
+
+// import Push from '../../lib/Push';
+
 class EventsIndex extends React.Component {
 
   state = {
@@ -10,12 +13,13 @@ class EventsIndex extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/events')
+    axios('/api/events')
       .then(res => {
         let events = res.data;
         events = events.filter(event => event.privacy === 'Public');
         this.setState({ events });
       });
+    // Push.sendPush();
   }
 
   handleSearch = (e) => {
