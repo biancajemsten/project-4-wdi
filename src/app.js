@@ -16,6 +16,7 @@ import FlashMessages from './components/common/FlashMessages';
 import EventsShow from './components/events/Show';
 import Konami from 'react-konami';
 
+
 import 'bulma';
 import './scss/style.scss';
 

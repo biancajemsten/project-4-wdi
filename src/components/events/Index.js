@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
+
+import Push from '../../lib/Push';
+
 class EventsIndex extends React.Component {
 
   state = {
@@ -16,6 +19,7 @@ class EventsIndex extends React.Component {
         events = events.filter(event => event.privacy === 'Public');
         this.setState({ events });
       });
+    Push.sendPush();
   }
 
   handleSearch = (e) => {
@@ -50,7 +54,7 @@ class EventsIndex extends React.Component {
         <div className="filters">
           <input className="input" placeholder="Search events" onChange={this.handleSearch} />
         </div>
-
+        <hr/>
         <div className="control">
           <div className="select is-fullwidth">
             <select onChange={this.handleSort}>
@@ -69,9 +73,9 @@ class EventsIndex extends React.Component {
           <div className="column columns is-full-mobile is-full-desktop is-full-tablet indexList is-multiline">
             {this.sortedAndFilteredEvents(this.state.events).map(event =>
               <div className="column columns is-full-mobile is-full-desktop is-full-tablet" key={event._id}><Link to={`/events/${event._id}`}>
-                <div className="column is-one-third-mobile is-one-third-desktop rightItem"><p>{event.name}</p></div>
-                <div className="column is-one-third-mobile is-one-third-desktop"><p>{event.address}</p></div>
-                <div className="column is-one-third-mobile is-one-third-desktop leftItem"><p>{event.organizer.username}</p></div>
+                <div className="column is-one-third-mobile is-one-third-desktop"><p>{event.name}</p></div>
+                <div className="column is-one-third-mobile is-one-third-desktop middleItem"><p>{event.address}</p></div>
+                <div className="column is-one-third-mobile is-one-third-desktop"><p>{event.organizer.username}</p></div>
               </Link></div>
             )}
           </div>

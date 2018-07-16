@@ -7,12 +7,47 @@ html {
 }
 
 input.input, textarea.input{
-  background-color: $light;
+  // background-color: $light;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed #83A4C5;
+  outline: none;
+  padding: 0px 0px 0px 0px;
+  color: $light;
+  border-radius: 0;
+  box-shadow: none;
+  .location-search-input{
+    color: $light;
+  }
+  &:focus{
+    outline: none;
+    box-shadow: none;
+    border-bottom: 1px dashed $red;
+  }
+}
+
+input.input::placeholder{
+  color: $light;
+  opacity: 0.6 ;
+  font-style: italic !important;// this isn't working, fix?
+
+}
+
+hr{
+  background-color: $red;
 }
 
 .panda{
   position:absolute;
   animation: run 5s;
+}
+
+.loadContainer{
+  display: flex;
+  flex-direction: column;
+  h2{
+    text-align: center; 
+  }
 }
 
 @keyframes run {

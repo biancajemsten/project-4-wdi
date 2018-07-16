@@ -1,32 +1,14 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const webpush  = require('web-push');
 const path = require('path');
-const { dbURI, port, publicVapidKey, privateVapidKey } = require('./config/environment');
 
+
+const { dbURI, port } = require('./config/environment');
 
 //Set static path
 app.use(express.static(path.join(__dirname, 'client')));
 
-
-webpush.setVapidDetails('mailto:biancajemsten@gmail.com', publicVapidKey, privateVapidKey);
-
-//Subscribe route
-app.post('/api/subscribe', (req, res)=>{
-  //Get push subscription object from client
-  const subscription = req.body;
-  // console.log('request', req);
-
-  //send 201 -resource created
-  res.status(201).json({});
-
-  //create getPayload
-  const payload = JSON.stringify({title: 'Push test'});
-
-  //pass object into sendNotification
-  webpush.sendNotification(subscription, payload).catch(err => console.error(err));
-});
 
 const errorHandler = require('./lib/errorHandler');
 

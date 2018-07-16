@@ -1,0 +1,38 @@
+
+  .field{
+    button, button.button, button.button.addTimeSlot{
+      background-color: $red;
+      color: $light;
+      border-color: $red;
+      &:hover{
+        border: 1px $light outset;
+      }
+    }
+  }
+  div.field.filePicker button, button.deleteEvent{
+    background-color: $red;
+    color: $light;
+    border-color: $red;
+    &:hover{
+      border: 1px $light outset;
+    }
+  }
+form{
+    button.button{
+      background-color: $red;
+      color: $light;
+      border-color: $red;
+      &:hover{
+        border: 1px $light outset;
+        color: $light;
+      }
+  }
+}
+
+
+div.columns.buttonContainer{
+  margin-top: 15px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-around;
+}

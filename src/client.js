@@ -3,8 +3,6 @@ const publicVapidKey = 'BB6b3GD1wulS5BXvcpdm93v2NIXHoEE2tszOX1iD1yLHoIpSVYOdyeW4
 //check for service worker
 if('serviceWorker' in navigator){
   send().catch(err => console.error(err));
-}else {
-  console.log('not found', navigator);
 }
 
 
@@ -29,14 +27,13 @@ async function send() {
 
   //send push showNotification
   console.log('sending push....');
-  await fetch('/api/subscribe', { // currently res and req are undefined. But the body logs.
+  await fetch('/api/subscribe', {
     method: 'POST',
     body: JSON.stringify(subscription),
     headers: {
       'content-type': 'application/json'
     }
-  })
-    .then(() => console.log(JSON.stringify(subscription)));
+  });
   console.log('push sent... ');
 }
 

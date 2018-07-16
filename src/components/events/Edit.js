@@ -14,11 +14,16 @@ class EventsEdit extends React.Component {
       startDate: moment(),
       selectedTimes: [],
       timeSlots: [],
-      address: ''
+      address: '',
+      errors: {
+        name: ''
+      }
     };
     this.onChange = this.onChange.bind(this);
     this.addTimeSlot = this.addTimeSlot.bind(this);
     this.removeTimeSlot = this.removeTimeSlot.bind(this);
+    this.handleClearSelectedTimes = this.handleClearSelectedTimes.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   handleAddressChange = address => {
@@ -54,8 +59,36 @@ class EventsEdit extends React.Component {
     this.setState({ selectedTimes });
   }
 
+  // clearArray = (array) => {
+  //   const arrayToClear = array.slice();
+  //   return arrayToClear.splice(0, arrayToClear.length);
+  // }
+
+  handleClearSelectedTimes(e) {
+    e.preventDefault();
+    const finalTimes = this.state.finalTimes.slice();
+    finalTimes.splice(0, finalTimes.length);
+    const selectedTimes = this.state.selectedTimes.slice();
+    selectedTimes.splice(0, selectedTimes.length);
+    const attendees = this.state.attendees.slice();
+    attendees.splice(0, attendees.length);
+    let finalTimesChecker = this.state.finalTimesChecker;
+    finalTimesChecker = false;
+    this.setState({ finalTimes, selectedTimes, attendees, finalTimesChecker });
+  }
+
   handleUpload = (e) => {
     this.setState({ image: e.filesUploaded[0].url });
+  }
+
+  handleBlur = ({target: { name, value }}) => {
+    const errorMessage = value.length === 0 ? 'This field is required' : '';
+    const errors = this.state.errors;
+    for(let field in errors) {
+      field = name;
+      errors[field] = errorMessage;
+      return this.setState({ errors });
+    }
   }
 
   handleSubmit = (e) => {
@@ -74,7 +107,7 @@ class EventsEdit extends React.Component {
           data: this.state,
           headers: { Authorization: `Bearer ${Auth.getToken()}`}
         })
-          .then(() => this.props.history.push('/events'))
+          .then(() => this.props.history.push(`/events/${this.props.match.params.id}`))
           .catch(err => this.setState({ errors: err.response.data.errors}));
       });
   }
@@ -117,19 +150,25 @@ class EventsEdit extends React.Component {
 
   render() {
     return(
-      <EventsForm
-        handleAddressChange={this.handleAddressChange}
-        handleSelect={this.handleSelect}
-        handleChange={this.handleChange}
-        addTimeSlot={this.addTimeSlot}
-        removeTimeSlot={this.removeTimeSlot}
-        handleSubmit={this.handleSubmit}
-        handleUpload={this.handleUpload}
-        handleSelectChange={this.handleSelectChange}
-        selected={this.state.startDate}
-        onChange={this.onChange}
-        data={this.state}
-      />
+      <div>
+        <h2 className="title is-2">Edit your event</h2>
+        <hr/>
+        <EventsForm
+          handleAddressChange={this.handleAddressChange}
+          handleSelect={this.handleSelect}
+          handleChange={this.handleChange}
+          handleBlur={this.handleBlur}
+          addTimeSlot={this.addTimeSlot}
+          removeTimeSlot={this.removeTimeSlot}
+          handleClearSelectedTimes={this.handleClearSelectedTimes}
+          handleSubmit={this.handleSubmit}
+          handleUpload={this.handleUpload}
+          handleSelectChange={this.handleSelectChange}
+          selected={this.state.startDate}
+          onChange={this.onChange}
+          data={this.state}
+        />
+      </div>
     );
   }
 }

@@ -3,9 +3,10 @@
 const User = require('../../../models/user');
 const userData = {
   username: 'test',
-  email: 'test@test.test',
-  password: 'test',
-  passwordConfirmation: 'test'
+  email: 'test@test.com',
+  password: 'pass',
+  passwordConfirmation: 'pass',
+  tel: '+447377103864'
 };
 
 describe('POST /register', ()=> {
