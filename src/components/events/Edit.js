@@ -32,7 +32,7 @@ class EventsEdit extends React.Component {
 
   handleSelect = address => {
     geocodeByAddress(address)
-      .then(results => getLatLng(results[0]), console.log(address))
+      .then(results => getLatLng(results[0]))
       .then(latLng => this.setState({ location: latLng, address: address }))
       .catch(error => console.error('Error', error));
   };
@@ -175,7 +175,6 @@ class EventsEdit extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return(
       <div>
         <h2 className="title is-2">Edit your event</h2>
