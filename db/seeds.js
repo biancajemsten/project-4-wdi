@@ -67,7 +67,7 @@ mongoose.connect(dbURI, (err, db) => {
         address: 'GA, Relay Building',
         location: { lat: 51.5153002, lng: -0.0746125 },
         privacy: 'Public',
-        invitees: [users[0], users[1]],
+        invitees: [ users[1]],
         attendees: [ users[2] ],
         image: 'https://geekandsundry.com/wp-content/uploads/2016/12/featured-dnd-holiday.png',
         organizer: [users[2]._id]
