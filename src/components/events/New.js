@@ -72,25 +72,24 @@ class EventsNew extends React.Component {
     this.setState({ image: e.filesUploaded[0].url });
   }
 
+  saveEvent = () => {
+    axios({
+      method: 'POST',
+      url: '/api/events',
+      data: this.state,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
+    })
+      .then(() => this.props.history.push('/events'))
+      .catch(err => this.setState({ errors: err.response.data.errors}));
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
-    new Promise(resolve => {
-      const timeSlots = this.state.selectedTimes.map(time => {
-        const date = time;
-        return { date: date };
-      });
-      resolve(this.setState({ timeSlots }));
-    })
-      .then(() => {
-        axios({
-          method: 'POST',
-          url: '/api/events',
-          data: this.state,
-          headers: { Authorization: `Bearer ${Auth.getToken()}`}
-        })
-          .then(() => this.props.history.push('/events'))
-          .catch(err => this.setState({ errors: err.response.data.errors}));
-      });
+    const timeSlots = this.state.selectedTimes.map(time => {
+      const date = time;
+      return { date: date };
+    });
+    this.setState({ timeSlots }, this.saveEvent);
   }
 
   componentDidMount() {

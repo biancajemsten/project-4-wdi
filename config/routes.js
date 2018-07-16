@@ -24,6 +24,6 @@ router.route('/users/:id')
   .put(secureRoute, users.update);
 
 
-router.post('/subscribe', push.subscribe);
+router.post('/subscribe', secureRoute, push.subscribe);
 
 module.exports = router;

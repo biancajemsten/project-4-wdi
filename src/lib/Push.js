@@ -1,51 +1,36 @@
 const publicVapidKey = 'BB6b3GD1wulS5BXvcpdm93v2NIXHoEE2tszOX1iD1yLHoIpSVYOdyeW49UzuI8UWdKor62EcRs8lylUF-KW3Jns';
+import Auth from './Auth';
 
 class Push {
-  static sendPush() {
-    //check for service worker
-    console.log('clicked');
-    if('serviceWorker' in navigator){
-      this.send().catch(err => console.error(err));
-    }
-  }
-
-
-
   //register Sw, Register Push, Send Push
-  static async send() {
+  static register() {
     //Register service worker
     console.log('Registering service worker... ');
-    const register = await navigator.serviceWorker.register('/sw.js', {
+    return navigator.serviceWorker.register('/sw.js', {
       scope: '/'
-    });
-    console.log('Service worker registered... ');
-
-    //register push
-    console.log('registering push ...');
-    const subscription = await register.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: this.urlBase64ToUint8Array(publicVapidKey)
-    });
-    console.log('push registered....');
-
-
-
-    //send push showNotification
-    console.log('sending push....');
-    await fetch('/api/subscribe', {
-      method: 'POST',
-      body: JSON.stringify(subscription),
-      headers: {
-        'content-type': 'application/json'
-      }
-    });
-    console.log('push sent... ');
+    })
+      .then(register => {
+        return register.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: this.urlBase64ToUint8Array(publicVapidKey)
+        });
+      })
+      .then(subscription => {
+        return fetch('/api/subscribe', {
+          method: 'POST',
+          body: JSON.stringify(subscription),
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${Auth.getToken()}`
+          }
+        });
+      });
   }
 
   static urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
-      .replace(/\-/g, '+')
+      .replace(/-/g, '+')
       .replace(/_/g, '/');
 
     const rawData = window.atob(base64);

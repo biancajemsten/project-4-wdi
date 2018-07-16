@@ -26,21 +26,22 @@ async function send() {
 
 
   //send push showNotification
-  console.log('sending push....');
+  console.log('subscribing to push notifications....');
   await fetch('/api/subscribe', {
     method: 'POST',
     body: JSON.stringify(subscription),
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
-  });
-  console.log('push sent... ');
+  })
+    .then(res => console.log('subscription successful', res));
 }
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
   const base64 = (base64String + padding)
-    .replace(/\-/g, '+')
+    .replace(/-/g, '+')
     .replace(/_/g, '/');
 
   const rawData = window.atob(base64);

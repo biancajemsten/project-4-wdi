@@ -1,7 +1,5 @@
-console.log('I am a serviceworker');
- 
-
 self.addEventListener('push', (event) => {
+  console.log('WTF IS SELF!', self);
   console.log('Push Message', event);
   const data = event.data.json();
   console.log('push received...');
