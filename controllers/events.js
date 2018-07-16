@@ -1,6 +1,7 @@
 const Event = require('../models/event');
 const { sendSMS } = require('../lib/twilio');
 const moment = require('moment');
+const notifications = require('../lib/notifications');
 
 function indexRoute(req, res, next) {
   Event
@@ -25,10 +26,10 @@ function createRoute(req, res, next){
     .then(event => {
       res.status(201).json(event);
       if(req.body.selectedOptions) {
-        req.body.selectedOptions.forEach(person =>{
+        req.body.selectedOptions.forEach(person => {
           const body = `Hi ${person.label}! You have been invited to ${req.body.name} by ${req.body.organizer.username}. Visit http://localhost:8000/events/${event._id} to view the event and vote on which dates are best for you.`;
-          const tel = person.tel;
-          sendSMS(body, tel);
+          sendSMS(body, person.tel);
+          notifications.send({ title: 'You\'ve been invited to an event!', body }, person.value);
         });
       }
     })

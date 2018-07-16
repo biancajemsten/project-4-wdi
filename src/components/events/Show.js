@@ -18,7 +18,6 @@ class EventsShow extends React.Component{
   componentDidMount(){
     axios.get(`/api/events/${this.props.match.params.id}`)
       .then(res => this.setState({event: res.data}))
-      .then(() => console.log(this.state))
       .catch(err => this.setState({error: err.message}));
   }
 

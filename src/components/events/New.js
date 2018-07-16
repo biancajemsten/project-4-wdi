@@ -23,6 +23,7 @@ class EventsNew extends React.Component {
     this.addTimeSlot = this.addTimeSlot.bind(this);
     this.removeTimeSlot = this.removeTimeSlot.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.populateHours = this.populateHours.bind(this);
   }
 
   handleAddressChange = address => {
@@ -31,7 +32,7 @@ class EventsNew extends React.Component {
 
   handleSelect = address => {
     geocodeByAddress(address)
-      .then(results => getLatLng(results[0]), console.log(address))
+      .then(results => getLatLng(results[0]))
       .then(latLng => this.setState({ location: latLng, address: address }))
       .catch(error => console.error('Error', error));
   };
@@ -54,6 +55,29 @@ class EventsNew extends React.Component {
     this.setState({ startDate: date });
   }
 
+  populateHours = () => {
+    const hoursInDay = [];
+    for (let i=0; i < 25; i++) {
+      hoursInDay.push(i);
+    }
+    return this.setState({ hoursInDay });
+  }
+
+  populateMinutes = () => {
+    const quarterHours = [];
+    for (let i=0; i < 60; i+=15) {
+      quarterHours.push(i);
+    }
+    return this.setState({ quarterHours });
+  }
+
+  convertEventLengthToMinutes = () => {
+    const hours = this.state.hours;
+    const minutes = this.state.minutes;
+    const length = (hours * 60) + parseInt(minutes);
+    this.setState({ length });
+  }
+
   addTimeSlot(e) {
     e.preventDefault();
     const selectedTimes = this.state.selectedTimes.slice();
@@ -72,28 +96,31 @@ class EventsNew extends React.Component {
     this.setState({ image: e.filesUploaded[0].url });
   }
 
+  saveEvent = () => {
+    axios({
+      method: 'POST',
+      url: '/api/events',
+      data: this.state,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
+    })
+      .then(() => this.props.history.push('/events'))
+      .catch(err => this.setState({ errors: err.response.data.errors}));
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
-    new Promise(resolve => {
-      const timeSlots = this.state.selectedTimes.map(time => {
-        const date = time;
-        return { date: date };
-      });
-      resolve(this.setState({ timeSlots }));
-    })
-      .then(() => {
-        axios({
-          method: 'POST',
-          url: '/api/events',
-          data: this.state,
-          headers: { Authorization: `Bearer ${Auth.getToken()}`}
-        })
-          .then(() => this.props.history.push('/events'))
-          .catch(err => this.setState({ errors: err.response.data.errors}));
-      });
+    this.convertEventLengthToMinutes(); 
+    const timeSlots = this.state.selectedTimes.map(time => {
+      const date = time;
+      return { date: date };
+    });
+
+    this.setState({ timeSlots }, this.saveEvent);
   }
 
   componentDidMount() {
+    this.populateHours();
+    this.populateMinutes();
     axios({
       url: '/api/users',
       method: 'GET'

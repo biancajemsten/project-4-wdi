@@ -32,7 +32,7 @@ class EventsEdit extends React.Component {
 
   handleSelect = address => {
     geocodeByAddress(address)
-      .then(results => getLatLng(results[0]), console.log(address))
+      .then(results => getLatLng(results[0]))
       .then(latLng => this.setState({ location: latLng, address: address }))
       .catch(error => console.error('Error', error));
   };
@@ -57,6 +57,29 @@ class EventsEdit extends React.Component {
     const selectedTimes = this.state.selectedTimes;
     selectedTimes.splice(selectedTimes.indexOf(e.target.value), 1);
     this.setState({ selectedTimes });
+  }
+
+  populateHours = () => {
+    const hoursInDay = [];
+    for (let i=0; i < 25; i++) {
+      hoursInDay.push(i);
+    }
+    return this.setState({ hoursInDay });
+  }
+
+  populateMinutes = () => {
+    const quarterHours = [];
+    for (let i=0; i < 60; i+=15) {
+      quarterHours.push(i);
+    }
+    return this.setState({ quarterHours });
+  }
+
+  convertEventLengthToMinutes = () => {
+    const hours = this.state.hours;
+    const minutes = this.state.minutes;
+    const length = (hours * 60) + parseInt(minutes);
+    this.setState({ length });
   }
 
   // clearArray = (array) => {
@@ -94,6 +117,7 @@ class EventsEdit extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     new Promise(resolve => {
+      this.convertEventLengthToMinutes();
       const timeSlots = this.state.selectedTimes.map(time => {
         const date = time;
         return { date: date };
@@ -113,6 +137,8 @@ class EventsEdit extends React.Component {
   }
 
   componentDidMount() {
+    this.populateHours();
+    this.populateMinutes();
     axios({
       url: `/api/events/${this.props.match.params.id}`,
       method: 'GET'

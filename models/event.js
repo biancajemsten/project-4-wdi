@@ -63,9 +63,16 @@ eventSchema.virtual('finalTimesChecker')
     return this.finalTimes.length > 0 ? true : false;
   });
 
+eventSchema.virtual('hours')
+  .get(function() {
+    return Math.floor(moment.duration(this.length, 'minutes').asHours());
+  });
 
+eventSchema.virtual('minutes')
+  .get(function() {
+    return Math.round(this.length % 60);
+  });
 
 eventSchema.set('toJSON', { virtuals: true });
-
 
 module.exports = mongoose.model('Event', eventSchema);
