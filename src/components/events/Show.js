@@ -186,7 +186,7 @@ class EventsShow extends React.Component{
         <div className="columns buttonContainer">
           {this.checkUserIsOrganizer() && <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>}
           {this.checkUserIsOrganizer() && <button className="button deleteEvent" onClick={this.handleDelete}>Delete Event</button>}
-          {this.checkUserIsInvitee() && !this.checkUserIsOrganizer() && Auth.isAuthenticated() && <button className="button" onClick={this.handleDeclineInvitation}>Decline Invitation</button>}
+          {this.checkUserIsInvitee() && !this.checkUserIsOrganizer() && Auth.isAuthenticated() && !this.checkUserAttending() && <button className="button" onClick={this.handleDeclineInvitation}>Decline Invitation</button>}
         </div>
 
         {!this.state.event.finalTimesChecker && <div className="columns is-mobile is-multiline">

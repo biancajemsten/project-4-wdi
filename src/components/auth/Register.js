@@ -61,7 +61,7 @@ class AuthRegister extends React.Component{
         </div>
         <div className="field">
           <label className="tel">Telephone Number</label>
-          <input className="input" name="tel" placeholder="Telephone Number" onChange={this.handleChange} onBlur={this.handleBlur} />
+          <input className="input" name="tel" placeholder="Telephone Number" onChange={this.handleChange} onBlur={this.handleBlur} value="+44" />
           {this.state.errors.tel && <small>{this.state.errors.tel}</small>}
         </div>
         <div className="field">
