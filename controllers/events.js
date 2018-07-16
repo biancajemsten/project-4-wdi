@@ -30,7 +30,7 @@ function createRoute(req, res, next){
         req.body.selectedOptions.forEach(person => {
           const body = `Hi ${person.label}! You have been invited to ${req.body.name} by ${req.body.organizer.username}. Visit http://localhost:8000/events/${event._id} to view the event and vote on which dates are best for you.`;
           sendSMS(body, person.tel);
-          notifications.send({ title: 'You\'ve been invited to an event!', body }, person.value);
+          notifications.send({ title: 'You\'ve been invited to an event!', body: `Hi ${person.label}` }, person.value);
         });
       }
     })

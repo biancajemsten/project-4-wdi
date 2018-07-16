@@ -4,7 +4,7 @@ self.addEventListener('push', (event) => {
   const data = event.data.json();
   console.log('push received...');
   self.registration.showNotification(data.title, {
-    body: 'Notified by Bianca',
+    body: data.body,
     icon: 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png'
   });
 });
