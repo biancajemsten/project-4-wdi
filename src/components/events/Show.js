@@ -183,9 +183,41 @@ class EventsShow extends React.Component{
   }
 
   acceptRequest = (id) => {
-    invitees = this.state.event.invitees.slice();
-    joinRequests = this.state.event.joinRequests.slice();
-    joinRequests.splice(indexOf(id), 1)
+    new Promise(resolve => {
+      const invitees = this.state.event.invitees.slice();
+      const joinRequests = this.state.event.joinRequests.slice();
+      joinRequests.splice(joinRequests.indexOf(id), 1);
+      invitees.push(id);
+      resolve(this.setState({ ...this.state.event, joinRequests, invitees }));
+    })
+      .then(() => {
+        axios({
+          method: 'PUT',
+          url: `/api/events/${this.props.match.params.id}`,
+          data: this.state,
+          headers: { Authorization: `Bearer ${Auth.getToken()}`}
+        })
+          .then(res => this.setState({ event: res.data }))
+          .catch(err => console.log(err));
+      });
+  }
+
+  declineRequest = (id) => {
+    new Promise(resolve => {
+      const joinRequests = this.state.event.joinRequests.slice();
+      joinRequests.splice(joinRequests.indexOf(id), 1);
+      resolve(this.setState({ ...this.state.event, joinRequests }));
+    })
+      .then(() => {
+        axios({
+          method: 'PUT',
+          url: `/api/events/${this.props.match.params.id}`,
+          data: this.state,
+          headers: { Authorization: `Bearer ${Auth.getToken()}`}
+        })
+          .then(res => this.setState({ event: res.data }))
+          .catch(err => console.log(err));
+      });
   }
 
 
@@ -204,7 +236,7 @@ class EventsShow extends React.Component{
     return(
       <div>
         <h2 className="title is-2 font-is-light">{this.state.event.name}</h2>
-        {!this.checkUserAttending() && !this.checkUserIsInvitee() && !this.pendingRequestToJoin() && <button className="button" onClick={this.submitRequestToJoin}>Request to join</button>}
+        {!this.checkUserAttending() && !this.checkUserIsInvitee() && !this.pendingRequestToJoin() && !this.checkUserIsOrganizer() && <button className="button" onClick={this.submitRequestToJoin}>Request to join</button>}
         {!this.checkUserAttending() && !this.checkUserIsInvitee() &&this.pendingRequestToJoin() && <div className="button">Pending...</div>}
         <hr/>
         <div className="columns is-multiline is-mobile">
@@ -215,7 +247,7 @@ class EventsShow extends React.Component{
           </div>
           <div className="column is-three-fifths">
             {this.state.event.location && <p className="font-is-light"><strong>Address: </strong>{this.state.event.address}</p>}
-            <p className="font-is-light"><strong>Description: </strong>{this.state.event.description}</p>
+            {this.state.event.description && <p className="font-is-light"><strong>Description: </strong>{this.state.event.description}</p>}
           </div>
         </div>
         <div className="columns buttonContainer">
@@ -275,14 +307,17 @@ class EventsShow extends React.Component{
           <GoogleMap location={this.state.event.location} />
         </div>}
 
-        <h3 className="title is-3">Pending Requests</h3>
-        {this.state.event.joinRequests.map(request =>
-          <div key={request._id}>
-            <p>{request.username}</p>
-            <button onClick={() => this.acceptRequest(request._id)} className="button">Accept</button>
-            <button onClick={() => this.declineRequest(request._id)} className="button">Decline</button>
-          </div>
-        )}
+        {this.checkUserIsOrganizer() && <div>
+          <h3 className="title is-3">Pending Requests</h3>
+          {this.state.event.joinRequests.map(request =>
+            <div key={request._id}>
+              <p>{request.username}</p>
+              <button onClick={() => this.acceptRequest(request._id)} className="button">Accept</button>
+              <button onClick={() => this.declineRequest(request._id)} className="button">Decline</button>
+            </div>
+          )}
+        </div>}
+
       </div>
     );
   }
