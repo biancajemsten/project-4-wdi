@@ -114,26 +114,21 @@ class EventsEdit extends React.Component {
     }
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    new Promise(resolve => {
-      this.convertEventLengthToMinutes();
-      const timeSlots = this.state.selectedTimes.map(time => {
-        const date = time;
-        return { date: date };
-      });
-      resolve(this.setState({ timeSlots }));
+  handleSubmit = () => {
+    this.convertEventLengthToMinutes();
+    const timeSlots = this.state.selectedTimes.map(time => {
+      const date = time;
+      return { date: date };
+    });
+    this.setState({ timeSlots });
+    axios({
+      method: 'PUT',
+      url: `/api/events/${this.props.match.params.id}`,
+      data: this.state,
+      headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
-      .then(() => {
-        axios({
-          method: 'PUT',
-          url: `/api/events/${this.props.match.params.id}`,
-          data: this.state,
-          headers: { Authorization: `Bearer ${Auth.getToken()}`}
-        })
-          .then(() => this.props.history.push(`/events/${this.props.match.params.id}`))
-          .catch(err => this.setState({ errors: err.response.data.errors}));
-      });
+      .then(() => this.props.history.push(`/events/${this.props.match.params.id}`))
+      .catch(err => this.setState({ errors: err.response.data.errors}));
   }
 
   componentDidMount() {

@@ -9,31 +9,25 @@ class AuthRegister extends React.Component{
     }
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    new Promise(resolve => {
-      let tel = this.state.tel;
-      if(tel[0] === '0') {
-        tel = tel.replace(this.state.tel[0], '+44');
-      }
-      tel = tel.replace(/ /g, '');
-      resolve(this.setState({ tel }));
-    })
-      .then(() => {
-        if(this.checkErrors()) {
-
-          axios({
-            url: '/api/register',
-            method: 'POST',
-            data: this.state
-          })
-            .then(res => {
-              Auth.setToken(res.data.token);
-              this.props.history.push('/login');
-            })
-            .catch(err => this.setState({ errors: err.response.data.errors}));
-        }
-      });
+  handleSubmit = () => {
+    let tel = this.state.tel;
+    if(tel[0] === '0') {
+      tel = tel.replace(this.state.tel[0], '+44');
+    }
+    tel = tel.replace(/ /g, '');
+    this.setState({ tel });
+    if(this.checkErrors()) {
+      axios({
+        url: '/api/register',
+        method: 'POST',
+        data: this.state
+      })
+        .then(res => {
+          Auth.setToken(res.data.token);
+          this.props.history.push('/login');
+        })
+        .catch(err => this.setState({ errors: err.response.data.errors}));
+    }
   }
 
   handleChange = ({target: { name, value }}) => {
