@@ -53,8 +53,27 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, han
         </div>}
 
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
-          <label className="label">Event Length</label>
-          <input className="input" name="length" placeholder="Enter the event length in minutes please" onChange={handleChange} onBlur={handleBlur} value={data.length || ''} />
+          <label className="label">Event Length (hours & minutes)</label>
+          <div className="control">
+            <div className="select is-full-width">
+              <select name="hours" onChange={handleChange} value={data.hours || ''}>
+                <option value="" disabled>Hours</option>
+                {data.hoursInDay && data.hoursInDay.map(hour =>
+                  <option key={hour}>{hour}</option>
+                )}
+              </select>
+            </div>
+          </div>
+          <div className="control">
+            <div className="select is-full-width">
+              <select name="minutes" onChange={handleChange} value={data.minutes || ''}>
+                <option value="" disabled>Minutes</option>
+                {data.quarterHours && data.quarterHours.map(quarters =>
+                  <option key={quarters}>{quarters}</option>
+                )}
+              </select>
+            </div>
+          </div>
           {data.errors.length && <small>{data.errors.length}</small>}
         </div>
 

@@ -59,6 +59,29 @@ class EventsEdit extends React.Component {
     this.setState({ selectedTimes });
   }
 
+  populateHours = () => {
+    const hoursInDay = [];
+    for (let i=0; i < 25; i++) {
+      hoursInDay.push(i);
+    }
+    return this.setState({ hoursInDay });
+  }
+
+  populateMinutes = () => {
+    const quarterHours = [];
+    for (let i=0; i < 60; i+=15) {
+      quarterHours.push(i);
+    }
+    return this.setState({ quarterHours });
+  }
+
+  convertEventLengthToMinutes = () => {
+    const hours = this.state.hours;
+    const minutes = this.state.minutes;
+    const length = (hours * 60) + parseInt(minutes);
+    this.setState({ length });
+  }
+
   // clearArray = (array) => {
   //   const arrayToClear = array.slice();
   //   return arrayToClear.splice(0, arrayToClear.length);
@@ -94,6 +117,7 @@ class EventsEdit extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     new Promise(resolve => {
+      this.convertEventLengthToMinutes();
       const timeSlots = this.state.selectedTimes.map(time => {
         const date = time;
         return { date: date };
@@ -113,6 +137,8 @@ class EventsEdit extends React.Component {
   }
 
   componentDidMount() {
+    this.populateHours();
+    this.populateMinutes();
     axios({
       url: `/api/events/${this.props.match.params.id}`,
       method: 'GET'
@@ -149,6 +175,7 @@ class EventsEdit extends React.Component {
   }
 
   render() {
+    console.log(this.state);
     return(
       <div>
         <h2 className="title is-2">Edit your event</h2>

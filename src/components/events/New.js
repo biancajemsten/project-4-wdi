@@ -23,6 +23,7 @@ class EventsNew extends React.Component {
     this.addTimeSlot = this.addTimeSlot.bind(this);
     this.removeTimeSlot = this.removeTimeSlot.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.populateHours = this.populateHours.bind(this);
   }
 
   handleAddressChange = address => {
@@ -54,6 +55,29 @@ class EventsNew extends React.Component {
     this.setState({ startDate: date });
   }
 
+  populateHours = () => {
+    const hoursInDay = [];
+    for (let i=0; i < 25; i++) {
+      hoursInDay.push(i);
+    }
+    return this.setState({ hoursInDay });
+  }
+
+  populateMinutes = () => {
+    const quarterHours = [];
+    for (let i=0; i < 60; i+=15) {
+      quarterHours.push(i);
+    }
+    return this.setState({ quarterHours });
+  }
+
+  convertEventLengthToMinutes = () => {
+    const hours = this.state.hours;
+    const minutes = this.state.minutes;
+    const length = (hours * 60) + parseInt(minutes);
+    this.setState({ length });
+  }
+
   addTimeSlot(e) {
     e.preventDefault();
     const selectedTimes = this.state.selectedTimes.slice();
@@ -75,6 +99,7 @@ class EventsNew extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     new Promise(resolve => {
+      this.convertEventLengthToMinutes();
       const timeSlots = this.state.selectedTimes.map(time => {
         const date = time;
         return { date: date };
@@ -94,6 +119,8 @@ class EventsNew extends React.Component {
   }
 
   componentDidMount() {
+    this.populateHours();
+    this.populateMinutes();
     axios({
       url: '/api/users',
       method: 'GET'
