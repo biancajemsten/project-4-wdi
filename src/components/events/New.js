@@ -114,6 +114,7 @@ class EventsNew extends React.Component {
       const date = time;
       return { date: date };
     });
+
     this.setState({ timeSlots }, this.saveEvent);
   }
 

@@ -26,6 +26,29 @@ class EventsShow extends React.Component{
     if(Auth.getPayload().sub === this.state.event.organizer._id) return true;
   }
 
+  checkUserAttending = () => {
+    if(!Auth.getPayload()) return false;
+    const currentUser = Auth.getPayload().sub;
+    if(this.state.event.attendees.includes(currentUser)) return true;
+  }
+
+  checkUserIsInvitee = () => {
+    if(!Auth.getPayload()) return false;
+    const currentUser = Auth.getPayload().sub;
+    const invitees = this.state.event.invitees;
+    let isInvitee;
+    invitees.forEach(invitee => {
+      if(invitee._id === currentUser) {
+        isInvitee = true;
+      }
+    });
+    return isInvitee;
+  }
+
+  pendingRequestToJoin = () => {
+    if(this.state.event.joinRequests.includes(Auth.getPayload().sub)) return true;
+  }
+
   //checks the date of the column with the date of the timeSlot
   filterStartTime = (date, i) => {
     if(this.state.event.finalTimes.length > 0){
@@ -109,24 +132,7 @@ class EventsShow extends React.Component{
       });
   }
 
-  checkUserAttending = () => {
-    if(!Auth.getPayload()) return false;
-    const currentUser = Auth.getPayload().sub;
-    if(this.state.event.attendees.includes(currentUser)) return true;
-  }
 
-  checkUserIsInvitee = () => {
-    if(!Auth.getPayload()) return false;
-    const currentUser = Auth.getPayload().sub;
-    const invitees = this.state.event.invitees;
-    let isInvitee;
-    invitees.forEach(invitee => {
-      if(invitee._id === currentUser) {
-        isInvitee = true;
-      }
-    });
-    return isInvitee;
-  }
 
   handleDeclineInvitation = () => {
     new Promise(resolve => {
@@ -157,6 +163,32 @@ class EventsShow extends React.Component{
     }
   }
 
+  submitRequestToJoin = () => {
+    new Promise(resolve => {
+      const user = Auth.getPayload().sub;
+      const joinRequests = this.state.event.joinRequests.slice();
+      joinRequests.push(user);
+      resolve(this.setState({...this.state.event, joinRequests}));
+    })
+      .then(() => {
+        axios({
+          method: 'PUT',
+          url: `/api/events/${this.props.match.params.id}`,
+          data: this.state,
+          headers: { Authorization: `Bearer ${Auth.getToken()}`}
+        })
+          .then(res => this.setState({ event: res.data }))
+          .catch(err => console.log(err));
+      });
+  }
+
+  acceptRequest = (id) => {
+    invitees = this.state.event.invitees.slice();
+    joinRequests = this.state.event.joinRequests.slice();
+    joinRequests.splice(indexOf(id), 1)
+  }
+
+
   handleDelete = () => {
     axios({
       method: 'DELETE',
@@ -168,9 +200,12 @@ class EventsShow extends React.Component{
 
   render(){
     if(!this.state.event) return <div className="loadContainer"><img src="../../assets/images/Pacman.svg"/><h2 className="title">Loading...</h2></div>;
+    console.log(this.state);
     return(
       <div>
         <h2 className="title is-2 font-is-light">{this.state.event.name}</h2>
+        {!this.checkUserAttending() && !this.checkUserIsInvitee() && !this.pendingRequestToJoin() && <button className="button" onClick={this.submitRequestToJoin}>Request to join</button>}
+        {!this.checkUserAttending() && !this.checkUserIsInvitee() &&this.pendingRequestToJoin() && <div className="button">Pending...</div>}
         <hr/>
         <div className="columns is-multiline is-mobile">
           <div className="column is-two-fifths">
@@ -239,6 +274,15 @@ class EventsShow extends React.Component{
           <h3 className="title is-3">Location</h3>
           <GoogleMap location={this.state.event.location} />
         </div>}
+
+        <h3 className="title is-3">Pending Requests</h3>
+        {this.state.event.joinRequests.map(request =>
+          <div key={request._id}>
+            <p>{request.username}</p>
+            <button onClick={() => this.acceptRequest(request._id)} className="button">Accept</button>
+            <button onClick={() => this.declineRequest(request._id)} className="button">Decline</button>
+          </div>
+        )}
       </div>
     );
   }

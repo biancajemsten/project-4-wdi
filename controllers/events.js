@@ -14,8 +14,7 @@ function indexRoute(req, res, next) {
 function showRoute(req, res, next) {
   Event
     .findById(req.params.id)
-    .populate('invitees')
-    .populate('organizer')
+    .populate('invitees organizer joinRequests')
     .then(event => res.json(event))
     .catch(next);
 }

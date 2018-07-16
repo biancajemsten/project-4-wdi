@@ -43,7 +43,8 @@ const eventSchema = new mongoose.Schema({
   pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   image: String,
   organizer: { type: mongoose.Schema.ObjectId, ref: 'User' },
-  finalTimes: [Date]
+  finalTimes: [Date],
+  joinRequests: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
 });
 
 eventSchema.virtual('eventDates')
