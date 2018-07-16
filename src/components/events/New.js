@@ -109,10 +109,12 @@ class EventsNew extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    this.convertEventLengthToMinutes(); 
     const timeSlots = this.state.selectedTimes.map(time => {
       const date = time;
       return { date: date };
     });
+
     this.setState({ timeSlots }, this.saveEvent);
   }
 
