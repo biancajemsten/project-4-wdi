@@ -158,6 +158,26 @@ class EventsShow extends React.Component{
     }
   }
 
+  submitRequestToJoin = () => {
+    new Promise(resolve => {
+      const user = Auth.getPayload().sub;
+      const joinRequests = this.state.event.joinRequests.slice();
+      joinRequests.push(user);
+      resolve(this.setState({...this.state.event, joinRequests}));
+    })
+      .then(() => {
+        axios({
+          method: 'PUT',
+          url: `/api/events/${this.props.match.params.id}`,
+          data: this.state,
+          headers: { Authorization: `Bearer ${Auth.getToken()}`}
+        })
+          .then(res => this.setState({ event: res.data }))
+          .catch(err => console.log(err));
+      });
+  }
+
+
   handleDelete = () => {
     axios({
       method: 'DELETE',
@@ -169,9 +189,11 @@ class EventsShow extends React.Component{
 
   render(){
     if(!this.state.event) return <div className="loadContainer"><img src="../../assets/images/Pacman.svg"/><h2 className="title">Loading...</h2></div>;
+    console.log(this.state); 
     return(
       <div>
         <h2 className="title is-2 font-is-light">{this.state.event.name}</h2>
+        <button className="button" onClick={this.submitRequestToJoin}>Request to join</button>
         <hr/>
         <div className="columns is-multiline is-mobile">
           <div className="column is-two-fifths">
@@ -187,7 +209,7 @@ class EventsShow extends React.Component{
         <div className="columns buttonContainer">
           {this.checkUserIsOrganizer() && <Link to={`/events/${this.state.event._id}/edit`} className="button">Edit Event</Link>}
           {this.checkUserIsOrganizer() && <button className="button deleteEvent" onClick={this.handleDelete}>Delete Event</button>}
-          {this.checkUserIsInvitee() && !this.checkUserIsOrganizer() && Auth.isAuthenticated() && <button className="button" onClick={this.handleDeclineInvitation}>Decline Invitation</button>}
+          {this.checkUserIsInvitee() && !this.checkUserIsOrganizer() && Auth.isAuthenticated() && !this.checkUserAttending() && <button className="button" onClick={this.handleDeclineInvitation}>Decline Invitation</button>}
         </div>
 
         {!this.state.event.finalTimesChecker && <div className="columns is-mobile is-multiline">
