@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom';
 const Hero = ({ event, handleDelete, handleDeclineInvitation, handleJoinRequest }) => {
 
   const checkUserIsOrganizer = () => {
-    return Auth.getPayload() && Auth.getPayload().sub === event.organizer._id;
+    return Auth.isAuthenticated() && Auth.getPayload().sub === event.organizer._id;
   };
 
   const checkUserAttending = () => {
-    return !Auth.getPayload() && event.attendees.includes(Auth.getPayload().sub);
+    return Auth.isAuthenticated() && event.attendees.includes(Auth.getPayload().sub);
   };
 
   const checkUserIsInvitee = () => {
-    return !Auth.getPayload() && event.invitees.some(invitee => invitee._id === Auth.getPayload().sub);
+    return Auth.isAuthenticated() && event.invitees.some(invitee => invitee._id === Auth.getPayload().sub);
   };
 
   const pendingRequestToJoin = () => {

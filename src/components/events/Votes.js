@@ -38,7 +38,7 @@ const Votes = ({ event, handleVote, handlePickDate, handleConfirmFinalTimes, han
 
   return (
     <div>
-      {!event.finalTimesChecker && (checkUserIsInvitee() || checkUserIsOrganizer()) &&
+      {!event.finalTimesChecker && (checkUserIsInvitee() || checkUserIsOrganizer() || checkUserAttending()) &&
         <div className="columns is-mobile is-multiline">
 
           {event.eventDates.map((date, i) =>

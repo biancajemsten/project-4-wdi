@@ -26,7 +26,6 @@ class EventsShow extends React.Component{
   handlePickDate = (date) => {
     let finalTimes;
     const index = this.state.event.finalTimes.indexOf(date);
-
     if(index === -1) {
       finalTimes = this.state.event.finalTimes.concat(date);
     } else {
@@ -182,7 +181,7 @@ class EventsShow extends React.Component{
 
         {this.state.event.location && <Location event={this.state.event} />}
 
-        {Auth.getPayload() && Auth.getPayload().sub === this.state.event.organizer._id && <PendingRequests event={this.state.event} />}
+        {Auth.getPayload() && Auth.getPayload().sub === this.state.event.organizer._id && <PendingRequests event={this.state.event} acceptRequest={this.acceptRequest} declineRequest={this.declineRequest} />}
 
       </div>
     );
