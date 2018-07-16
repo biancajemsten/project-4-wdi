@@ -44,7 +44,6 @@ class EventsIndex extends React.Component {
   }
 
   render() {
-    if(!this.state.events) return <h2 className="title is-2 font-is-light">Loading...</h2>;
     return(
       <section>
         <div className="filters">
@@ -67,7 +66,7 @@ class EventsIndex extends React.Component {
             <h6 className="title is-6">Organizer</h6>
           </div>
           <div className="column columns is-full-mobile is-full-desktop is-full-tablet indexList is-multiline">
-            {this.sortedAndFilteredEvents(this.state.events).map(event =>
+            {this.state.events && this.sortedAndFilteredEvents(this.state.events).map(event =>
               <div className="column columns is-full-mobile is-full-desktop is-full-tablet" key={event._id}><Link to={`/events/${event._id}`}>
                 <div className="column is-one-third-mobile is-one-third-desktop"><p>{event.name}</p></div>
                 <div className="column is-one-third-mobile is-one-third-desktop middleItem"><p>{event.address}</p></div>

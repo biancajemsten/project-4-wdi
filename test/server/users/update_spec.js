@@ -70,7 +70,6 @@ describe('PUT /users/:id', ()=>{
       .set('Authorization', `Bearer ${token}`)
       .send(updatedUserData)
       .end((err, res) => {
-        console.log(res.body);
         expect(res.body.name).to.eq(userData.name);
         expect(res.body.description).to.eq(userData.description);
         done();
