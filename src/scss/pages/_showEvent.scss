@@ -47,6 +47,11 @@ div.timeSlotDiv{
 
     }
   }
+  button.button{
+    background-color: $dark-blue;
+    color: $light;
+    margin-right: 10px;
+  }
 }
 
 // button.button.unVote{
@@ -60,11 +65,11 @@ div.timeSlotDiv{
 }
 
 .requestTable{
-  width: 400px;
-  background-color: $light;
+  // width: 400px;
   margin: 0px;
   color: $dark-blue;
   div{
+    background-color: $light;
     display: flex;
     justify-content: space-between;
   }
