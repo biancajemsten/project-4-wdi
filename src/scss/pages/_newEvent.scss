@@ -114,3 +114,12 @@ div.Select-control{
 .Select-menu-outer{
   color: $light;
 }
+
+
+.select:not(.is-multiple):not(.is-loading)::after {
+  border-color: $red;
+  z-index: 0;
+  &:hover{
+    border-color: $dark-blue;
+  }
+}

@@ -59,9 +59,7 @@ function updateRoute(req, res, next) {
             const body = `Hi ${user.username}! ${req.body.organizer.username} has set the final time(s) for the event ${req.body.name}. It will take place on ${times}. For more information, visit ${req.headers.origin}/events/${event._id}`;
             sendSMS(body, user.tel);
           });
-
       }
-
       return res.json(event);
     })
     .catch(next);
