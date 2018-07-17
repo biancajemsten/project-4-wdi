@@ -12,7 +12,7 @@ class EventsShow extends React.Component{
   constructor(){
     super();
     this.state = {
-      selectedTimeSlots: []
+      votes: []
     };
   }
 
@@ -50,32 +50,24 @@ class EventsShow extends React.Component{
 
   // allows a user to vote on a timeslot
   handleVote = (slotId) => {
-    let selectedTimeSlots;
-    const index = this.state.selectedTimeSlots.indexOf(slotId);
+    let votes;
+    const index = this.state.votes.indexOf(slotId);
 
     if(index === -1) {
-      selectedTimeSlots = this.state.selectedTimeSlots.concat(slotId);
+      votes = this.state.votes.concat(slotId);
     } else {
-      selectedTimeSlots = this.state.selectedTimeSlots.slice();
-      selectedTimeSlots.splice(index, 1);
+      votes = this.state.votes.slice();
+      votes.splice(index, 1);
     }
-    this.setState({ selectedTimeSlots });
+    this.setState({ votes });
   }
 
   // allows a user to submit their vote
   handleVoteSubmit = () => {
-    const timeSlots = this.state.event.timeSlots.map(timeSlot => {
-      const slot = { ...timeSlot };
-      if(this.state.selectedTimeSlots.includes(slot._id)) slot.votes.push(Auth.getPayload().sub);
-      return slot;
-    });
-    const attendees = this.state.event.attendees.concat(Auth.getPayload().sub);
-    const event = { ...this.state.event, attendees, timeSlots };
-
     axios({
-      method: 'PUT',
-      url: `/api/events/${this.props.match.params.id}`,
-      data: event,
+      method: 'POST',
+      url: `/api/events/${this.props.match.params.id}/vote`,
+      data: this.state,
       headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
       .then(res => this.setState({ event: res.data }))
@@ -170,7 +162,7 @@ class EventsShow extends React.Component{
           handlePickDate={this.handlePickDate}
           handleConfirmFinalTimes={this.handleConfirmFinalTimes}
           handleVoteSubmit={this.handleVoteSubmit}
-          selectedTimeSlots={this.state.selectedTimeSlots}
+          votes={this.state.votes}
         />
 
         {this.state.event.finalTimesChecker &&

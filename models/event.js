@@ -38,7 +38,6 @@ const eventSchema = new mongoose.Schema({
   address: String,
   location: { lat: Number, lng: Number },
   privacy: { type: String, enum: ['Private', 'Public'], required: 'Privacy level is required' },
-  attendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   invitees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   image: String,
@@ -57,7 +56,6 @@ eventSchema.virtual('finalEventDates')
     return Array.from(new Set(this.finalTimes.map(time => moment(time).format('ddd, MMM Do'))));
   });
 
-
 eventSchema.virtual('finalTimesChecker')
   .get(function() {
     return this.finalTimes.length > 0 ? true : false;
@@ -71,6 +69,12 @@ eventSchema.virtual('hours')
 eventSchema.virtual('minutes')
   .get(function() {
     return Math.round(this.length % 60);
+  });
+
+eventSchema.virtual('attendees')
+  .get(function() {
+    const attendees = this.timeSlots.reduce((attendees, slot) => attendees.concat(slot.votes), []);
+    return Array.from(new Set(attendees));
   });
 
 eventSchema.set('toJSON', { virtuals: true });
