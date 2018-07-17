@@ -40,7 +40,6 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, han
             {data.selectedTimes.map(time =>
               <span key={time} className="tag">{moment(time).format('ddd, MMM Do, HH:mm')}<button value={time || ''} onClick={removeTimeSlot} className="delete"></button></span>
             )}
-            {/* {data.errors.date && <small>{data.errors.date}</small>} */}
           </div>
         </div>}
 
@@ -98,7 +97,6 @@ const EventsForm = ({ handleAddressChange, handleSelect, selected, onChange, han
                     const className = suggestion.active
                       ? 'suggestion-item--active'
                       : 'suggestion-item';
-                      // inline style for demonstration purpose
                     const style = suggestion.active
                       ? { backgroundColor: '#fafafa', cursor: 'pointer' }
                       : { backgroundColor: '#ffffff', cursor: 'pointer' };
