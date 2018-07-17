@@ -23,14 +23,24 @@ class UsersShow extends React.Component {
         {this.state.user && <h1 className="title is-1">{`${this.state.user.username}'s events`}</h1>}
         <hr/>
         <div className="columns">
-          {this.state.user && this.state.user.myEvents.length > 0 && <EventList
-            user = {this.state.user}
-            events = {this.state.user.myEvents}
-          />}
-          {this.state.user && this.state.user.invitedToEvents.length > 0 && <EventList
-            user= {this.state.user}
-            events = {this.state.user.invitedToEvents}
-          />}
+          {this.state.user && this.state.user.myEvents.length > 0 &&
+            <div className="column is-half">
+              <h2 className="title is-2">Your events</h2>
+              <EventList
+                user = {this.state.user}
+                events = {this.state.user.myEvents}
+              />
+            </div>
+          }
+          {this.state.user && this.state.user.invitedToEvents.length > 0 &&
+            <div className="column is-half">
+              <h2 className="title is-2">You're invited to</h2>
+              <EventList
+                user= {this.state.user}
+                events = {this.state.user.invitedToEvents}
+              />
+            </div>
+          }
         </div>
       </div>
     );

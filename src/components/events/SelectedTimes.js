@@ -26,7 +26,7 @@ const SelectedTimes = ({ event }) => {
 
   return (
     <div>
-      <h2 className="title is-2">Selected Times</h2>
+      <h3 className="title is-3">Final Times</h3>
       <div className="columns is-full is-mobile is-multiline">
 
         {event.finalEventDates.map((date, i) =>

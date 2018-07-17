@@ -73,7 +73,7 @@ eventSchema.virtual('minutes')
 
 eventSchema.virtual('attendees')
   .get(function() {
-    const attendees = this.timeSlots.reduce((attendees, slot) => attendees.concat(slot.votes), []);
+    const attendees = this.timeSlots.reduce((attendees, slot) => attendees.concat(slot.votes), []).map(id => id.toString());
     return Array.from(new Set(attendees));
   });
 
