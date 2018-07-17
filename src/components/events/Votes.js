@@ -2,7 +2,7 @@ import React from 'react';
 import Auth from '../../lib/Auth';
 import moment from 'moment';
 
-const Votes = ({ event, handleVote, handlePickDate, handleConfirmFinalTimes, handleVoteSubmit, selectedTimeSlots }) => {
+const Votes = ({ event, handleVote, handlePickDate, handleConfirmFinalTimes, handleVoteSubmit, votes }) => {
   const checkUserIsOrganizer = () => {
     return Auth.isAuthenticated() && Auth.getPayload().sub === event.organizer._id;
   };
@@ -15,7 +15,7 @@ const Votes = ({ event, handleVote, handlePickDate, handleConfirmFinalTimes, han
     return Auth.isAuthenticated() && event.invitees.some(invitee => invitee._id === Auth.getPayload().sub);
   };
 
-  const isVoted = (slotId) => selectedTimeSlots.includes(slotId);
+  const isVoted = (slotId) => votes.includes(slotId);
 
   const isPicked = (date) => event.finalTimes.includes(date);
 

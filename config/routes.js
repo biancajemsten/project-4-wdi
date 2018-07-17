@@ -14,6 +14,8 @@ router.route('/events/:id')
   .put(secureRoute, events.update)
   .delete(secureRoute, events.delete);
 
+router.post('/events/:id/vote', secureRoute, events.vote);
+
 router.post('/register', auth.register);
 router.post('/login', auth.login);
 
