@@ -22,7 +22,6 @@ function showRoute(req, res, next) {
 function createRoute(req, res, next){
   req.body.organizer = req.currentUser;
   req.body.length = (req.body.hours * 60) + +req.body.minutes;
-  req.body.timeSlots = req.body.selectedTimes;
   Event
     .create(req.body)
     .then(event => {
@@ -39,7 +38,6 @@ function createRoute(req, res, next){
 }
 
 function updateRoute(req, res, next) {
-  req.body.timeSlots = req.body.selectedTimes;
   Event
     .findById(req.params.id)
     .populate('organizer invitees')
@@ -91,11 +89,51 @@ function voteRoute(req, res, next) {
     .catch(next);
 }
 
+function requestRoute(req, res, next) {
+  Event
+    .findById(req.params.id)
+    .populate('organizer invitees')
+    .then(event => {
+      event.joinRequests.push(req.currentUser);
+      return event.save();
+    })
+    .then(event => res.json(event))
+    .catch(next);
+}
+
+function acceptRoute(req, res, next) {
+  Event
+    .findById(req.params.id)
+    .populate('organizer invitees')
+    .then(event => {
+      event.joinRequests = event.joinRequests.filter(user => !user._id.equals(req.params.userId));
+      event.invitees.push(req.params.userId);
+      return event.save();
+    })
+    .then(event => res.json(event))
+    .catch(next);
+}
+
+function declineRoute(req, res, next) {
+  Event
+    .findById(req.params.id)
+    .populate('organizer invitees')
+    .then(event => {
+      event.joinRequests = event.joinRequests.filter(user => !user._id.equals(req.params.userId));
+      return event.save();
+    })
+    .then(event => res.json(event))
+    .catch(next);
+}
+
 module.exports = {
   index: indexRoute,
   show: showRoute,
   create: createRoute,
   update: updateRoute,
   delete: deleteRoute,
-  vote: voteRoute
+  vote: voteRoute,
+  request: requestRoute,
+  accept: acceptRoute,
+  decline: declineRoute
 };
