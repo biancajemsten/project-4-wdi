@@ -10,7 +10,7 @@
     }
   div.control{
     display: inline-block;
-    margin-right: 10px; 
+    margin-right: 10px;
   }
   }
   div.field.filePicker button, button.deleteEvent{
@@ -19,6 +19,7 @@
     border-color: $red;
     &:hover{
       border: 1px $light outset;
+      color: $light; 
     }
   }
 form{
