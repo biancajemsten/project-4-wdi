@@ -31,8 +31,10 @@ form{
 
 
 div.columns.buttonContainer{
-  margin-top: 15px;
-  margin-bottom: 25px;
+  margin: 15px 0 25px 0;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  .button{
+    margin-right: 10px; 
+  }
 }

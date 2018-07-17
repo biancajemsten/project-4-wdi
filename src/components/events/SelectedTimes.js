@@ -13,7 +13,7 @@ const SelectedTimes = ({ event }) => {
   };
 
   const columnCounter = () => {
-    if(event.finalTimes.length > 0) {
+    if(event.finalTimesChecker) {
       return event.finalEventDates.length > 1;
     } else{
       return event.eventDates.length > 1;
@@ -26,17 +26,17 @@ const SelectedTimes = ({ event }) => {
 
   return (
     <div>
-      <h3 className="title is-3">Final Times</h3>
-      <div className="columns is-full is-mobile is-multiline">
+      <h3 className="title is-3">Final Time{columnCounter()&&'s'}</h3>
+      <div className="columns slotContainer is-full is-mobile is-multiline">
 
         {event.finalEventDates.map((date, i) =>
-          <div key={i} className={`column dateColumn${columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
+          <div key={i} className={`column dateColumn is-one-third-desktop is-one-third-tablet${columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
             <div className="columns is-multiline">
               <div className="column is-full">
                 <h6 className="title is-6">{date}</h6>
               </div>
               {event.finalTimes.map((time, i) => filterStartTime(date, i) &&
-                <div className="timeSlotDiv column is-one-third-desktop is-full-mobile is-full-tablet" key={i}>
+                <div className="timeSlotDiv column is-full-desktop is-full-mobile is-full-tablet" key={i}>
                   <p>
                     <strong>Time: </strong> {getFormattedTime(time)}
                   </p>

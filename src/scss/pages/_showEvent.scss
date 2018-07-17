@@ -1,3 +1,7 @@
+div.columns.slotContainer{
+  margin: 0;
+}
+
 .dateColumn{
   box-sizing: border-box;
   border: 2px solid $light;
@@ -48,5 +52,6 @@ div.timeSlotDiv{
 
 .buttonDiv{
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  margin-bottom: 15px;
 }
