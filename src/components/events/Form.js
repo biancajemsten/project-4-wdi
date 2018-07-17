@@ -54,7 +54,6 @@ const EventsForm = ({ handleBlur, addTimeSlot, removeTimeSlot, handleClearSelect
                 <button value={time.date || ''} onClick={removeTimeSlot} className="delete"></button>
               </span>
             )}
-            {/* {data.errors.date && <small>{data.errors.date}</small>} */}
           </div>
         </div>}
 
