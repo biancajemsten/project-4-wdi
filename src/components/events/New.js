@@ -50,14 +50,22 @@ class EventsNew extends React.Component {
     this.setState({ finalTimes: [], selectedTimes: [], attendees: [], finalTimesChecker: false });
   }
 
-  handleBlur = ({target: { name, value }}) => {
-    const errorMessage = value.length === 0 ? 'This field is required' : '';
-    const errors = this.state.errors;
-    for(let field in errors) {
-      field = name;
-      errors[field] = errorMessage;
-      return this.setState({ errors });
+  validations = {
+    name: {
+      message: 'This field is required',
+      required: true
     }
+  }
+
+  getFieldError = (name, value) => {
+    const validation = this.validations[name];
+    if(validation.pattern && !validation.pattern.test(value) || (!value && validation.required)) return validation.message;
+    return '';
+  }
+
+  handleBlur = ({target: { name, value }}) => {
+    const errors = { ...this.state.errors, [name]: this.getFieldError(name, value) };
+    this.setState({ errors });
   }
 
   handleSelectChange = selectedOptions => {

@@ -60,7 +60,7 @@ class AuthRegister extends React.Component{
   formIsValid = () => {
     return Object.keys(this.validations).every(field => {
       const validation = this.validations[field];
-      return (validation.pattern && validation.pattern.test(this.state.field)) && (validation.required && this.state[field]);
+      return (validation.pattern && validation.pattern.test(this.state.field)) || (validation.required && this.state[field]);
     });
   }
 
@@ -98,7 +98,7 @@ class AuthRegister extends React.Component{
           {this.state.errors.passwordConfirmation && <small>{this.state.errors.passwordConfirmation}</small>}
         </div>
 
-        <button onClick={this.handleSubmit} disabled={!this.formIsValid()} className="button">Submit</button>
+        <button disabled={!this.formIsValid()} className="button">Submit</button>
       </form>
     );
   }
