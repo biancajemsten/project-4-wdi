@@ -9,25 +9,30 @@ class AuthRegister extends React.Component{
     }
   }
 
-  handleSubmit = () => {
-    let tel = this.state.tel;
-    if(tel[0] === '0') {
-      tel = tel.replace(this.state.tel[0], '+44');
-    }
-    tel = tel.replace(/ /g, '');
-    this.setState({ tel });
-    if(this.checkErrors()) {
-      axios({
-        url: '/api/register',
-        method: 'POST',
-        data: this.state
+  handleSubmit = (e) => {
+    e.preventDefault();
+    //HOW DO WE DO THIS NUMBER FORMATTING IN THE BACK END?
+    // new Promise(resolve => {
+    // let tel = this.state.tel;
+    // if(tel[0] === '0') {
+    //   tel = tel.replace(this.state.tel[0], '+44');
+    // }
+    // tel = tel.replace(/ /g, '');
+    // this.setState({ tel }, () => {
+    axios({
+      url: '/api/register',
+      method: 'POST',
+      data: this.state
+    })
+      .then(res => {
+        Auth.setToken(res.data.token);
+        this.props.history.push('/login');
       })
-        .then(res => {
-          Auth.setToken(res.data.token);
-          this.props.history.push('/login');
-        })
-        .catch(err => this.setState({ errors: err.response.data.errors}));
-    }
+      .catch(err => this.setState({ errors: err.response.data.errors}));
+    // });
+    // })
+    //   .then(() => {
+    //     if(this.checkErrors()) {
   }
 
   handleChange = ({target: { name, value }}) => {
@@ -90,7 +95,7 @@ class AuthRegister extends React.Component{
           {this.state.errors.passwordConfirmation && <small>{this.state.errors.passwordConfirmation}</small>}
         </div>
 
-        <button className="button">Submit</button>
+        <button onClick={this.handleSubmit} className="button">Submit</button>
       </form>
     );
   }

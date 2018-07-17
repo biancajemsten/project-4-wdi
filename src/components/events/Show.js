@@ -34,6 +34,7 @@ class EventsShow extends React.Component{
     }
     const event = { ...this.state.event, finalTimes };
     this.setState({ event });
+    console.log(this.state.event);
   }
 
   // persist the final times (ADMIN)
