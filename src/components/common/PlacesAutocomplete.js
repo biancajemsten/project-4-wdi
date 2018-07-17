@@ -15,7 +15,7 @@ class PlacesAutocomplete extends React.Component {
 
   render() {
     return(
-      <input ref={element => this.input = element} className={this.props.className}/>
+      <input ref={element => this.input = element} name="address" className={this.props.className} value={this.props.value} onChange={this.props.handleChange} />
     );
   }
 }
