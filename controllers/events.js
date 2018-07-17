@@ -21,6 +21,7 @@ function showRoute(req, res, next) {
 
 function createRoute(req, res, next){
   req.body.organizer = req.currentUser;
+  req.body.length = (req.body.hours * 60) + +req.body.minutes;
   Event
     .create(req.body)
     .then(event => {
@@ -29,7 +30,7 @@ function createRoute(req, res, next){
         req.body.selectedOptions.forEach(person => {
           const body = `Hi ${person.label}! You have been invited to ${req.body.name} by ${req.body.organizer.username}. Visit ${req.headers.origin}/events/${event._id} to view the event and vote on which dates are best for you.`;
           sendSMS(body, person.tel);
-          notifications.send({ title: `You've been invited to ${req.body.name}`, body: 'Go to:', url: `/events/${event._id}`}, person.value);
+          notifications.send({ title: `You've been invited to ${req.body.name}`, body: `Hey ${person.label}. For more info, visit 'My events' on CheckIt`}, person.value);
         });
       }
     })
@@ -43,22 +44,17 @@ function updateRoute(req, res, next) {
     .then(event => event.set(req.body))
     .then(event => event.save())
     .then(event => {
-      // console.log('EVENT ATTENDEES: ', typeof event.attendees[0]);
       if(event.finalTimes.length > 0 && event.attendees.length > 0) {
         const times = event.finalTimes
           .map(time => moment(time).format('dddd MMMM Do [at] HH:mm'))
           .map(time => time).join(', ').replace(/(.*),(.*)$/, '$1 &$2');
-        // console.log('EVENT INVITEES: ', typeof event.invitees[0]);
         event.invitees
           .filter(user => event.attendees.includes(user._id.toString()))
           .forEach(user => {
-            console.log('USER', user);
             const body = `Hi ${user.username}! ${req.body.organizer.username} has set the final time(s) for the event ${req.body.name}. It will take place on ${times}. For more information, visit ${req.headers.origin}/events/${event._id}`;
             sendSMS(body, user.tel);
           });
-
       }
-
       return res.json(event);
     })
     .catch(next);
@@ -88,11 +84,55 @@ function voteRoute(req, res, next) {
     .catch(next);
 }
 
+function requestRoute(req, res, next) {
+  Event
+    .findById(req.params.id)
+    .populate('organizer invitees')
+    .then(event => {
+      event.joinRequests.push(req.currentUser);
+      return event.save();
+    })
+    //--> We can put this in but it breaks if not every organizer has an endpoint installed 
+    // .then(event => {
+    //   notifications.send({ title: 'New request!', body: `Someone has requested to join ${event.name}`}, event.organizer._id);
+    // })
+    .then(event => res.json(event))
+    .catch(next);
+}
+
+function acceptRoute(req, res, next) {
+  Event
+    .findById(req.params.id)
+    .populate('organizer invitees')
+    .then(event => {
+      event.joinRequests = event.joinRequests.filter(user => !user._id.equals(req.params.userId));
+      event.invitees.push(req.params.userId);
+      return event.save();
+    })
+    .then(event => res.json(event))
+    .catch(next);
+}
+
+function declineRoute(req, res, next) {
+  Event
+    .findById(req.params.id)
+    .populate('organizer invitees')
+    .then(event => {
+      event.joinRequests = event.joinRequests.filter(user => !user._id.equals(req.params.userId));
+      return event.save();
+    })
+    .then(event => res.json(event))
+    .catch(next);
+}
+
 module.exports = {
   index: indexRoute,
   show: showRoute,
   create: createRoute,
   update: updateRoute,
   delete: deleteRoute,
-  vote: voteRoute
+  vote: voteRoute,
+  request: requestRoute,
+  accept: acceptRoute,
+  decline: declineRoute
 };

@@ -1,6 +1,6 @@
 
   .field{
-    button, button.button, button.button.addTimeSlot{
+    button.button, button.button.addTimeSlot{
       background-color: $red;
       color: $light;
       border-color: $red;
@@ -8,6 +8,10 @@
         border: 1px $light outset;
       }
     }
+  div.control{
+    display: inline-block;
+    margin-right: 10px;
+  }
   }
   div.field.filePicker button, button.deleteEvent{
     background-color: $red;
@@ -15,6 +19,7 @@
     border-color: $red;
     &:hover{
       border: 1px $light outset;
+      color: $light; 
     }
   }
 form{

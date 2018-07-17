@@ -10,7 +10,7 @@
   background-color: $light;
 }
 
-button.button.selected{
+.timeSlotDiv button.button.selected{
   background-color: $red;
   color: $light;
   &:active{

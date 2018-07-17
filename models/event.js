@@ -39,7 +39,6 @@ const eventSchema = new mongoose.Schema({
   location: { lat: Number, lng: Number },
   privacy: { type: String, enum: ['Private', 'Public'], required: 'Privacy level is required' },
   invitees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  pendingAttendees: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   image: String,
   organizer: { type: mongoose.Schema.ObjectId, ref: 'User' },
   finalTimes: [Date],
@@ -48,6 +47,7 @@ const eventSchema = new mongoose.Schema({
 
 eventSchema.virtual('eventDates')
   .get(function() {
+    console.log(this); 
     return Array.from(new Set(this.timeSlots.map(slot => moment(slot.date).format('ddd, MMM Do'))));
   });
 

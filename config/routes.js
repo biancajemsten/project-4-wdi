@@ -15,6 +15,11 @@ router.route('/events/:id')
   .delete(secureRoute, events.delete);
 
 router.post('/events/:id/vote', secureRoute, events.vote);
+router.post('/events/:id/requests', secureRoute, events.request);
+router.route('/events/:id/requests/:userId')
+  .all(secureRoute)
+  .put(events.accept)
+  .delete(events.decline);
 
 router.post('/register', auth.register);
 router.post('/login', auth.login);
