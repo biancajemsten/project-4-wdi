@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken');
 const { secret } = require('../config/environment');
 
 function register(req, res, next) {
+  if(req.body.tel[0] === '0') {
+    req.body.tel = req.body.tel.replace(req.body.tel[0], '+44');
+  }
+  req.body.tel = req.body.tel.replace(/ /g, '');
   User.create(req.body)
     .then(user => res.status(201).json(user))
     .catch(next);

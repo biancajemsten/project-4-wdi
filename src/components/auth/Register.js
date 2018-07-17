@@ -4,21 +4,42 @@ import Auth from '../../lib/Auth';
 
 class AuthRegister extends React.Component{
   state = {
-    errors: {
-      username: ''
+    errors: {}
+  }
+
+  validations = {
+    password: {
+      message: 'This field is required',
+      required: true
+    },
+    username: {
+      message: 'This field is required',
+      required: true
+    },
+    passwordConfirmation: {
+      message: 'Passwords do not match',
+      required: true
+    },
+    email: {
+      message: 'Please enter a valid email address',
+      required: true,
+      pattern: /.+@.+\..+/
+    },
+    tel: {
+      message: 'Please enter a valid UK mobile number',
+      required: true,
+      pattern: /^\(?(?:(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?\(?(?:0\)?[\s-]?\(?)?|0)(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}|\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4}|\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3})|\d{5}\)?[\s-]?\d{4,5}|8(?:00[\s-]?11[\s-]?11|45[\s-]?46[\s-]?4\d))(?:(?:[\s-]?(?:x|ext\.?\s?|#)\d+)?)$/
     }
+  }
+
+  getFieldError = (name, value) => {
+    const validation = this.validations[name];
+    if(validation.pattern && !validation.pattern.test(value) || (!value && validation.required)) return validation.message;
+    return '';
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    //HOW DO WE DO THIS NUMBER FORMATTING IN THE BACK END?
-    // new Promise(resolve => {
-    // let tel = this.state.tel;
-    // if(tel[0] === '0') {
-    //   tel = tel.replace(this.state.tel[0], '+44');
-    // }
-    // tel = tel.replace(/ /g, '');
-    // this.setState({ tel }, () => {
     axios({
       url: '/api/register',
       method: 'POST',
@@ -29,41 +50,23 @@ class AuthRegister extends React.Component{
         this.props.history.push('/login');
       })
       .catch(err => this.setState({ errors: err.response.data.errors}));
-    // });
-    // })
-    //   .then(() => {
-    //     if(this.checkErrors()) {
   }
 
   handleChange = ({target: { name, value }}) => {
-    this.handleBlur({target: { name, value }});
-    this.setState({ [name]: value });
+    const errors = { ...this.state.errors, [name]: '' };
+    this.setState({ [name]: value, errors });
   }
 
-  checkErrors = () => {
-    const errors = this.state.errors;
-    return Object.values(errors).every(error => error === '');
+  formIsValid = () => {
+    return Object.keys(this.validations).every(field => {
+      const validation = this.validations[field];
+      return (validation.pattern && validation.pattern.test(this.state.field)) || (validation.required && this.state[field]);
+    });
   }
 
   handleBlur = ({target: { name, value }}) => {
-    let errorMessage;
-    if(name === 'passwordConfirmation') {
-      errorMessage = value !== this.state.password ? 'Passwords do not match' : '';
-    } else if(name === 'email') {
-      const re = new RegExp(/.+@.+\..+/);
-      errorMessage = re.test(value) ? '' : 'Please enter a valid email address';
-    } else if(name === 'tel') {
-      const re = new RegExp(/^\(?(?:(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?\(?(?:0\)?[\s-]?\(?)?|0)(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}|\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4}|\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3})|\d{5}\)?[\s-]?\d{4,5}|8(?:00[\s-]?11[\s-]?11|45[\s-]?46[\s-]?4\d))(?:(?:[\s-]?(?:x|ext\.?\s?|#)\d+)?)$/);
-      errorMessage = re.test(value) ? '' : 'Please enter a valid UK mobile number';
-    } else {
-      errorMessage = value.length === 0 ? 'This field is required' : '';
-    }
-    const errors = this.state.errors;
-    for(let field in errors) {
-      field = name;
-      errors[field] = errorMessage;
-      return this.setState({ errors });
-    }
+    const errors = { ...this.state.errors, [name]: this.getFieldError(name, value) };
+    this.setState({ errors });
   }
 
   render() {
@@ -95,11 +98,10 @@ class AuthRegister extends React.Component{
           {this.state.errors.passwordConfirmation && <small>{this.state.errors.passwordConfirmation}</small>}
         </div>
 
-        <button onClick={this.handleSubmit} className="button">Submit</button>
+        <button disabled={!this.formIsValid()} className="button">Submit</button>
       </form>
     );
   }
-
 }
 
 export default AuthRegister;

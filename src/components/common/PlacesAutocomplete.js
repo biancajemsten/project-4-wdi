@@ -4,7 +4,6 @@ import React from 'react';
 class PlacesAutocomplete extends React.Component {
 
   componentDidMount() {
-    console.log(this.props);
     this.autocomplete = new google.maps.places.Autocomplete(this.input);
     this.autocomplete.addListener('place_changed', () => {
       const place = this.autocomplete.getPlace();
@@ -15,7 +14,7 @@ class PlacesAutocomplete extends React.Component {
 
   render() {
     return(
-      <input ref={element => this.input = element} className={this.props.className}/>
+      <input ref={element => this.input = element} name="address" className={this.props.className} value={this.props.value} onChange={this.props.handleChange} />
     );
   }
 }

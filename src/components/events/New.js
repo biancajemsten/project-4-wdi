@@ -9,7 +9,6 @@ class EventsNew extends React.Component {
 
   state = {
     startDate: moment(),
-    selectedTimes: [],
     timeSlots: [],
     errors: {
       name: ''
@@ -35,29 +34,32 @@ class EventsNew extends React.Component {
 
   addTimeSlot = (e) => {
     e.preventDefault();
-    const selectedTimes = this.state.selectedTimes.concat({ date: this.state.startDate.toISOString() });
-    this.setState({ selectedTimes });
+    const timeSlots = this.state.timeSlots.concat({ date: this.state.startDate.toISOString() });
+    this.setState({ timeSlots });
   }
 
   removeTimeSlot = (e) => {
     e.preventDefault();
-    const selectedTimes = this.state.selectedTimes.filter(dateObj => dateObj.date !== e.target.value);
-    this.setState({ selectedTimes });
+    const timeSlots = this.state.timeSlots.filter(dateObj => dateObj.date !== e.target.value);
+    this.setState({ timeSlots });
   }
 
-  handleClearSelectedTimes = (e) => {
-    e.preventDefault();
-    this.setState({ finalTimes: [], selectedTimes: [], attendees: [], finalTimesChecker: false });
+  validations = {
+    name: {
+      message: 'This field is required',
+      required: true
+    }
+  }
+
+  getFieldError = (name, value) => {
+    const validation = this.validations[name];
+    if(validation.pattern && !validation.pattern.test(value) || (!value && validation.required)) return validation.message;
+    return '';
   }
 
   handleBlur = ({target: { name, value }}) => {
-    const errorMessage = value.length === 0 ? 'This field is required' : '';
-    const errors = this.state.errors;
-    for(let field in errors) {
-      field = name;
-      errors[field] = errorMessage;
-      return this.setState({ errors });
-    }
+    const errors = { ...this.state.errors, [name]: this.getFieldError(name, value) };
+    this.setState({ errors });
   }
 
   handleSelectChange = selectedOptions => {
@@ -67,7 +69,6 @@ class EventsNew extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Event created');
     axios({
       method: 'POST',
       url: '/api/events',
