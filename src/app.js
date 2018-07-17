@@ -56,10 +56,10 @@ class App extends React.Component {
             <div className="container">
               <Switch>
                 <Route exact path="/" component={Home} />
-                <Route path="/users/:id" component={UsersShow} />
+                <ProtectedRoute path="/users/:id" component={UsersShow} />
                 <ProtectedRoute path="/events/new" component={EventsNew} />
-                <Route path="/events/:id/edit" component={EventsEdit}/>
-                <Route path="/events/:id" component={EventsShow}/>
+                <ProtectedRoute path="/events/:id/edit" component={EventsEdit}/>
+                <ProtectedRoute path="/events/:id" component={EventsShow}/>
                 <Route path="/events" component={EventsIndex} />
                 <Route path="/register" component={AuthRegister} />
                 <Route path="/login" component={AuthLogin} />

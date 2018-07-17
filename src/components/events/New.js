@@ -75,7 +75,7 @@ class EventsNew extends React.Component {
       data: this.state,
       headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
-      .then(() => this.props.history.push('/events'))
+      .then(() => this.props.history.push(`/users/${Auth.getPayload().sub}`))
       .catch(err => this.setState({ errors: err.response.data.errors}));
   }
 
