@@ -11,13 +11,6 @@ class AuthRegister extends React.Component{
 
   handleSubmit = (e) => {
     e.preventDefault();
-    //HOW DO WE DO THIS NUMBER FORMATTING IN THE BACK END?
-    // let tel = this.state.tel;
-    // if(tel[0] === '0') {
-    //   tel = tel.replace(this.state.tel[0], '+44');
-    // }
-    // tel = tel.replace(/ /g, '');
-    //if(this.checkErrors) ?? should return false for invalid ohone 
     axios({
       url: '/api/register',
       method: 'POST',
@@ -96,7 +89,6 @@ class AuthRegister extends React.Component{
       </form>
     );
   }
-
 }
 
 export default AuthRegister;
