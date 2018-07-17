@@ -12,13 +12,12 @@ class AuthRegister extends React.Component{
   handleSubmit = (e) => {
     e.preventDefault();
     //HOW DO WE DO THIS NUMBER FORMATTING IN THE BACK END?
-    // new Promise(resolve => {
     // let tel = this.state.tel;
     // if(tel[0] === '0') {
     //   tel = tel.replace(this.state.tel[0], '+44');
     // }
     // tel = tel.replace(/ /g, '');
-    // this.setState({ tel }, () => {
+    //if(this.checkErrors) ?? should return false for invalid ohone 
     axios({
       url: '/api/register',
       method: 'POST',
@@ -29,10 +28,6 @@ class AuthRegister extends React.Component{
         this.props.history.push('/login');
       })
       .catch(err => this.setState({ errors: err.response.data.errors}));
-    // });
-    // })
-    //   .then(() => {
-    //     if(this.checkErrors()) {
   }
 
   handleChange = ({target: { name, value }}) => {
@@ -67,6 +62,8 @@ class AuthRegister extends React.Component{
   }
 
   render() {
+    console.log(this.state.errors);
+    console.log(this.checkErrors());
     return(
       <form onSubmit={this.handleSubmit}>
         <div className="field">
