@@ -10,7 +10,6 @@ class EventsEdit extends React.Component {
 
   state = {
     startDate: moment(),
-    selectedTimes: [],
     timeSlots: [],
     address: '',
     errors: {
@@ -27,8 +26,8 @@ class EventsEdit extends React.Component {
 
         const options = res.users.map(user => ({ value: user._id, label: user.username }));
         const selectedOptions = res.event.invitees.map(invitee => ({ value: invitee._id, label: invitee.username }));
-        const selectedTimes = res.event.timeSlots.map(timeSlot => ({ date: timeSlot.date }));
-        this.setState({ selectedTimes, options, selectedOptions, ...res.event  });
+        const timeSlots = res.event.timeSlots.map(timeSlot => ({ date: timeSlot.date }));
+        this.setState({ timeSlots, options, selectedOptions, ...res.event  });
       });
   }
 
@@ -38,19 +37,19 @@ class EventsEdit extends React.Component {
 
   addTimeSlot = (e) => {
     e.preventDefault();
-    const selectedTimes = this.state.selectedTimes.concat({ date: this.state.startDate.toISOString() });
-    this.setState({ selectedTimes });
+    const timeSlots = this.state.timeSlots.concat({ date: this.state.startDate.toISOString() });
+    this.setState({ timeSlots });
   }
 
   removeTimeSlot = (e) => {
     e.preventDefault();
-    const selectedTimes = this.state.selectedTimes.filter(dateObj => dateObj.date !== e.target.value);
-    this.setState({ selectedTimes });
+    const timeSlots = this.state.timeSlots.filter(dateObj => dateObj.date !== e.target.value);
+    this.setState({ timeSlots });
   }
 
   handleClearSelectedTimes = (e) => {
     e.preventDefault();
-    this.setState({ finalTimes: [], selectedTimes: [], attendees: [], finalTimesChecker: false });
+    this.setState({ finalTimes: [], timeSlots: [], attendees: [], finalTimesChecker: false });
   }
 
   handleBlur = ({target: { name, value }}) => {

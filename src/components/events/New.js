@@ -9,7 +9,6 @@ class EventsNew extends React.Component {
 
   state = {
     startDate: moment(),
-    selectedTimes: [],
     timeSlots: [],
     errors: {
       name: ''
@@ -35,19 +34,14 @@ class EventsNew extends React.Component {
 
   addTimeSlot = (e) => {
     e.preventDefault();
-    const selectedTimes = this.state.selectedTimes.concat({ date: this.state.startDate.toISOString() });
-    this.setState({ selectedTimes });
+    const timeSlots = this.state.timeSlots.concat({ date: this.state.startDate.toISOString() });
+    this.setState({ timeSlots });
   }
 
   removeTimeSlot = (e) => {
     e.preventDefault();
-    const selectedTimes = this.state.selectedTimes.filter(dateObj => dateObj.date !== e.target.value);
-    this.setState({ selectedTimes });
-  }
-
-  handleClearSelectedTimes = (e) => {
-    e.preventDefault();
-    this.setState({ finalTimes: [], selectedTimes: [], attendees: [], finalTimesChecker: false });
+    const timeSlots = this.state.timeSlots.filter(dateObj => dateObj.date !== e.target.value);
+    this.setState({ timeSlots });
   }
 
   handleBlur = ({target: { name, value }}) => {

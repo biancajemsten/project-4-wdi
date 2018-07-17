@@ -49,7 +49,7 @@ const EventsForm = ({ handleBlur, addTimeSlot, removeTimeSlot, handleClearSelect
           </div>
           <button className="button addTimeSlot" onClick={addTimeSlot}>Add timeslot</button>
           <div className="tagContainer">
-            {data.selectedTimes.map(time =>
+            {data.timeSlots.map(time =>
               <span key={time.date} className="tag">{moment(time.date).format('ddd, MMM Do, HH:mm')}
                 <button value={time.date || ''} onClick={removeTimeSlot} className="delete"></button>
               </span>

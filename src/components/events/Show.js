@@ -93,12 +93,9 @@ class EventsShow extends React.Component{
 
   // allows a user to request joining this event
   handleJoinRequest = () => {
-    const joinRequests = this.state.event.joinRequests.concat(Auth.getPayload().sub);
-    const event = { ...this.state.event, joinRequests };
-
     axios({
-      method: 'PUT',
-      url: `/api/events/${this.props.match.params.id}`,
+      method: 'POST',
+      url: `/api/events/${this.props.match.params.id}/requests`,
       data: event,
       headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
@@ -107,16 +104,10 @@ class EventsShow extends React.Component{
   }
 
   // accepts a user's request to this event (ADMIN)
-  acceptRequest = (id) => {
-    const joinRequests = this.state.event.joinRequests.slice();
-    joinRequests.splice(joinRequests.indexOf(id), 1);
-    const invitees = this.state.event.invitees.concat(id);
-    const event = { ...this.state.event, joinRequests, invitees };
-
+  acceptRequest = (userId) => {
     axios({
       method: 'PUT',
-      url: `/api/events/${this.props.match.params.id}`,
-      data: event,
+      url: `/api/events/${this.props.match.params.id}/requests/${userId}`,
       headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
       .then(res => this.setState({ event: res.data }))
@@ -124,14 +115,10 @@ class EventsShow extends React.Component{
   }
 
   // declines a user's request to this event (ADMIN)
-  declineRequest = (id) => {
-    const joinRequests = this.state.event.joinRequests.slice();
-    joinRequests.splice(joinRequests.indexOf(id), 1);
-    const event = { ...this.state.event, joinRequests };
+  declineRequest = (userId) => {
     axios({
-      method: 'PUT',
-      url: `/api/events/${this.props.match.params.id}`,
-      data: event,
+      method: 'DELETE',
+      url: `/api/events/${this.props.match.params.id}/requests/${userId}`,
       headers: { Authorization: `Bearer ${Auth.getToken()}`}
     })
       .then(res => this.setState({ event: res.data }))
