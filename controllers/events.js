@@ -27,9 +27,9 @@ function createRoute(req, res, next){
       res.status(201).json(event);
       if(req.body.selectedOptions) {
         req.body.selectedOptions.forEach(person => {
-          const body = `Hi ${person.label}! You have been invited to ${req.body.name} by ${req.body.organizer.username}. Visit http://localhost:8000/events/${event._id} to view the event and vote on which dates are best for you.`;
+          const body = `Hi ${person.label}! You have been invited to ${req.body.name} by ${req.body.organizer.username}. Visit ${req.headers.origin}/events/${event._id} to view the event and vote on which dates are best for you.`;
           sendSMS(body, person.tel);
-          notifications.send({ title: `Hey, ${person.label}`, body: 'You have an invitation to an event.'}, person.value);
+          notifications.send({ title: `You've been invited to ${req.body.name}`, body: 'Go to:', url: `/events/${event._id}`}, person.value);
         });
       }
     })
@@ -39,22 +39,27 @@ function createRoute(req, res, next){
 function updateRoute(req, res, next) {
   Event
     .findById(req.params.id)
-    .populate('organizer')
+    .populate('organizer invitees')
     .then(event => event.set(req.body))
     .then(event => event.save())
     .then(event => {
-      res.json(event);
-      if(req.body.finalTimes.length > 0 && req.body.invitees.length > 0) {
-        req.body.invitees.forEach(person => {
-          const formattedTimes = req.body.finalTimes.map(time => {
-            return moment(time).format('dddd MMMM Do [at] HH:mm');
+      console.log('EVENT ATTENDEES: ', typeof event.attendees[0]);
+      if(event.finalTimes.length > 0 && event.attendees.length > 0) {
+        const times = event.finalTimes
+          .map(time => moment(time).format('dddd MMMM Do [at] HH:mm'))
+          .map(time => time).join(', ').replace(/(.*),(.*)$/, '$1 &$2');
+        console.log('EVENT INVITEES: ', typeof event.invitees[0]);
+        event.invitees
+          .filter(user => event.attendees.includes(user._id))
+          .forEach(user => {
+            console.log('USER', user);
+            const body = `Hi ${user.username}! ${req.body.organizer.username} has set the final time(s) for the event ${req.body.name}. It will take place on ${times}. For more information, visit ${req.headers.origin}/events/${event._id}`;
+            sendSMS(body, user.tel);
           });
-          const times = formattedTimes.map(time => time).join(', ').replace(/(.*),(.*)$/, '$1 &$2');
-          const body = `Hi ${person.username}! ${req.body.organizer.username} has set the final time(s) for the event ${req.body.name}. It will take place on ${times}. For more information, visit http://localhost:8000/events/${event._id}`;
-          const tel = person.tel;
-          sendSMS(body, tel);
-        });
+
       }
+
+      return res.json(event);
     })
     .catch(next);
 }
@@ -67,10 +72,27 @@ function deleteRoute(req, res, next) {
     .catch(next);
 }
 
+// POST /events/:id/vote
+function voteRoute(req, res, next) {
+  Event
+    .findById(req.params.id)
+    .populate('organizer invitees')
+    .then(event => {
+      event.timeSlots = event.timeSlots.map(timeSlot => {
+        if(req.body.votes.includes(timeSlot._id.toString())) timeSlot.votes.push(req.currentUser._id);
+        return timeSlot;
+      });
+      return event.save();
+    })
+    .then(event => res.json(event))
+    .catch(next);
+}
+
 module.exports = {
   index: indexRoute,
   show: showRoute,
   create: createRoute,
   update: updateRoute,
-  delete: deleteRoute
+  delete: deleteRoute,
+  vote: voteRoute
 };
