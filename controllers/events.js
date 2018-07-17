@@ -21,6 +21,8 @@ function showRoute(req, res, next) {
 
 function createRoute(req, res, next){
   req.body.organizer = req.currentUser;
+  req.body.length = (req.body.hours * 60) + +req.body.minutes;
+  req.body.timeSlots = req.body.selectedTimes;
   Event
     .create(req.body)
     .then(event => {
@@ -37,6 +39,7 @@ function createRoute(req, res, next){
 }
 
 function updateRoute(req, res, next) {
+  req.body.timeSlots = req.body.selectedTimes;
   Event
     .findById(req.params.id)
     .populate('organizer invitees')
