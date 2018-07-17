@@ -30,7 +30,7 @@ function createRoute(req, res, next){
         req.body.selectedOptions.forEach(person => {
           const body = `Hi ${person.label}! You have been invited to ${req.body.name} by ${req.body.organizer.username}. Visit ${req.headers.origin}/events/${event._id} to view the event and vote on which dates are best for you.`;
           sendSMS(body, person.tel);
-          notifications.send({ title: `You've been invited to ${req.body.name}`, body: 'Go to:', url: `/events/${event._id}`}, person.value);
+          notifications.send({ title: `You've been invited to ${req.body.name}`, body: `Hey ${person.label}. For more info, visit 'My events' on CheckIt`}, person.value);
         });
       }
     })
