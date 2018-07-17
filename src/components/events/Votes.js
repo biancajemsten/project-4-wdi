@@ -20,7 +20,7 @@ const Votes = ({ event, handleVote, handlePickDate, handleConfirmFinalTimes, han
   const isPicked = (date) => event.finalTimes.includes(date);
 
   const columnCounter = () => {
-    if(event.finalTimes.length > 0) {
+    if(event.finalTimesChecker) {
       return event.finalEventDates.length > 1;
     } else{
       return event.eventDates.length > 1;
@@ -39,10 +39,10 @@ const Votes = ({ event, handleVote, handlePickDate, handleConfirmFinalTimes, han
   return (
     <div>
       {!event.finalTimesChecker && (checkUserIsInvitee() || checkUserIsOrganizer() || checkUserAttending()) &&
-        <div className="columns is-mobile is-multiline">
+        <div className="columns slotContainer is-mobile is-multiline">
 
           {event.eventDates.map((date, i) =>
-            <div key={i} className={`column dateColumn${columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
+            <div key={i} className={`column dateColumn is-one-third-desktop is-one-third-tablet${columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
               <div className="columns is-multiline">
 
                 <div className="column is-full">
@@ -50,7 +50,7 @@ const Votes = ({ event, handleVote, handlePickDate, handleConfirmFinalTimes, han
                 </div>
 
                 {event.timeSlots.map((timeSlot, i) => filterStartTime(date, i) &&
-                  <div className="timeSlotDiv column is-one-third-desktop is-full-mobile is-full-tablet" key={i}>
+                  <div className="timeSlotDiv column is-full-desktop is-full-mobile is-full-tablet" key={i}>
                     {isVoted(timeSlot._id) && <div>
                       <img className="checkIcon" src="/assets/images/checklogo.png"/>
                     </div>}

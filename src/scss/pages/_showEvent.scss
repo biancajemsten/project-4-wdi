@@ -1,3 +1,11 @@
+div.columns.slotContainer{
+  margin: 0;
+}
+div.showHeadContainer{
+  display: flex;
+  justify-content: space-between;
+}
+
 .dateColumn{
   box-sizing: border-box;
   border: 2px solid $light;
@@ -48,5 +56,26 @@ div.timeSlotDiv{
 
 .buttonDiv{
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
+}
+
+.requestTable{
+  width: 400px;
+  background-color: $light;
+  margin: 0px;
+  color: $dark-blue;
+  div{
+    display: flex;
+    justify-content: space-between;
+  }
+  p{
+    color: $dark-blue;
+  }
+  button.button{
+    font-size: 0.75rem;
+    margin-left: 10px;
+  }
+  .column{
+    border: 1px solid $dark-blue;
+  }
 }

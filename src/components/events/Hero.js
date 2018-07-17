@@ -16,19 +16,22 @@ const Hero = ({ event, handleDelete, handleDeclineInvitation, handleJoinRequest 
     return Auth.isAuthenticated() && event.invitees.some(invitee => invitee._id === Auth.getPayload().sub);
   };
 
+  // Not working right now due to object is not object 
   const pendingRequestToJoin = () => {
     return event.joinRequests.includes(Auth.getPayload().sub);
   };
 
   return (
     <section>
-      <h2 className="title is-2 font-is-light">{event.name}</h2>
-      {!checkUserAttending() && !checkUserIsInvitee() && !pendingRequestToJoin() && !checkUserIsOrganizer() &&
-        <button className="button" onClick={handleJoinRequest}>Request to join</button>
-      }
-      {!checkUserAttending() && !checkUserIsInvitee() && pendingRequestToJoin() &&
-        <div className="button">Pending...</div>
-      }
+      <div className="showHeadContainer">
+        <h2 className="title is-2 font-is-light">{event.name}</h2>
+        {!checkUserAttending() && !checkUserIsInvitee() && !pendingRequestToJoin() && !checkUserIsOrganizer() &&
+          <button className="button" onClick={handleJoinRequest}>Request to join</button>
+        }
+        {!checkUserAttending() && !checkUserIsInvitee() && pendingRequestToJoin() &&
+          <div className="button">Pending...</div>
+        }
+      </div>
       <hr/>
       <div className="columns is-multiline is-mobile">
         <div className="column is-two-fifths">
