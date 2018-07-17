@@ -95,7 +95,7 @@ const EventsForm = ({ handleBlur, addTimeSlot, removeTimeSlot, handleClearSelect
           <PlacesAutocomplete
             className="input"
             name="address"
-            value={data.address}
+            value={data.address || ''}
             handleChange={handleChange}
           />
         </div>
@@ -115,7 +115,7 @@ const EventsForm = ({ handleBlur, addTimeSlot, removeTimeSlot, handleClearSelect
           <label className="label">Set Privacy</label>
           <div className="control">
             <div className="select is-fullwidth">
-              <select name="privacy" onChange={handleChange} onBlur={handleBlur} value={data.privacy || ''}>
+              <select name="privacy" onChange={handleChange} value={data.privacy || ''}>
                 <option value="" disabled>Set event privacy</option>
                 <option>Private</option>
                 <option>Public</option>
