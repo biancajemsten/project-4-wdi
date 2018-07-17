@@ -41,8 +41,23 @@ mongoose.connect(dbURI, (err, db) => {
         timeSlots: [{
           date: '2018-07-11T12:30:00',
           votes: []
+        },{
+          date: '2018-07-11T15:30:00',
+          votes: []
         }, {
-          date: '2018-07-13T15:15:00',
+          date: '2018-07-13T09:00:00',
+          votes: []
+        }, {
+          date: '2018-07-13T11:00:00',
+          votes: []
+        }, {
+          date: '2018-07-13T15:00:00',
+          votes: []
+        },{
+          date: '2018-08-01T15:15:00',
+          votes: []
+        },{
+          date: '2018-08-01T18:15:00',
           votes: []
         }],
         length: 120,
@@ -59,8 +74,20 @@ mongoose.connect(dbURI, (err, db) => {
         timeSlots: [{
           date: '2018-07-21T08:30:00',
           votes: []
+        },{
+          date: '2018-07-21T10:30:00',
+          votes: []
         }, {
           date: '2018-08-13T13:30:00',
+          votes: []
+        }, {
+          date: '2018-08-13T15:30:00',
+          votes: []
+        }, {
+          date: '2018-08-13T17:30:00',
+          votes: []
+        },{
+          date: '2018-08-23T09:00:00',
           votes: []
         }],
         length: 300,
