@@ -22,13 +22,15 @@ const Hero = ({ event, handleDelete, handleDeclineInvitation, handleJoinRequest 
 
   return (
     <section>
-      <h2 className="title is-2 font-is-light">{event.name}</h2>
-      {!checkUserAttending() && !checkUserIsInvitee() && !pendingRequestToJoin() && !checkUserIsOrganizer() &&
-        <button className="button" onClick={handleJoinRequest}>Request to join</button>
-      }
-      {!checkUserAttending() && !checkUserIsInvitee() && pendingRequestToJoin() &&
-        <div className="button">Pending...</div>
-      }
+      <div className="showHeadContainer">
+        <h2 className="title is-2 font-is-light">{event.name}</h2>
+        {!checkUserAttending() && !checkUserIsInvitee() && !pendingRequestToJoin() && !checkUserIsOrganizer() &&
+          <button className="button" onClick={handleJoinRequest}>Request to join</button>
+        }
+        {!checkUserAttending() && !checkUserIsInvitee() && pendingRequestToJoin() &&
+          <div className="button">Pending...</div>
+        }
+      </div>
       <hr/>
       <div className="columns is-multiline is-mobile">
         <div className="column is-two-fifths">
