@@ -57,7 +57,6 @@ div.timeSlotDiv{
 .buttonDiv{
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 15px;
 }
 
 .requestTable{
@@ -71,13 +70,12 @@ div.timeSlotDiv{
   }
   p{
     color: $dark-blue;
-    // display: inline-block;
   }
   button.button{
     font-size: 0.75rem;
     margin-left: 10px;
   }
   .column{
-    border: 1px solid $dark-blue; 
+    border: 1px solid $dark-blue;
   }
 }
