@@ -5,7 +5,7 @@ const SelectedTimes = ({ event }) => {
 
   //checks the date of the column with the date of the timeSlot
   const filterStartTime = (date, i) => {
-    if(event.finalTimes.length > 0){
+    if(event.finalTimesChecker){
       if(date === moment(event.finalTimes[i]).format('ddd, MMM Do')) return true;
     } else{
       if(date === moment(event.timeSlots[i].date).format('ddd, MMM Do')) return true;
@@ -28,6 +28,7 @@ const SelectedTimes = ({ event }) => {
     <div>
       <h2 className="title is-2">Selected Times</h2>
       <div className="columns is-full is-mobile is-multiline">
+
         {event.finalEventDates.map((date, i) =>
           <div key={i} className={`column dateColumn${columnCounter() ? ' is-half-mobile' : ' is-full-mobile'}`}>
             <div className="columns is-multiline">

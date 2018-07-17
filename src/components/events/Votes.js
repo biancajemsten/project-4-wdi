@@ -29,7 +29,9 @@ const Votes = ({ event, handleVote, handlePickDate, handleConfirmFinalTimes, han
 
   //checks the date of the column with the date of the timeSlot
   const filterStartTime = (date, i) => {
-    if(event.finalTimes.length > 0){
+    console.log(event.finalTimes);
+    console.log(event.finalTimes[i]);
+    if(event.finalTimesChecker){
       if(date === moment(event.finalTimes[i]).format('ddd, MMM Do')) return true;
     } else{
       if(date === moment(event.timeSlots[i].date).format('ddd, MMM Do')) return true;

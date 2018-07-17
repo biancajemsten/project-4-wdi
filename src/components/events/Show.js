@@ -24,8 +24,10 @@ class EventsShow extends React.Component{
 
   // allows selecting the final times (ADMIN)
   handlePickDate = (date) => {
-    let finalTimes;
+    console.log(date);
+    let finalTimes = [];
     const index = this.state.event.finalTimes.indexOf(date);
+    console.log(index); 
     if(index === -1) {
       finalTimes = this.state.event.finalTimes.concat(date);
     } else {
