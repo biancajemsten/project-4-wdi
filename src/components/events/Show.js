@@ -146,6 +146,7 @@ class EventsShow extends React.Component{
   }
 
   render(){
+    console.log(this.state);
     if(!this.state.event) return <div className="loadContainer"><img src="/assets/images/Pacman.svg"/><h2 className="title">Loading...</h2></div>;
     return(
       <div>
