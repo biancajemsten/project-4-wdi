@@ -69,7 +69,6 @@ class EventsNew extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Event created');
     axios({
       method: 'POST',
       url: '/api/events',

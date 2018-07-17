@@ -44,16 +44,13 @@ function updateRoute(req, res, next) {
     .then(event => event.set(req.body))
     .then(event => event.save())
     .then(event => {
-      // console.log('EVENT ATTENDEES: ', typeof event.attendees[0]);
       if(event.finalTimes.length > 0 && event.attendees.length > 0) {
         const times = event.finalTimes
           .map(time => moment(time).format('dddd MMMM Do [at] HH:mm'))
           .map(time => time).join(', ').replace(/(.*),(.*)$/, '$1 &$2');
-        // console.log('EVENT INVITEES: ', typeof event.invitees[0]);
         event.invitees
           .filter(user => event.attendees.includes(user._id.toString()))
           .forEach(user => {
-            console.log('USER', user);
             const body = `Hi ${user.username}! ${req.body.organizer.username} has set the final time(s) for the event ${req.body.name}. It will take place on ${times}. For more information, visit ${req.headers.origin}/events/${event._id}`;
             sendSMS(body, user.tel);
           });
