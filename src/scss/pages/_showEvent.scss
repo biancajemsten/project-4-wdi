@@ -34,9 +34,7 @@ div.timeSlotDiv{
   p, strong{
     color: $dark-blue;
   }
-  .column{
 
-  }
   div{
     float:right;
     .checkIcon{
@@ -54,11 +52,6 @@ div.timeSlotDiv{
   }
 }
 
-// button.button.unVote{
-//   background-color: $red;
-//   color: $light;
-// }
-
 .buttonDiv{
   display: flex;
   justify-content: flex-start;
@@ -72,6 +65,9 @@ div.timeSlotDiv{
     background-color: $light;
     display: flex;
     justify-content: space-between;
+    &:hover{
+      background-color: $table-hover;
+    }
   }
   p{
     color: $dark-blue;
