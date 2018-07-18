@@ -92,6 +92,10 @@ function requestRoute(req, res, next) {
       event.joinRequests.push(req.currentUser);
       return event.save();
     })
+    //--> We can put this in but it breaks if not every organizer has an endpoint installed 
+    // .then(event => {
+    //   notifications.send({ title: 'New request!', body: `Someone has requested to join ${event.name}`}, event.organizer._id);
+    // })
     .then(event => res.json(event))
     .catch(next);
 }

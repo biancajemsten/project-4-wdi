@@ -16,9 +16,8 @@ const Hero = ({ event, handleDelete, handleDeclineInvitation, handleJoinRequest 
     return Auth.isAuthenticated() && event.invitees.some(invitee => invitee._id === Auth.getPayload().sub);
   };
 
-  // Not working right now due to object is not object
   const pendingRequestToJoin = () => {
-    return event.joinRequests.map(user => user._id).includes(Auth.getPayload().sub);
+    return event.joinRequests.some(request => request._id === Auth.getPayload().sub);
   };
 
   return (
