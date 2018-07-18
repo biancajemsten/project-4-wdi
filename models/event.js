@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
+const _ = require('lodash');
 
 const timeSlotSchema = new mongoose.Schema({
   date: { type: Date },
@@ -47,12 +48,12 @@ const eventSchema = new mongoose.Schema({
 
 eventSchema.virtual('eventDates')
   .get(function() {
-    console.log(this); 
     return Array.from(new Set(this.timeSlots.map(slot => moment(slot.date).format('ddd, MMM Do'))));
   });
 
 eventSchema.virtual('finalEventDates')
   .get(function(){
+    this.finalTimes = _.sortBy(this.finalTimes);
     return Array.from(new Set(this.finalTimes.map(time => moment(time).format('ddd, MMM Do'))));
   });
 
