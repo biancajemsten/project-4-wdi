@@ -98,6 +98,36 @@ mongoose.connect(dbURI, (err, db) => {
         attendees: [],
         image: 'https://geekandsundry.com/wp-content/uploads/2016/12/featured-dnd-holiday.png',
         organizer: [users[2]._id]
+      },{
+        name: 'Kräftskiva',
+        description: 'Let\'s put funny triangle formed hats on and sing a song every time we take a snaps.',
+        timeSlots: [{
+          date: '2018-08-08T17:30:00',
+          votes: []
+        },{
+          date: '2018-08-08T19:00:00',
+          votes: []
+        }, {
+          date: '2018-08-10T18:00:00',
+          votes: []
+        }, {
+          date: '2018-08-10T20:00:00',
+          votes: []
+        }, {
+          date: '2018-08-15T17:45:00',
+          votes: []
+        },{
+          date: '2018-08-15T19:00:00',
+          votes: []
+        }],
+        length: 120,
+        address: 'Helsingborg, Sverige',
+        location: { lat: 56.0452094, lng: 12.691276 },
+        privacy: 'Public',
+        invitees: [ users[2]],
+        attendees: [],
+        image: 'https://eu-central-1.tchyn.io/unitedbloggers-production/uploads/sites/406/2016/08/Isabella-Lo%CC%88wengrip-kra%CC%88ftskiva-i-tra%CC%88dga%CC%8Arden.jpg?quality=90',
+        organizer: [users[0]._id]
       }]);
     })
     .then(events => console.log(`${events.length} event(s) created`))
