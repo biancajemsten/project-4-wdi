@@ -5,10 +5,10 @@ const SelectedTimes = ({ event }) => {
 
   //checks the date of the column with the date of the timeSlot
   const filterStartTime = (date, i) => {
-    if(event.finalTimesChecker){
-      if(date === moment(event.finalTimes[i]).format('ddd, MMM Do')) return true;
+    if(event.finalTimesChecker) {
+      return date === moment(event.finalTimes[i]).format('ddd, MMM Do');
     } else{
-      if(date === moment(event.timeSlots[i].date).format('ddd, MMM Do')) return true;
+      return date === moment(event.timeSlots[i].date).format('ddd, MMM Do');
     }
   };
 
@@ -38,7 +38,7 @@ const SelectedTimes = ({ event }) => {
               {event.finalTimes.map((time, i) => filterStartTime(date, i) &&
                 <div className="timeSlotDiv column is-full-desktop is-full-mobile is-full-tablet" key={i}>
                   <p>
-                    <strong>Time: </strong> {getFormattedTime(time)}
+                    <strong>Time: </strong>{getFormattedTime(time)}
                   </p>
                 </div>
               )}
