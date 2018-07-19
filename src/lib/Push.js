@@ -3,18 +3,30 @@ import Auth from './Auth';
 
 class Push {
   //register Sw, Register Push, Send Push
-  static register() {
+  register = {}
+
+  static initialize() {
     //Register service worker
     console.log('Registering service worker... ');
     return navigator.serviceWorker.register('/sw.js', {
       scope: '/'
     })
       .then(register => {
-        return register.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: this.urlBase64ToUint8Array(publicVapidKey)
+        this.register = register;
+        const serviceWorker = register.installing || register.waiting || register.active;
+        serviceWorker.addEventListener('statechange', (e) => {
+          if(e.target.state === 'activated') return this.subscribe();
         });
-      })
+
+        if(serviceWorker.state === 'activated') return this.subscribe();
+      });
+  }
+
+  static subscribe() {
+    return this.register.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: this.urlBase64ToUint8Array(publicVapidKey)
+    })
       .then(subscription => {
         return fetch('/api/subscribe', {
           method: 'POST',
