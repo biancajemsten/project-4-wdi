@@ -29,7 +29,7 @@ class App extends React.Component {
   };
 
   componentDidMount = () => {
-    Push.register()
+    Push.initialize()
       .then(res => {
         console.log('REGISTERED', res);
         this.setState({ pushRegistered: true });
