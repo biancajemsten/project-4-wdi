@@ -6,7 +6,7 @@ class Push {
   static register() {
     //Register service worker
     console.log('Registering service worker... ');
-    return navigator.serviceWorker.register('/assets/js/sw.js', {
+    return navigator.serviceWorker.register('/sw.js', {
       scope: '/'
     })
       .then(register => {

@@ -10,7 +10,8 @@ const HtmlWebpack = new HtmlWebpackPlugin({
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CopyWebpack = new CopyWebpackPlugin([
-  { from: './src/assets', to: 'assets' }
+  { from: './src/assets', to: 'assets' },
+  { from: './src/sw.js', to: 'sw.js', toType: 'file' }
 ]);
 
 const HotModuleReplcement = new webpack.HotModuleReplacementPlugin();
