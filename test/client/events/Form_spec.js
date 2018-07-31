@@ -39,6 +39,7 @@ describe('EventsForm tests', () => {
   });
 
   it('should render a form', done =>{
+    console.log(wrapper.debug());
     expect(wrapper.find('form').length).to.eq(1);
     done();
   });
