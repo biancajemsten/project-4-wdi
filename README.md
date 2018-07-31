@@ -4,7 +4,7 @@
 ---
 
 #### Overview
-CheckIt is an application that allows users to organize an event and suggest times slots to its chosen invitees. Users invited to the event receive a push notification and can then vote on the most suitable time slots for them. Given the votes, the organizer can then set a final time which attendees are notified of via text message.  
+CheckIt is an application that allows users to organize an event and suggest time slots to its chosen invitees. Users invited to the event receive a push notification and can then vote on the most suitable time slots for them. Given the votes, the organizer can then set a final time which attendees are notified of via text message.  
 
 #### Before using the app
 
@@ -29,13 +29,13 @@ CheckIt is an application that allows users to organize an event and suggest tim
 #### Third party APIs
 The application uses three third party APIs. Google Maps is used on the event show page to indicate to the user where the event takes place. When creating an event, we have implemented Filestack to enable the user to upload a photo. Lastly, twilio is used to send out notifications to users who have been invited to an event as well as notifying them when the final time for an event has been set.
 
-Please note that we have currently commented out the code that enables twilio. The reason for this is that we are using a trial account which requires us to register all phone numbers with twilio. The function would work for a paid account but we have decided to disable the code for now.
+*Please note that we have currently commented out the code that enables twilio. The reason for this is that we are using a trial account which requires us to register all phone numbers with twilio. The function would work for a paid account but we have decided to disable the code for now.*
 
 #### Build process
 
-The project started with the group coming together to draw out the initial plans for the project. First features, looking into APIs we would use and planning out models for the database.
+The project started with the group discussing the initial plans for the project such as first features, looking into APIs we could use and planning out models for the database.
 
-The following step was to set up wireframes, describing the user-journey through the entire stay on the website:
+Thereafter we set up wireframes to describe the user-journey through the entire stay on the website:
 from registering
 to creating an event,
 to voting on different time slots,
@@ -43,9 +43,9 @@ to the event creator deciding on the final times of the event.
 
 The next step was to set up our Trello board. And to create feature-focused cards. Every card represented a smallest individual feature to be worked on.
 
-From the get go we decided to design the application mobile first.
+From the get go we decided to design the application mobile first. Therefore it is fully mobile responsive and functional on all devices.
 
-Coding started from backend, once again completing smallest feature possible, and then testing it, before pushing it to the development branch. The initial setup of the processes was fairly straightforward and simple. The developer picked a trello card, assigning themselves to it, and then they proceeded to code it.
+Coding started from the back end, once again completing smallest feature possible, and then testing it, before pushing it to the development branch. The initial setup of the processes was fairly straightforward and simple. The developer picked a trello card, assigned it to themselves, and then they proceeded to write the code for it.
 
 When the project reached more challenging stages, it was common for developers in this to pair up, to hasten the process.
 
@@ -54,11 +54,11 @@ And once more, every feature was tested pushed to development.
 
 #### The user experience
 
-The user can have two roles - they can be an organizer or an invitee. The experience looks somewhat different for the two and it will also depend on if the event is public or private.
+The user can have two roles on the site - they can be an organizer or an invitee. The experience looks somewhat different for the two and it will also depend on if the event is public or private.
 
 <table>
-  <th><p align="center"><img src="https://i.imgur.com/HjhgDYY.png" width="500"></p></th>
   <th><p align="center"><img src="https://i.imgur.com/OeXsjyT.png" width="500"></p></th>
+  <th><p align="center"><img src="https://i.imgur.com/HjhgDYY.png" width="500"></p></th>
 </table>
 
 
@@ -81,8 +81,8 @@ If the creator declines the request, then the user is simply removed from the pr
 
 <p align="center"><img src="https://i.imgur.com/7CPwFaq.gif" width="700"></p>
 
-**Choosing final times.** When the event creator is satisfied with the amount of votes received, he may choose to click the button `Pick Date` on one or more chosen time slots.
-When the creator has chosen the final times of the event they’re able to submit them, which changes the event to now, instead of displayed all of the different time slots, to now only displaying the chosen timeslots, notifying the invited users with an SMS that the final times for the event have been chosen, reminding them to attend at the right time and location.
+**Choosing final times.** When the organizer is satisfied with the amount of votes received, he may choose to click the button `Pick Date` on one or more chosen time slots.
+When the organizer has selected and submitted the final times of the event, the layout of the page changes to only display the final times instead of all choices. The submission also notifies the invited users with an SMS that the final times for the event have been chosen, reminding them to attend at the right time and location.
 
 
 #### Challenges
@@ -99,9 +99,9 @@ The final major challenge we faced was working with Date and the Event model. As
 
 
 #### What's next
-If we were to return to the project we would include Nodemailer, Google Calendar and iCalendar events, to ensure that the user is contacted in a method that is preferable to them, rather than only having the ability to be contacted by SMS or visiting the website.
+If we were to return to the project we would include Nodemailer, Google Calendar and/or iCalendar events, to ensure that the user is contacted via a method that is preferable to them, rather than only having the ability to be contacted by SMS or visiting the website.
 
-Secondly, using Geolocation we would want to include directions, so that the user could simply open up the event and be shown quickest way to the event from their current location.
+Additionally, using Geolocation we would want to include directions, so that the user could simply open up the event and be shown quickest way to the event from their current location.
 
 The project itself is open-ended and simple enough in concept that it allows for different kinds of additions and improvements even later down the line.
 
