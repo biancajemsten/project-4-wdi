@@ -1,4 +1,4 @@
-# WDI 34 project 4 - CheckIt <p display= "inline" style="float: right"><img src="./src/assets/images/checklogo.png" width="50"></p>
+s# WDI 34 project 4 - CheckIt <p display= "inline" style="float: right"><img src="./src/assets/images/checklogo.png" width="50"></p>
 ### A MERN Stack App
 ##### by Bianca Jemsten, Martin Koeoep and Richard Tzanov
 ---

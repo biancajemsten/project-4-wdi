@@ -66,7 +66,7 @@ const EventsForm = ({ handleBlur, addTimeSlot, removeTimeSlot, handleClearSelect
         </div>}
 
         <div className="field column is-full-mobile is-half-desktop is-half-tablet">
-          <label className="label">Event Length (hours & minutes)</label>
+          <label className="label">Event Length</label>
           <div className="control">
             <div className="select is-full-width">
               <select name="hours" onChange={handleChange} value={data.hours || ''}>

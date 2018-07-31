@@ -26,13 +26,14 @@ function createRoute(req, res, next){
     .create(req.body)
     .then(event => {
       res.status(201).json(event);
-      if(req.body.selectedOptions) {
-        req.body.selectedOptions.forEach(person => {
-          const body = `Hi ${person.label}! You have been invited to ${req.body.name} by ${req.body.organizer.username}. Visit ${req.headers.origin}/events/${event._id} to view the event and vote on which dates are best for you.`;
-          sendSMS(body, person.tel);
-          notifications.send({ title: `You've been invited to ${req.body.name}`, body: `Hey ${person.label}. For more info, visit 'My events' on CheckIt`}, person.value);
-        });
-      }
+      // TWILIO COMMENTED OUT BECAUSE API IS USING A TRIAL ACCOUNT AND WON'T WORK WITH NEW NUMBERS
+      // if(req.body.selectedOptions) {
+      //   req.body.selectedOptions.forEach(person => {
+      //     const body = `Hi ${person.label}! You have been invited to ${req.body.name} by ${req.body.organizer.username}. Visit ${req.headers.origin}/events/${event._id} to view the event and vote on which dates are best for you.`;
+      //     sendSMS(body, person.tel);
+      //     notifications.send({ title: `You've been invited to ${req.body.name}`, body: `Hey ${person.label}. For more info, visit 'My events' on CheckIt`}, person.value);
+      //   });
+      // }
     })
     .catch(next);
 }
@@ -44,17 +45,18 @@ function updateRoute(req, res, next) {
     .then(event => event.set(req.body))
     .then(event => event.save())
     .then(event => {
-      if(event.finalTimes.length > 0 && event.attendees.length > 0) {
-        const times = event.finalTimes
-          .map(time => moment(time).format('dddd MMMM Do [at] HH:mm'))
-          .map(time => time).join(', ').replace(/(.*),(.*)$/, '$1 &$2');
-        event.invitees
-          .filter(user => event.attendees.includes(user._id.toString()))
-          .forEach(user => {
-            const body = `Hi ${user.username}! ${req.body.organizer.username} has set the final time(s) for the event ${req.body.name}. It will take place on ${times}. For more information, visit ${req.headers.origin}/events/${event._id}`;
-            sendSMS(body, user.tel);
-          });
-      }
+      // TWILIO COMMENTED OUT BECAUSE API IS USING A TRIAL ACCOUNT AND WON'T WORK WITH NEW NUMBERS
+      // if(event.finalTimes.length > 0 && event.attendees.length > 0) {
+      //   const times = event.finalTimes
+      //     .map(time => moment(time).format('dddd MMMM Do [at] HH:mm'))
+      //     .map(time => time).join(', ').replace(/(.*),(.*)$/, '$1 &$2');
+      //   event.invitees
+      //     .filter(user => event.attendees.includes(user._id.toString()))
+      //     .forEach(user => {
+      //       const body = `Hi ${user.username}! ${req.body.organizer.username} has set the final time(s) for the event ${req.body.name}. It will take place on ${times}. For more information, visit ${req.headers.origin}/events/${event._id}`;
+      //       sendSMS(body, user.tel);
+      //     });
+      // }
       return res.json(event);
     })
     .catch(next);
@@ -92,7 +94,7 @@ function requestRoute(req, res, next) {
       event.joinRequests.push(req.currentUser);
       return event.save();
     })
-    //--> We can put this in but it breaks if not every organizer has an endpoint installed 
+    //--> We can put this in but it breaks if not every organizer has an endpoint installed
     // .then(event => {
     //   notifications.send({ title: 'New request!', body: `Someone has requested to join ${event.name}`}, event.organizer._id);
     // })
