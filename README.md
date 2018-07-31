@@ -6,6 +6,10 @@ s# WDI 34 project 4 - CheckIt <p display= "inline" style="float: right"><img src
 #### Overview
 CheckIt is an application that allows users to organize an event and suggest times slots to its chosen invitees. Users invited to the event receive a push notification and can then vote on the most suitable timeslots for them. Given the votes, the organizer can then set a final time which attendees are notified of via text message.  
 
+#### Before using the app
+
+
+
 #### Technologies used
 
 ||||
@@ -19,4 +23,6 @@ CheckIt is an application that allows users to organize an event and suggest tim
 |jsonwebtoken|bluebird|axios|
 |body-parser|file-loader|moment|
 
-### Third party API's
+#### Third party APIs
+
+#### Before using the app

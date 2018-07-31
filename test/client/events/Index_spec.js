@@ -127,7 +127,7 @@ describe('EventsIndex tests', () => {
     });
   });
 
-  it('should filter the criminals', done => {
+  it('should filter the events', done => {
     const input = wrapper.find('input');
     promise.then(() => {
       input.simulate('change', { target: { value: 'D&D' } });
