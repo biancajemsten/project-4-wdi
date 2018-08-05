@@ -6,6 +6,8 @@
 #### Overview
 CheckIt is an application that allows users to organize an event and suggest time slots to its chosen invitees. Users invited to the event receive a push notification and can then vote on the most suitable time slots for them. Given the votes, the organizer can then set a final time which attendees are notified of via text message.  
 
+The app is deployed on [Heroku ](https://checkit-planit.herokuapp.com/)
+
 #### Before using the app
 
 - Use Chrome v68.0.3440.70 to ensure features work as intended
