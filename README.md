@@ -24,7 +24,7 @@ CheckIt is an application that allows users to organize an event and suggest tim
 |Mocha|Yarn|Supertest|
 |web-push|filestack-js|bcrypt|
 |jsonwebtoken|bluebird|axios|
-|body-parser|file-loader|moment|
+|body-parser|file-loader|Moment.js|
 
 #### Third party APIs
 The application uses three third party APIs. Google Maps is used on the event show page to indicate to the user where the event takes place. When creating an event, we have implemented Filestack to enable the user to upload a photo. Lastly, twilio is used to send out notifications to users who have been invited to an event as well as notifying them when the final time for an event has been set.
@@ -35,17 +35,19 @@ The application uses three third party APIs. Google Maps is used on the event sh
 
 The project started with the group discussing the initial plans for the project such as first features, looking into APIs we could use and planning out models for the database.
 
-Thereafter we set up wireframes to describe the user-journey through the entire stay on the website:
+Thereafter we set up wireframes using draw.io to describe the user-journey through the entire stay on the website:
 from registering
 to creating an event,
 to voting on different time slots,
 to the event creator deciding on the final times of the event.
 
+<p align="center"><img src="https://i.imgur.com/wCWeWdg.png" width="700"></p>
+
 The next step was to set up our Trello board. And to create feature-focused cards. Every card represented a smallest individual feature to be worked on.
 
 From the get go we decided to design the application mobile first. Therefore it is fully mobile responsive and functional on all devices.
 
-Coding started from the back end, once again completing smallest feature possible, and then testing it, before pushing it to the development branch. The initial setup of the processes was fairly straightforward and simple. The developer picked a trello card, assigned it to themselves, and then they proceeded to write the code for it.
+Coding started from the back end, once again completing smallest feature possible, and then testing it, before pushing it to the development branch. The initial setup of the processes was fairly straightforward and simple. The developer picked a Trello card, assigned it to themselves, and then they proceeded to write the code for it.
 
 When the project reached more challenging stages, it was common for developers in this to pair up, to hasten the process.
 

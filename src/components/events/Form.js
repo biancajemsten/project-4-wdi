@@ -131,7 +131,7 @@ const EventsForm = ({ handleBlur, addTimeSlot, removeTimeSlot, handleClearSelect
             <img src={data.image} alt="user upload"/>
           </figure>}
           <ReactFilestack
-            apikey='A1P1k3n9REqxOW2Z9xz22z'
+            apikey='A3pF9v5RGT6i4708a7QBIz'
             name="image"
             onSuccess={e => handleChange({ target: { name: 'image', value: e.filesUploaded[0].url } })}
             value={data.image || ''}
