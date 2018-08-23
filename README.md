@@ -1,4 +1,6 @@
-# WDI 34 project 4 - CheckIt <p display= "inline" style="float: right"><img src="./src/assets/images/checklogo.png" width="50"></p>
+# WDI 34 project 4 - CheckIt
+<!-- <p display= "inline" style="float: right"><img src="./src/assets/images/checklogo.png" width="50"></p> -->
+
 ### A MERN Stack App
 ##### by Bianca Jemsten, Martin Koeoep and Richard Tzanov
 ---
@@ -100,6 +102,15 @@ What this meant was that the last couple of days on the project were spent almos
 Related to this was the issue of feature-bloat. As we moved quite quickly through the initial build, we kept coming up with extra functionality we wanted to add to do with the types of events, how those events were accessed by different users, different types of notifications, etc. An important part of the learning process for us was realising the essentials necessary to get an app working and focusing on making those function as smoothly as possible.
 
 The final major challenge we faced was working with Date and the Event model. As the entire app is driven by the dates and times for events, storing and formatting dates correctly was essential. Moment.js was invaluable for this, as was coming to understand that the best way to store the Date data was unformatted on the model, then using virtuals to render it how we wanted before sending it to the front-end. This was an ongoing process, as there were lots of different ways we wanted to use the event times, from listing all the times for a single day under one date heading to storing which dates had been voted on and then displaying the final times to the user.
+
+#### Wins
+
+Overall we are proud of the outcome of the CheckIt application. A few things we want to highlight as big wins are:
+-	Successful refactoring and moving a lot of the heavy lifting to the back end
+-	Having implemented so many different stages of the event, handling all that data, and displaying the event differently depending on the type of user – such as invitee, attendee, organizer, having requested to join etc.
+-	Researching and getting push notifications to work  
+-	Designing the app from mobile and up to get it to be fully responsive
+
 
 
 #### What's next
